@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101114">
+<title>Expediente Cero</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101114;color:#f4f0e8;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button{font:inherit;cursor:pointer}
+.phone{max-width:430px;min-height:100dvh;margin:auto;background:#15161a;position:relative;padding-bottom:30px}
+.status{display:flex;justify-content:space-between;padding:14px 22px;font-size:13px;color:#ddd}
+.top{padding:28px 24px 22px;border-bottom:1px solid #303137}
+.kicker{font-size:10px;letter-spacing:3px;color:#c9aa70}
+h1{font-size:30px;letter-spacing:2px;margin:10px 0 5px}
+.muted{color:#999ba4;font-size:13px;line-height:1.6}
+.notice{margin:18px 20px;padding:14px;background:#24252a;border:1px solid #414047;border-radius:12px}
+.notice strong{display:block;font-size:13px;margin-bottom:5px;color:#d8bd88}
+.apps{padding:22px;display:grid;grid-template-columns:repeat(3,1fr);gap:22px 12px}
+.app{background:none;border:0;color:#eee;display:flex;flex-direction:column;align-items:center;gap:9px;font-size:12px}
+.icon{height:62px;width:62px;border-radius:17px;display:grid;place-items:center;font-size:27px;box-shadow:0 5px 14px #0003}
+.blue{background:#426fe0}.purple{background:#7757ad}.green{background:#32855e}.yellow{background:#b18a3d}.grey{background:#41444b}.red{background:#9d4949}
+.section{padding:0 22px 24px}
+.section h2{font-size:17px;font-weight:600}
+.item{width:100%;text-align:left;color:#eee;background:#202126;border:1px solid #34353b;border-radius:10px;padding:15px;margin:7px 0}
+.item small{display:block;color:#9a9ca5;margin-top:6px;line-height:1.5}
+.back{background:none;border:0;color:#c9aa70;padding:20px 22px 8px}
+.view{padding:0 22px 30px}
+.view h2{font-size:25px;margin:12px 0}
+.msg{padding:12px 14px;border-radius:14px;background:#292a30;margin:12px 0;max-width:88%;line-height:1.5;font-size:14px}
+.msg.me{margin-left:auto;background:#315d4b}
+.photo{padding:22px;background:#28282b;border:1px solid #49464a;border-radius:10px;margin:15px 0}
+.note{border-left:2px solid #c9aa70;padding:12px 15px;background:#222329;line-height:1.7;margin:15px 0}
+.action{width:100%;padding:14px;background:#c9aa70;color:#151515;border:0;border-radius:8px;font-weight:700;margin-top:12px}
+input{width:100%;padding:13px;background:#24252a;border:1px solid #4b4b51;color:white;border-radius:8px;margin:8px 0}
+.footer{text-align:center;color:#6f717a;font-size:10px;padding:22px}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="status"><span>9:41</span><span>● ● ▰</span></div>
+  <div id="home">
+    <header class="top">
+      <div class="kicker">DISPOSITIVO RECUPERADO</div>
+      <h1>EXPEDIENTE <span style="color:#c9aa70">CERO</span></h1>
+      <div class="muted">Teléfono de Elena Vidal · Caso EC-001</div>
+    </header>
+    <div class="notice">
+      <strong>● NOTIFICACIÓN NUEVA</strong>
+      <span style="font-size:13px">Número desconocido: «¿Tienes ya el teléfono?»</span>
+      <div class="muted" style="margin-top:5px">Hace 3 minutos</div>
+    </div>
+    <div class="apps">
+      <button class="app" onclick="openApp('messages')"><span class="icon blue">▤</span>Mensajes</button>
+      <button class="app" onclick="openApp('photos')"><span class="icon purple">▧</span>Fotos</button>
+      <button class="app" onclick="openApp('calls')"><span class="icon green">☎</span>Llamadas</button>
+      <button class="app" onclick="openApp('notes')"><span class="icon yellow">▤</span>Notas</button>
+      <button class="app" onclick="openApp('files')"><span class="icon grey">▣</span>Archivos</button>
+      <button class="app" onclick="openApp('contacts')"><span class="icon red">♙</span>Contactos</button>
+    </div>
+    <div class="section">
+      <h2>Actividad reciente</h2>
+      <button class="item" onclick="openApp('messages')">Mensaje de número desconocido<small>«No deberías tener ese teléfono»</small></button>
+    </div>
+    <div class="footer">FICCIÓN INTERACTIVA · EC-001</div>
+  </div>
+  <div id="detail" class="hidden">
+    <button class="back" onclick="goHome()">← Volver al teléfono</button>
+    <div class="view" id="content"></div>
+  </div>
+</div>
+<script>
+const content=document.getElementById('content');
+const detail=document.getElementById('detail');
+const home=document.getElementById('home');
+const discovered=new Set(JSON.parse(localStorage.getItem('ec-discovered')||'[]'));
+function clue(id){discovered.add(id);localStorage.setItem('ec-discovered',JSON.stringify([...discovered]));}
+function openApp(app){
+ home.classList.add('hidden');detail.classList.remove('hidden');
+ const pages={
+ messages:`<div class="kicker">MENSAJES</div><h2>Conversaciones</h2>
+ <button class="item" onclick="conversation('maria')">María Torres<small>23:18 · «Elena, no puedes seguir ocultándolo»</small></button>
+ <button class="item" onclick="conversation('marcos')">Marcos León<small>23:40 · «Ya estoy en casa»</small></button>
+ <button class="item" onclick="conversation('unknown')">Número desconocido<small>00:06 · «¿Tienes ya el teléfono?»</small></button>`,
+ photos:`<div class="kicker">GALERÍA</div><h2>Fotografías</h2>
+ <button class="item" onclick="photo()">IMG_2048.jpg<small>23:49 · Estación de tren</small></button>
+ <p class="muted">Una fotografía recuperada de la última noche de Elena.</p>`,
+ calls:`<div class="kicker">REGISTRO</div><h2>Llamadas recientes</h2>
+ <div class="item">Marcos León<small>23:52 · Entrante · 38 segundos</small></div>
+ <div class="item">Número privado<small>23:17 · Perdida</small></div>
+ <div class="item">María Torres<small>22:41 · Saliente · 2 minutos</small></div>
+ <p class="muted">Pista: compara estos horarios con las conversaciones.</p>`,
+ notes:`<div class="kicker">NOTAS PERSONALES</div><h2>Borrador</h2>
+ <div class="note">No debo confiar en lo que dice. Si vuelve a llamar, preguntaré por el andén. La hora de la foto no puede ser correcta… a menos que el reloj estuviera parado.</div>
+ <button class="action" onclick="clue('note');alert('Nota marcada como examinada')">Marcar como examinada</button>`,
+ files:`<div class="kicker">ARCHIVO LOCAL</div><h2>Documentos</h2>
+ <button class="item" onclick="fileDoc()">cronologia.txt<small>Última modificación: 23:55</small></button>
+ <button class="item" onclick="locked()">copia_seguridad.lock<small>Archivo protegido</small></button>`,
+ contacts:`<div class="kicker">CONTACTOS</div><h2>Personas</h2>
+ <div class="item">María Torres<small>Amiga · Último contacto: 22:41</small></div>
+ <div class="item">Marcos León<small>Compañero de trabajo · Último contacto: 23:52</small></div>
+ <div class="item">Número desconocido<small>Identidad no registrada</small></div>`
+ };
+ content.innerHTML=pages[app]||'<h2>No disponible</h2>';
+}
+function conversation(who){
+ const chats={
+ maria:['María Torres',[['them','¿Has encontrado lo que buscabas?'],['me','No sé de qué hablas.'],['them','Elena, por favor. Él estuvo en la estación.'],['them','No me hagas decirlo por aquí.']]],
+ marcos:['Marcos León',[['them','¿Has salido ya?'],['me','No. Estoy en casa desde las 23:40.'],['them','Entonces no contestes a nadie.'],['them','Y borra esta conversación.']]],
+ unknown:['Número desconocido',[['them','¿Tienes ya el teléfono?'],['me','¿Quién eres?'],['them','Mira la fotografía de la estación. Fíjate en el reloj.']]]
+ };
+ const [name,lines]=chats[who];clue('chat-'+who);
+ content.innerHTML='<div class="kicker">MENSAJES</div><h2>'+name+'</h2>'+lines.map(([side,txt])=>'<div class="msg '+(side==='me'?'me':'')+'">'+txt+'</div>').join('')+'<p class="muted">Conversación guardada en el dispositivo.</p>';
+}
+function photo(){
+ clue('photo');
+ content.innerHTML=`<div class="kicker">FOTOGRAFÍA</div><h2>IMG_2048.jpg</h2>
+ <div class="photo"><div style="font-size:45px;text-align:center">🚉</div><p style="text-align:center">ESTACIÓN · NOCHE</p><p class="muted">La imagen está dañada. No se puede confirmar la hora solo por el nombre del archivo.</p></div>
+ <p>En el fondo aparece un reloj de estación. Su hora parece no coincidir con la hora de captura.</p>
+ <button class="action" onclick="alert('Pista registrada: hay que comprobar el reloj antes de sacar conclusiones.')">Examinar detalle</button>`;
+}
+function fileDoc(){
+ clue('timeline');
+ content.innerHTML=`<div class="kicker">DOCUMENTO DE TEXTO</div><h2>cronologia.txt</h2>
+ <div class="note">23:17 — llamada perdida.<br>23:40 — Marcos afirma estar en casa.<br>23:49 — fotografía de la estación.<br>23:52 — llamada de Marcos.<br>00:06 — mensaje desconocido.</div>
+ <p class="muted">Estas horas son registros del teléfono, no una prueba definitiva de dónde estaba cada persona.</p>`;
+}
+function locked(){
+ content.innerHTML=`<div class="kicker">ARCHIVO PROTEGIDO</div><h2>copia_seguridad.lock</h2><p class="muted">Introduce la palabra clave que creas que desbloquea el archivo. Esta función aún está en desarrollo.</p><input id="key" placeholder="Palabra clave"><button class="action" onclick="alert('El acertijo de desbloqueo se añadirá en la siguiente versión.')">Intentar desbloquear</button>`;
+}
+function goHome(){detail.classList.add('hidden');home.classList.remove('hidden')}
+</script>
+</body>
+</html>
