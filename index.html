@@ -1,136 +1,262 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#101114">
-<title>Expediente Cero</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1018">
+<title>Expediente Cero | Unidad de Investigación</title>
 <style>
+:root{--bg:#0b1018;--panel:#121b27;--panel2:#192535;--line:#29384a;--text:#e8eef5;--muted:#8fa0b4;--red:#e65b62;--cyan:#6dd6d0;--gold:#e6bd72}
 *{box-sizing:border-box}
-body{margin:0;background:#101114;color:#f4f0e8;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-button{font:inherit;cursor:pointer}
-.phone{max-width:430px;min-height:100dvh;margin:auto;background:#15161a;position:relative;padding-bottom:30px}
-.status{display:flex;justify-content:space-between;padding:14px 22px;font-size:13px;color:#ddd}
-.top{padding:28px 24px 22px;border-bottom:1px solid #303137}
-.kicker{font-size:10px;letter-spacing:3px;color:#c9aa70}
-h1{font-size:30px;letter-spacing:2px;margin:10px 0 5px}
-.muted{color:#999ba4;font-size:13px;line-height:1.6}
-.notice{margin:18px 20px;padding:14px;background:#24252a;border:1px solid #414047;border-radius:12px}
-.notice strong{display:block;font-size:13px;margin-bottom:5px;color:#d8bd88}
-.apps{padding:22px;display:grid;grid-template-columns:repeat(3,1fr);gap:22px 12px}
-.app{background:none;border:0;color:#eee;display:flex;flex-direction:column;align-items:center;gap:9px;font-size:12px}
-.icon{height:62px;width:62px;border-radius:17px;display:grid;place-items:center;font-size:27px;box-shadow:0 5px 14px #0003}
-.blue{background:#426fe0}.purple{background:#7757ad}.green{background:#32855e}.yellow{background:#b18a3d}.grey{background:#41444b}.red{background:#9d4949}
-.section{padding:0 22px 24px}
-.section h2{font-size:17px;font-weight:600}
-.item{width:100%;text-align:left;color:#eee;background:#202126;border:1px solid #34353b;border-radius:10px;padding:15px;margin:7px 0}
-.item small{display:block;color:#9a9ca5;margin-top:6px;line-height:1.5}
-.back{background:none;border:0;color:#c9aa70;padding:20px 22px 8px}
-.view{padding:0 22px 30px}
-.view h2{font-size:25px;margin:12px 0}
-.msg{padding:12px 14px;border-radius:14px;background:#292a30;margin:12px 0;max-width:88%;line-height:1.5;font-size:14px}
-.msg.me{margin-left:auto;background:#315d4b}
-.photo{padding:22px;background:#28282b;border:1px solid #49464a;border-radius:10px;margin:15px 0}
-.note{border-left:2px solid #c9aa70;padding:12px 15px;background:#222329;line-height:1.7;margin:15px 0}
-.action{width:100%;padding:14px;background:#c9aa70;color:#151515;border:0;border-radius:8px;font-weight:700;margin-top:12px}
-input{width:100%;padding:13px;background:#24252a;border:1px solid #4b4b51;color:white;border-radius:8px;margin:8px 0}
-.footer{text-align:center;color:#6f717a;font-size:10px;padding:22px}
-.hidden{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;color:inherit}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.top{position:sticky;top:0;z-index:20;background:#0b1018ed;border-bottom:1px solid var(--line);padding:env(safe-area-inset-top) 16px 12px;backdrop-filter:blur(16px)}
+.toprow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{font-size:12px;letter-spacing:2px;font-weight:800;color:var(--cyan)}
+.clock{font-variant-numeric:tabular-nums;color:var(--muted);font-size:12px}
+.wrap{max-width:1050px;margin:auto;padding:18px 14px 90px}
+.eyebrow{font-size:10px;letter-spacing:2px;color:var(--cyan);font-weight:800;text-transform:uppercase}
+h1{font-size:27px;line-height:1.15;margin:8px 0}
+h2{font-size:18px;margin:0 0 12px}
+h3{font-size:14px;margin:0 0 8px}
+p{line-height:1.55;color:#b7c4d3}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:15px;margin-bottom:14px}
+.hero{background:linear-gradient(140deg,#182b3a,#111824 65%);border:1px solid #304656;border-radius:18px;padding:20px;margin-bottom:18px;position:relative;overflow:hidden}
+.hero:after{content:"EC";position:absolute;right:10px;bottom:-28px;font-size:110px;font-weight:900;color:#ffffff08}
+.row{display:flex;gap:10px;align-items:center}
+.between{justify-content:space-between}
+.grow{flex:1;min-width:0}
+.btn{background:var(--panel2);border:1px solid #394a5e;border-radius:9px;padding:10px 12px;font-weight:650;font-size:12px}
+.btn.primary{background:#b9eee7;color:#102126;border-color:#b9eee7}
+.btn.danger{border-color:#773d45;color:#ffb7bc}
+.btn.active{border-color:var(--cyan);color:var(--cyan)}
+.btn:disabled{opacity:.4}
+.actions{display:flex;flex-wrap:wrap;gap:7px}
+.tag{display:inline-block;padding:5px 8px;border-radius:5px;background:#263444;color:#b9c9d8;font-size:10px;letter-spacing:.6px}
+.tag.red{background:#45252d;color:#ffabb2}
+.tag.green{background:#173c3b;color:#9ee9d9}
+.nav{display:flex;gap:7px;overflow:auto;padding:0 0 13px;scrollbar-width:none}
+.nav button{white-space:nowrap;flex-shrink:0}
+.view{display:none}.view.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.app{border:1px solid var(--line);background:var(--panel);border-radius:13px;padding:14px;text-align:left;min-height:106px}
+.app .ico{font-size:23px;display:block;margin-bottom:12px}
+.app strong{display:block;font-size:13px}
+.app span:last-child{color:var(--muted);font-size:11px}
+.field{width:100%;background:#0d1520;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:11px}
+textarea.field{resize:vertical;min-height:80px}
+label{display:block;color:var(--muted);font-size:12px;margin:12px 0 6px}
+.list{display:grid;gap:9px}
+.item{padding:12px;background:#101925;border:1px solid var(--line);border-radius:10px}
+.item p{margin:7px 0 0;font-size:12px}
+.phone{max-width:440px;margin:0 auto;background:#101722;border:1px solid #35475b;border-radius:27px;padding:12px;box-shadow:0 18px 55px #0007}
+.phonebar{display:flex;justify-content:space-between;font-size:11px;color:#c7d4e2;padding:3px 7px 13px}
+.phonehead{padding:15px 8px;border-bottom:1px solid var(--line);margin-bottom:12px}
+.phonehead h2{margin-bottom:4px}
+.phoneapps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.phoneapp{background:#182333;border:1px solid #29394d;border-radius:13px;padding:13px 4px;text-align:center;min-height:94px}
+.phoneapp .ico{display:block;font-size:24px;margin-bottom:8px}
+.phoneapp b{font-size:11px}
+.phonebottom{text-align:center;padding:20px 0 7px;color:var(--muted);font-size:10px}
+.msg{padding:10px 12px;margin:9px 0;border-radius:13px;background:#263344;max-width:88%;line-height:1.5;font-size:13px}
+.msg.me{margin-left:auto;background:#176a65}
+.msg .time{font-size:10px;opacity:.7;display:block;margin-top:5px}
+.photo{min-height:95px;border-radius:9px;background:linear-gradient(145deg,#263c4a,#101821);display:flex;align-items:center;justify-content:center;font-size:27px;margin-bottom:8px}
+.evidence-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.evidence{background:#101925;border:1px solid var(--line);border-radius:10px;padding:10px;text-align:left}
+.evidence.selected{border-color:var(--cyan)}
+.evidence p{font-size:11px;margin:7px 0 0}
+.board{height:440px;overflow:auto;position:relative;background-color:#151c25;background-image:radial-gradient(#425062 1px,transparent 1px);background-size:18px 18px;border:1px solid #38485b;border-radius:12px;touch-action:pan-x pan-y}
+#boardInner{position:relative;width:1000px;height:800px}
+#lines{position:absolute;inset:0;width:1000px;height:800px;pointer-events:none;z-index:1}
+.note{position:absolute;width:155px;min-height:90px;padding:10px;border:1px solid #a99160;border-radius:5px;background:#d9c78d;color:#2b291f;box-shadow:2px 4px 10px #0005;z-index:2;touch-action:none;user-select:none}
+.note.photoNote{background:#d5e0e7;border-color:#91a9bb}
+.note b{font-size:11px;display:block;margin-bottom:7px}
+.note p{font-size:11px;line-height:1.4;color:#353b40;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.note .movehint{font-size:9px;color:#5a6066;margin-top:8px}
+.timeline{position:relative;margin-left:9px;padding-left:19px;border-left:2px solid #34495c}
+.event{position:relative;padding:0 0 18px}
+.event:before{content:"";position:absolute;left:-25px;top:4px;width:10px;height:10px;background:var(--cyan);border-radius:50%;box-shadow:0 0 0 4px #183438}
+.event time{font-size:11px;color:var(--cyan);font-weight:800}
+.event p{margin:5px 0;font-size:12px}
+.event .eventactions{display:flex;gap:6px;flex-wrap:wrap}
+.banner{position:fixed;top:12px;left:12px;right:12px;z-index:50;max-width:450px;margin:auto;background:#202e3c;border:1px solid #4b657a;border-radius:13px;padding:13px;box-shadow:0 10px 35px #0009;display:none}
+.banner.show{display:block;animation:pop .25s}
+@keyframes pop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+hr{border:0;border-top:1px solid var(--line);margin:15px 0}
+.footer{text-align:center;color:#66778a;font-size:10px;padding:22px}
+@media(min-width:700px){.wrap{padding:24px 24px 60px}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.evidence-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.hero{padding:26px}.board{height:550px}}
 </style>
 </head>
 <body>
-<div class="phone">
-  <div class="status"><span>9:41</span><span>● ● ▰</span></div>
-  <div id="home">
-    <header class="top">
-      <div class="kicker">DISPOSITIVO RECUPERADO</div>
-      <h1>EXPEDIENTE <span style="color:#c9aa70">CERO</span></h1>
-      <div class="muted">Teléfono de Elena Vidal · Caso EC-001</div>
-    </header>
-    <div class="notice">
-      <strong>● NOTIFICACIÓN NUEVA</strong>
-      <span style="font-size:13px">Número desconocido: «¿Tienes ya el teléfono?»</span>
-      <div class="muted" style="margin-top:5px">Hace 3 minutos</div>
-    </div>
-    <div class="apps">
-      <button class="app" onclick="openApp('messages')"><span class="icon blue">▤</span>Mensajes</button>
-      <button class="app" onclick="openApp('photos')"><span class="icon purple">▧</span>Fotos</button>
-      <button class="app" onclick="openApp('calls')"><span class="icon green">☎</span>Llamadas</button>
-      <button class="app" onclick="openApp('notes')"><span class="icon yellow">▤</span>Notas</button>
-      <button class="app" onclick="openApp('files')"><span class="icon grey">▣</span>Archivos</button>
-      <button class="app" onclick="openApp('contacts')"><span class="icon red">♙</span>Contactos</button>
-    </div>
-    <div class="section">
-      <h2>Actividad reciente</h2>
-      <button class="item" onclick="openApp('messages')">Mensaje de número desconocido<small>«No deberías tener ese teléfono»</small></button>
-    </div>
-    <div class="footer">FICCIÓN INTERACTIVA · EC-001</div>
+<header class="top">
+ <div class="toprow"><div><div class="brand">EXPEDIENTE CERO</div><div class="small muted">UNIDAD DE INVESTIGACIÓN · NEXO FORENSICS</div></div><div style="text-align:right"><div class="clock" id="clock">--:--:--</div><div class="small" style="color:var(--cyan)">● SISTEMA ACTIVO</div></div></div>
+</header>
+<div class="wrap">
+ <div class="hero">
+  <div class="eyebrow">Caso EC-001 · Clasificación reservada</div>
+  <h1>La última conexión</h1>
+  <p>Una persona ha desaparecido. Su teléfono fue recuperado durante una inspección. Tu misión es analizar las evidencias, reconstruir las últimas horas y documentar una hipótesis.</p>
+  <div class="row" style="flex-wrap:wrap"><span class="tag red">CASO ABIERTO</span><span class="tag">DESAPARICIÓN</span><span class="tag">AGENTE: TÚ</span></div>
+ </div>
+ <nav class="nav" aria-label="Secciones">
+  <button class="btn active" data-view="home">⌂ Centro</button>
+  <button class="btn" data-view="phone">▣ Teléfono NEXO</button>
+  <button class="btn" data-view="evidence">▤ Evidencias</button>
+  <button class="btn" data-view="board">⌘ Tablero</button>
+  <button class="btn" data-view="timeline">◷ Cronología</button>
+  <button class="btn" data-view="report">▧ Informe</button>
+ </nav>
+
+ <section class="view active" id="home">
+  <div class="panel"><div class="row between"><div><div class="eyebrow">Resumen operativo</div><h2 style="margin-top:7px">Centro de investigación</h2></div><span class="tag green">EN CURSO</span></div>
+   <p>Explora el teléfono recuperado, registra las pistas importantes y organiza tu propia teoría. El tablero y la cronología son tuyos: puedes añadir elementos libremente.</p>
+   <div class="grid">
+    <button class="app" data-goto="phone"><span class="ico">▣</span><strong>Teléfono NEXO</strong><span>Mensajes, llamadas y notas</span></button>
+    <button class="app" data-goto="evidence"><span class="ico">▤</span><strong>Evidencias</strong><span>Consultar y registrar pruebas</span></button>
+    <button class="app" data-goto="board"><span class="ico">⌘</span><strong>Tablero policial</strong><span>Notas, fotos y conexiones</span></button>
+    <button class="app" data-goto="timeline"><span class="ico">◷</span><strong>Cronología</strong><span>Ordena los acontecimientos</span></button>
+    <button class="app" data-goto="report"><span class="ico">▧</span><strong>Informe del agente</strong><span>Hipótesis y conclusiones</span></button>
+    <button class="app" id="notifyBtn"><span class="ico">♧</span><strong>Comunicaciones</strong><span>Simular aviso interno</span></button>
+   </div>
   </div>
-  <div id="detail" class="hidden">
-    <button class="back" onclick="goHome()">← Volver al teléfono</button>
-    <div class="view" id="content"></div>
+  <div class="panel"><div class="eyebrow">Datos del expediente</div><h2 style="margin-top:7px">Ficha del caso</h2>
+   <div class="row between"><span class="muted">Identificador</span><b>EC-001</b></div><hr>
+   <div class="row between"><span class="muted">Persona desaparecida</span><b>Elena Ruiz</b></div><hr>
+   <div class="row between"><span class="muted">Último contacto conocido</span><b>21:46</b></div><hr>
+   <div class="row between"><span class="muted">Teléfono recuperado</span><b>NEXO / N-17</b></div><hr>
+   <div class="row between"><span class="muted">Estado</span><span class="tag red">Pendiente de resolución</span></div>
   </div>
+  <div class="panel"><h2>Protocolo de investigación</h2><p>Registra por separado los hechos confirmados y tus interpretaciones. Las horas y los mensajes de este caso son material ficticio de juego, no datos reales.</p><button class="btn primary" data-goto="phone">Iniciar inspección del teléfono →</button></div>
+ </section>
+
+ <section class="view" id="phone">
+  <div class="row between"><div><div class="eyebrow">Dispositivo recuperado</div><h2 style="margin-top:7px">NEXO N-17</h2></div><span class="tag green">Copia de análisis</span></div>
+  <div class="phone">
+   <div class="phonebar"><span id="phoneClock">21:47</span><span>●●● ▰ 84%</span></div>
+   <div class="phonehead"><div class="eyebrow">Dispositivo de</div><h2>Elena Ruiz</h2><div class="small muted">Última actividad registrada: 21:46</div></div>
+   <div class="phoneapps">
+    <button class="phoneapp" data-phone="messages"><span class="ico">▤</span><b>Mensajes</b></button>
+    <button class="phoneapp" data-phone="calls"><span class="ico">⌕</span><b>Llamadas</b></button>
+    <button class="phoneapp" data-phone="photos"><span class="ico">▧</span><b>Fotos</b></button>
+    <button class="phoneapp" data-phone="notes"><span class="ico">▨</span><b>Notas</b></button>
+    <button class="phoneapp" data-phone="files"><span class="ico">▱</span><b>Archivos</b></button>
+    <button class="phoneapp" data-phone="system"><span class="ico">⚙</span><b>Sistema</b></button>
+   </div>
+   <div class="phonebottom">NEXO OS · COPIA FORENSE DE LECTURA</div>
+  </div>
+  <div id="phoneContent" class="panel" style="margin-top:15px"><h2>Dispositivo aislado</h2><p>Selecciona una aplicación para examinar su contenido. Algunas pistas se complementan entre sí.</p></div>
+ </section>
+
+ <section class="view" id="evidence">
+  <div class="eyebrow">Registro de pruebas</div><h2 style="margin-top:7px">Evidencias del expediente</h2>
+  <p>Abre cada evidencia para revisar su descripción. Añádela al tablero para organizar tus propias conexiones.</p>
+  <div class="evidence-grid" id="evidenceGrid"></div>
+  <div class="panel" style="margin-top:14px"><h3>Registrar nueva evidencia</h3><label for="evTitle">Título</label><input class="field" id="evTitle" placeholder="Ej. Contradicción en la llamada"><label for="evDesc">Descripción o hallazgo</label><textarea class="field" id="evDesc" placeholder="Escribe lo que has observado..."></textarea><div class="actions" style="margin-top:10px"><button class="btn primary" id="addEvidence">Registrar evidencia</button><button class="btn" id="uploadBtn">Añadir foto propia</button><input id="upload" type="file" accept="image/*" hidden></div><p class="small">Las fotos propias se guardan en este navegador cuando es posible. No se envían a ningún servidor.</p></div>
+ </section>
+
+ <section class="view" id="board">
+  <div class="eyebrow">Espacio de análisis del agente</div><h2 style="margin-top:7px">Tablero de investigación</h2>
+  <p>Añade notas y evidencias, arrástralas con el dedo y selecciona dos tarjetas para conectarlas. Desplázate por el tablero arrastrando el fondo.</p>
+  <div class="panel"><div class="actions">
+   <button class="btn primary" id="newNote">＋ Nueva nota</button>
+   <button class="btn" id="addFromEvidence">＋ Añadir evidencia</button>
+   <button class="btn" id="connect">↗ Conectar seleccionadas</button>
+   <button class="btn" id="deleteSelected">Eliminar seleccionada</button>
+   <button class="btn" id="clearBoard">Restablecer tablero</button>
+  </div><p class="small" id="boardHint">Selecciona una tarjeta; después selecciona otra y pulsa «Conectar seleccionadas».</p></div>
+  <div class="board" id="boardViewport"><div id="boardInner"><svg id="lines"><defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e65b62"/></marker></defs><g id="lineGroup"></g></svg><div id="notes"></div></div></div>
+  <div class="small muted" style="margin-top:8px">Consejo: en el iPhone, desliza el fondo para moverte por el tablero y arrastra las tarjetas para organizarlas.</div>
+ </section>
+
+ <section class="view" id="timeline">
+  <div class="eyebrow">Reconstrucción temporal</div><h2 style="margin-top:7px">Cronología del caso</h2>
+  <p>Organiza los hechos según la hora que consideres correcta. Puedes corregir la fecha, la hora y la descripción de cada acontecimiento.</p>
+  <div class="panel"><h3>Añadir acontecimiento</h3><div class="row"><div class="grow"><label for="eventDate">Fecha</label><input class="field" type="date" id="eventDate" value="2026-10-14"></div><div class="grow"><label for="eventTime">Hora</label><input class="field" type="time" id="eventTime" value="21:46"></div></div><label for="eventTitle">Acontecimiento</label><input class="field" id="eventTitle" placeholder="Ej. Último mensaje enviado"><label for="eventDetail">Fuente o comentario</label><textarea class="field" id="eventDetail" placeholder="¿Qué prueba lo respalda? ¿Es un hecho o una hipótesis?"></textarea><div class="actions" style="margin-top:10px"><button class="btn primary" id="addEvent">＋ Añadir a cronología</button><button class="btn" id="sortEvents">Ordenar por fecha y hora</button></div></div>
+  <div class="panel"><div class="row between"><h3>Secuencia temporal</h3><span class="tag" id="eventCount">0 eventos</span></div><div class="timeline" id="eventList"></div></div>
+ </section>
+
+ <section class="view" id="report">
+  <div class="eyebrow">Documento de trabajo</div><h2 style="margin-top:7px">Informe del agente</h2>
+  <p>Redacta tu teoría antes de cerrar el caso. Distingue los datos comprobados de las sospechas.</p>
+  <div class="panel"><label for="facts">Hechos confirmados</label><textarea class="field" id="facts" placeholder="¿Qué sabes con certeza?"></textarea><label for="theory">Hipótesis principal</label><textarea class="field" id="theory" placeholder="¿Qué crees que ocurrió y por qué?"></textarea><label for="questions">Preguntas pendientes</label><textarea class="field" id="questions" placeholder="¿Qué contradicciones quedan por resolver?"></textarea><label for="conclusion">Conclusión provisional</label><textarea class="field" id="conclusion" placeholder="Resume tu interpretación del caso..."></textarea><div class="actions" style="margin-top:12px"><button class="btn primary" id="saveReport">Guardar informe</button><button class="btn" id="exportReport">Exportar informe .txt</button></div><p id="reportStatus" class="small muted">El informe se guarda en este navegador.</p></div>
+  <div class="panel"><h3>Progreso de la investigación</h3><p id="progressText">Aún no has registrado hallazgos personalizados.</p><div class="actions"><button class="btn" id="notifyReport">Solicitar actualización de sala</button></div></div>
+ </section>
+ <div class="footer">EXPEDIENTE CERO · FICCIÓN INTERACTIVA · NEXO FORENSICS<br>Las instituciones, personas y pruebas del juego son ficticias.</div>
 </div>
+<div class="banner" id="banner"><div class="row"><span style="font-size:22px">▣</span><div class="grow"><b id="bannerTitle">Comunicación interna</b><div id="bannerText" class="small muted">Actualización del expediente</div></div><button class="btn" id="closeBanner">×</button></div></div>
+
 <script>
-const content=document.getElementById('content');
-const detail=document.getElementById('detail');
-const home=document.getElementById('home');
-const discovered=new Set(JSON.parse(localStorage.getItem('ec-discovered')||'[]'));
-function clue(id){discovered.add(id);localStorage.setItem('ec-discovered',JSON.stringify([...discovered]));}
-function openApp(app){
- home.classList.add('hidden');detail.classList.remove('hidden');
- const pages={
- messages:`<div class="kicker">MENSAJES</div><h2>Conversaciones</h2>
- <button class="item" onclick="conversation('maria')">María Torres<small>23:18 · «Elena, no puedes seguir ocultándolo»</small></button>
- <button class="item" onclick="conversation('marcos')">Marcos León<small>23:40 · «Ya estoy en casa»</small></button>
- <button class="item" onclick="conversation('unknown')">Número desconocido<small>00:06 · «¿Tienes ya el teléfono?»</small></button>`,
- photos:`<div class="kicker">GALERÍA</div><h2>Fotografías</h2>
- <button class="item" onclick="photo()">IMG_2048.jpg<small>23:49 · Estación de tren</small></button>
- <p class="muted">Una fotografía recuperada de la última noche de Elena.</p>`,
- calls:`<div class="kicker">REGISTRO</div><h2>Llamadas recientes</h2>
- <div class="item">Marcos León<small>23:52 · Entrante · 38 segundos</small></div>
- <div class="item">Número privado<small>23:17 · Perdida</small></div>
- <div class="item">María Torres<small>22:41 · Saliente · 2 minutos</small></div>
- <p class="muted">Pista: compara estos horarios con las conversaciones.</p>`,
- notes:`<div class="kicker">NOTAS PERSONALES</div><h2>Borrador</h2>
- <div class="note">No debo confiar en lo que dice. Si vuelve a llamar, preguntaré por el andén. La hora de la foto no puede ser correcta… a menos que el reloj estuviera parado.</div>
- <button class="action" onclick="clue('note');alert('Nota marcada como examinada')">Marcar como examinada</button>`,
- files:`<div class="kicker">ARCHIVO LOCAL</div><h2>Documentos</h2>
- <button class="item" onclick="fileDoc()">cronologia.txt<small>Última modificación: 23:55</small></button>
- <button class="item" onclick="locked()">copia_seguridad.lock<small>Archivo protegido</small></button>`,
- contacts:`<div class="kicker">CONTACTOS</div><h2>Personas</h2>
- <div class="item">María Torres<small>Amiga · Último contacto: 22:41</small></div>
- <div class="item">Marcos León<small>Compañero de trabajo · Último contacto: 23:52</small></div>
- <div class="item">Número desconocido<small>Identidad no registrada</small></div>`
- };
- content.innerHTML=pages[app]||'<h2>No disponible</h2>';
-}
-function conversation(who){
- const chats={
- maria:['María Torres',[['them','¿Has encontrado lo que buscabas?'],['me','No sé de qué hablas.'],['them','Elena, por favor. Él estuvo en la estación.'],['them','No me hagas decirlo por aquí.']]],
- marcos:['Marcos León',[['them','¿Has salido ya?'],['me','No. Estoy en casa desde las 23:40.'],['them','Entonces no contestes a nadie.'],['them','Y borra esta conversación.']]],
- unknown:['Número desconocido',[['them','¿Tienes ya el teléfono?'],['me','¿Quién eres?'],['them','Mira la fotografía de la estación. Fíjate en el reloj.']]]
- };
- const [name,lines]=chats[who];clue('chat-'+who);
- content.innerHTML='<div class="kicker">MENSAJES</div><h2>'+name+'</h2>'+lines.map(([side,txt])=>'<div class="msg '+(side==='me'?'me':'')+'">'+txt+'</div>').join('')+'<p class="muted">Conversación guardada en el dispositivo.</p>';
-}
-function photo(){
- clue('photo');
- content.innerHTML=`<div class="kicker">FOTOGRAFÍA</div><h2>IMG_2048.jpg</h2>
- <div class="photo"><div style="font-size:45px;text-align:center">🚉</div><p style="text-align:center">ESTACIÓN · NOCHE</p><p class="muted">La imagen está dañada. No se puede confirmar la hora solo por el nombre del archivo.</p></div>
- <p>En el fondo aparece un reloj de estación. Su hora parece no coincidir con la hora de captura.</p>
- <button class="action" onclick="alert('Pista registrada: hay que comprobar el reloj antes de sacar conclusiones.')">Examinar detalle</button>`;
-}
-function fileDoc(){
- clue('timeline');
- content.innerHTML=`<div class="kicker">DOCUMENTO DE TEXTO</div><h2>cronologia.txt</h2>
- <div class="note">23:17 — llamada perdida.<br>23:40 — Marcos afirma estar en casa.<br>23:49 — fotografía de la estación.<br>23:52 — llamada de Marcos.<br>00:06 — mensaje desconocido.</div>
- <p class="muted">Estas horas son registros del teléfono, no una prueba definitiva de dónde estaba cada persona.</p>`;
-}
-function locked(){
- content.innerHTML=`<div class="kicker">ARCHIVO PROTEGIDO</div><h2>copia_seguridad.lock</h2><p class="muted">Introduce la palabra clave que creas que desbloquea el archivo. Esta función aún está en desarrollo.</p><input id="key" placeholder="Palabra clave"><button class="action" onclick="alert('El acertijo de desbloqueo se añadirá en la siguiente versión.')">Intentar desbloquear</button>`;
-}
-function goHome(){detail.classList.add('hidden');home.classList.remove('hidden')}
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id);
+const STORE="expedienteCero_v1";
+const initialEvidence=[
+{id:"e1",title:"Mensaje de las 21:42",type:"Mensaje",desc:"Elena escribe a Marcos: «No voy a esperar más. Si vienes, ven solo». El mensaje aparece como enviado, pero no hay respuesta en esa conversación.",source:"Mensajes / Marcos"},
+{id:"e2",title:"Llamada de las 21:46",type:"Registro",desc:"Llamada saliente de 18 segundos a un contacto guardado como «M.». No hay mensaje de voz asociado en la copia recuperada.",source:"Registro de llamadas"},
+{id:"e3",title:"Fotografía nocturna",type:"Fotografía",desc:"Una fotografía muestra una parada de autobús y un reloj digital de fondo que parece marcar 21:30. La imagen no contiene datos suficientes para confirmar cuándo fue tomada.",source:"Galería / Recientes"},
+{id:"e4",title:"Nota: 4 - 1 - 20 - 1",type:"Nota",desc:"Nota guardada sin título: «4 - 1 - 20 - 1. No mires la hora del envío. Mira el orden». No se conoce quién la escribió.",source:"Notas"},
+{id:"e5",title:"Documento: turno_noche",type:"Archivo",desc:"Un archivo de texto contiene: «La última salida no siempre es la última llegada». No incluye autor ni fecha verificable.",source:"Archivos / Documentos"},
+{id:"e6",title:"Mensaje de las 21:18",type:"Mensaje",desc:"Lucía escribe: «A las diez ya estaré en casa». No especifica dónde está ni a quién se refiere con «casa».",source:"Mensajes / Lucía"}
+];
+let state={evidence:initialEvidence.map(x=>({...x})),notes:[],links:[],events:[
+{id:"t1",date:"2026-10-14",time:"21:18",title:"Mensaje de Lucía",detail:"Lucía afirma que a las diez estará en casa. Ubicación no confirmada.",source:"e6"},
+{id:"t2",date:"2026-10-14",time:"21:30",title:"Hora visible en la fotografía",detail:"Un reloj aparece indicando 21:30. La hora real de la foto no está verificada.",source:"e3"},
+{id:"t3",date:"2026-10-14",time:"21:42",title:"Mensaje enviado a Marcos",detail:"«No voy a esperar más. Si vienes, ven solo». No consta respuesta.",source:"e1"},
+{id:"t4",date:"2026-10-14",time:"21:46",title:"Llamada saliente a «M.»",detail:"Duración registrada: 18 segundos. Identidad del contacto pendiente de confirmar.",source:"e2"}],
+report:{facts:"",theory:"",questions:"",conclusion:""},selected:[],uploaded:[]};
+try{const saved=localStorage.getItem(STORE);if(saved){const x=JSON.parse(saved);state={...state,...x};}}catch(e){}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(state));}catch(e){notify("Almacenamiento","No se ha podido guardar todo. Prueba con menos fotografías.");}}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function id(){return "x"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function notify(title,text){$("bannerTitle").textContent=title;$("bannerText").textContent=text;$("banner").classList.add("show");clearTimeout(notify.timer);notify.timer=setTimeout(()=>$("banner").classList.remove("show"),5000);try{if(navigator.vibrate)navigator.vibrate(35);}catch(e){}}
+$("closeBanner").onclick=()=>$("banner").classList.remove("show");
+function beep(){try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const c=new C(),o=c.createOscillator(),g=c.createGain();o.frequency.value=660;g.gain.value=.045;o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.12);o.onended=()=>c.close();}catch(e){}}
+function go(name){document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id===name));document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===name));if(name==="evidence")renderEvidence();if(name==="board")renderBoard();if(name==="timeline")renderEvents();if(name==="report")loadReport();window.scrollTo({top:0,behavior:"smooth"});}
+document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>go(b.dataset.view));
+document.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>go(b.dataset.goto));
+function icon(type){return ({Mensaje:"▤",Registro:"⌕",Fotografía:"▧",Nota:"▨",Archivo:"▱",Personal:"♙"})[type]||"▤";}
+function renderEvidence(){const grid=$("evidenceGrid");grid.innerHTML="";state.evidence.forEach(e=>{const b=document.createElement("button");b.className="evidence";b.innerHTML=`<div class="photo">${icon(e.type)}</div><span class="tag">${esc(e.type)}</span><h3 style="margin-top:9px">${esc(e.title)}</h3><p>${esc(e.desc)}</p><p class="muted">${esc(e.source||"Registro del agente")}</p><div class="actions" style="margin-top:9px"><span class="small" style="color:var(--cyan)">Abrir / añadir al tablero →</span></div>`;b.onclick=()=>{notify(e.title,e.desc);if(!state.notes.some(n=>n.evidenceId===e.id)){addNote(e.title,e.desc,e.id);notify("Prueba preparada","Se ha añadido una tarjeta al tablero.");}else notify("Ya registrada","Esta prueba ya tiene una tarjeta en el tablero.");};grid.appendChild(b);});}
+$("addEvidence").onclick=()=>{const title=$("evTitle").value.trim(),desc=$("evDesc").value.trim();if(!title||!desc){notify("Faltan datos","Escribe un título y una descripción.");return;}state.evidence.push({id:id(),title,type:"Personal",desc,source:"Añadida por el agente"});$("evTitle").value="";$("evDesc").value="";save();renderEvidence();notify("Evidencia registrada",title);};
+$("uploadBtn").onclick=()=>$("upload").click();
+$("upload").onchange=async ev=>{const f=ev.target.files[0];if(!f)return;if(!f.type.startsWith("image/")){notify("Archivo no válido","Selecciona una imagen.");return;}if(f.size>1200000){notify("Imagen demasiado grande","Elige una foto inferior a 1,2 MB para guardarla en este navegador.");ev.target.value="";return;}const reader=new FileReader();reader.onload=()=>{const title=f.name;state.uploaded.push({id:id(),title,data:reader.result});state.evidence.push({id:id(),title:"Foto propia: "+title,type:"Fotografía",desc:"Imagen incorporada por el agente. Examina la imagen y anota por separado cualquier observación verificable.",source:"Archivo local",image:reader.result});save();renderEvidence();notify("Imagen incorporada",title);ev.target.value="";};reader.readAsDataURL(f);};
+const phoneData={
+messages:`<h2>Mensajes</h2><p class="muted">Conversaciones recuperadas · hora local del dispositivo</p><div class="item"><b>Marcos V.</b><div class="msg">¿Has salido ya?</div><div class="msg me">No voy a esperar más. Si vienes, ven solo.<span class="time">21:42 · Enviado</span></div><p>Sin respuesta recuperada después del mensaje.</p></div><div class="item"><b>Lucía S.</b><div class="msg">¿Sigues con el plan?</div><div class="msg me">A las diez ya estaré en casa.<span class="time">21:18 · Enviado</span></div><p>El contexto anterior no está disponible en esta copia.</p></div>`,
+calls:`<h2>Registro de llamadas</h2><div class="item"><b>21:46 · Saliente · «M.»</b><p>Duración: 18 segundos. No se recuperó audio. La inicial no identifica por sí sola a una persona.</p></div><div class="item"><b>20:57 · Entrante · Número desconocido</b><p>Llamada perdida. No consta devolución posterior en el registro disponible.</p></div><div class="item"><b>19:12 · Saliente · Lucía S.</b><p>Duración: 2 minutos y 4 segundos.</p></div>`,
+photos:`<h2>Galería recuperada</h2><p>Las ilustraciones son representaciones de las evidencias descritas, no fotografías forenses originales.</p><div class="evidence-grid"><div class="item"><div class="photo">▦</div><b>parada_noche.jpg</b><p>Reloj visible: 21:30. Hora de captura sin verificar.</p><button class="btn" data-photo="e3">Registrar en tablero</button></div><div class="item"><div class="photo">◷</div><b>detalle_reloj.jpg</b><p>El reloj puede ayudar a estimar una hora, pero no confirma cuándo se tomó la imagen.</p><button class="btn" data-photo="e3">Registrar en tablero</button></div></div>`,
+notes:`<h2>Notas</h2><div class="item"><span class="tag">SIN TÍTULO</span><h3 style="margin-top:9px">4 - 1 - 20 - 1</h3><p>«No mires la hora del envío. Mira el orden».</p><p class="muted">Pista de código: prueba distintas interpretaciones; no des por correcta una solución sin verificarla con otras pruebas.</p></div><div class="item"><h3>Recordatorio</h3><p>«La última salida no siempre es la última llegada».</p><p class="muted">Origen y autor sin confirmar.</p></div>`,
+files:`<h2>Archivos</h2><div class="item"><span class="tag">TXT · RECUPERADO</span><h3 style="margin-top:9px">turno_noche.txt</h3><p>«La última salida no siempre es la última llegada».</p><p>Fecha de creación: no recuperada.</p></div><div class="item"><span class="tag">ÍNDICE</span><h3 style="margin-top:9px">registro_local.log</h3><p>El último evento disponible en la copia aparece a las 21:46. Esto no demuestra que Elena estuviera usando el teléfono después de esa hora.</p></div>`,
+system:`<h2>Información del dispositivo</h2><div class="item"><b>Modelo</b><p>NEXO N-17 · Interfaz de ficción</p></div><div class="item"><b>Estado de la copia</b><p>Datos parciales. No se debe interpretar la ausencia de mensajes como prueba de que una conversación nunca existió.</p></div><div class="item"><b>Zona horaria</b><p>No verificada en el material del caso.</p></div>`
+};
+document.querySelectorAll("[data-phone]").forEach(b=>b.onclick=()=>{const key=b.dataset.phone;$("phoneContent").innerHTML=phoneData[key]||"";$("phoneContent").querySelectorAll("[data-photo]").forEach(x=>x.onclick=()=>{const e=state.evidence.find(z=>z.id===x.dataset.photo);if(e&&!state.notes.some(n=>n.evidenceId===e.id))addNote(e.title,e.desc,e.id);go("board");});$("phoneContent").scrollIntoView({behavior:"smooth",block:"start"});});
+function addNote(title,body,evidenceId=null){const n={id:id(),title,body,evidenceId,x:30+(state.notes.length%4)*190,y:30+(state.notes.length%5)*135,photo:false};state.notes.push(n);save();renderBoard();return n;}
+$("newNote").onclick=()=>{const title=prompt("Título de la nota:","Nueva observación");if(title===null)return;const body=prompt("Escribe tu observación o hipótesis:","");if(body===null)return;addNote(title||"Nota sin título",body);};
+$("addFromEvidence").onclick=()=>{if(!state.evidence.length)return;const title=prompt("Escribe el título exacto de la evidencia que quieres añadir:\n"+state.evidence.map(e=>e.title).join("\n"),state.evidence[0].title);if(!title)return;const e=state.evidence.find(x=>x.title.toLowerCase()===title.trim().toLowerCase());if(!e){notify("No encontrada","Usa el título exacto de una evidencia.");return;}if(state.notes.some(n=>n.evidenceId===e.id)){notify("Ya está en el tablero","Puedes seleccionar su tarjeta.");return;}addNote(e.title,e.desc,e.id);};
+let drag=null;
+function renderBoard(){const layer=$("notes"),group=$("lineGroup");layer.innerHTML="";group.innerHTML="";state.notes.forEach(n=>{const el=document.createElement("div");el.className="note"+(n.photo?" photoNote":"")+(state.selected.includes(n.id)?" selected":"");el.style.left=n.x+"px";el.style.top=n.y+"px";el.style.outline=state.selected.includes(n.id)?"3px solid #6dd6d0":"none";el.innerHTML=`<b>${esc(n.title)}</b><p>${esc(n.body)}</p><div class="movehint">MANTÉN Y ARRASTRA</div>`;el.onpointerdown=ev=>{if(ev.button!==undefined&&ev.button!==0)return;drag={id:n.id,sx:ev.clientX,sy:ev.clientY,x:n.x,y:n.y};el.setPointerCapture(ev.pointerId);ev.stopPropagation();};el.onpointermove=ev=>{if(!drag||drag.id!==n.id)return;const dx=(ev.clientX-drag.sx)*($("boardInner").clientWidth/$("boardViewport").clientWidth);const dy=(ev.clientY-drag.sy)*($("boardInner").clientWidth/$("boardViewport").clientWidth);n.x=Math.max(0,Math.min(835,drag.x+dx));n.y=Math.max(0,Math.min(710,drag.y+dy));el.style.left=n.x+"px";el.style.top=n.y+"px";drawLines();};el.onpointerup=()=>{if(drag&&drag.id===n.id){drag=null;save();}};el.onclick=ev=>{if(drag)return;state.selected=state.selected.includes(n.id)?state.selected.filter(x=>x!==n.id):[...state.selected,n.id];renderBoard();};layer.appendChild(el);});
+drawLines();$("boardHint").textContent=state.selected.length?state.selected.length+" tarjeta(s) seleccionada(s). Elige dos y pulsa conectar.":"Selecciona una tarjeta; después selecciona otra y pulsa «Conectar seleccionadas».";}
+function drawLines(){const g=$("lineGroup");g.innerHTML="";state.links.forEach(l=>{const a=state.notes.find(n=>n.id===l.a),b=state.notes.find(n=>n.id===l.b);if(!a||!b)return;const ns="http://www.w3.org/2000/svg",line=document.createElementNS(ns,"line");line.setAttribute("x1",a.x+77);line.setAttribute("y1",a.y+45);line.setAttribute("x2",b.x+77);line.setAttribute("y2",b.y+45);line.setAttribute("stroke","#e65b62");line.setAttribute("stroke-width","2.5");line.setAttribute("marker-end","url(#arrow)");g.appendChild(line);});}
+$("connect").onclick=()=>{if(state.selected.length!==2){notify("Selecciona dos tarjetas","Pulsa una tarjeta y luego la otra.");return;}const [a,b]=state.selected;if(a===b)return;if(!state.links.some(l=>(l.a===a&&l.b===b)||(l.a===b&&l.b===a)))state.links.push({a,b});state.selected=[];save();renderBoard();notify("Conexión creada","Has relacionado dos elementos de tu investigación.");};
+$("deleteSelected").onclick=()=>{if(!state.selected.length){notify("Nada seleccionado","Selecciona una tarjeta primero.");return;}if(!confirm("¿Eliminar las tarjetas seleccionadas del tablero? Las evidencias originales seguirán guardadas."))return;const ids=state.selected;state.notes=state.notes.filter(n=>!ids.includes(n.id));state.links=state.links.filter(l=>!ids.includes(l.a)&&!ids.includes(l.b));state.selected=[];save();renderBoard();};
+$("clearBoard").onclick=()=>{if(!confirm("¿Vaciar el tablero? Las evidencias y la cronología no se borrarán."))return;state.notes=[];state.links=[];state.selected=[];save();renderBoard();};
+function renderEvents(){const list=$("eventList");list.innerHTML="";state.events.forEach(e=>{const el=document.createElement("div");el.className="event";el.innerHTML=`<time>${esc(e.date)} · ${esc(e.time)}</time><h3 style="margin-top:5px">${esc(e.title)}</h3><p>${esc(e.detail)}</p><div class="eventactions"><button class="btn" data-edit="${e.id}">Editar</button><button class="btn" data-board="${e.id}">Añadir al tablero</button><button class="btn danger" data-del="${e.id}">Eliminar</button></div>`;list.appendChild(el);});$("eventCount").textContent=state.events.length+" eventos";list.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>editEvent(b.dataset.edit));list.querySelectorAll("[data-board]").forEach(b=>b.onclick=()=>{const e=state.events.find(x=>x.id===b.dataset.board);if(e)addNote(e.date+" "+e.time+" · "+e.title,e.detail);go("board");});list.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{state.events=state.events.filter(e=>e.id!==b.dataset.del);save();renderEvents();});}
+$("addEvent").onclick=()=>{const date=$("eventDate").value,time=$("eventTime").value,title=$("eventTitle").value.trim(),detail=$("eventDetail").value.trim();if(!date||!time||!title){notify("Faltan datos","Indica fecha, hora y acontecimiento.");return;}state.events.push({id:id(),date,time,title,detail});$("eventTitle").value="";$("eventDetail").value="";save();renderEvents();notify("Cronología actualizada",title);};
+$("sortEvents").onclick=()=>{state.events.sort((a,b)=>(a.date+"T"+a.time).localeCompare(b.date+"T"+b.time));save();renderEvents();};
+function editEvent(key){const e=state.events.find(x=>x.id===key);if(!e)return;const title=prompt("Editar acontecimiento:",e.title);if(title===null)return;const date=prompt("Editar fecha (AAAA-MM-DD):",e.date);if(date===null)return;const time=prompt("Editar hora (HH:MM):",e.time);if(time===null)return;const detail=prompt("Editar fuente/comentario:",e.detail);if(detail===null)return;Object.assign(e,{title,date,time,detail});save();renderEvents();}
+function loadReport(){for(const k of ["facts","theory","questions","conclusion"])$(k).value=state.report[k]||"";$("progressText").textContent=`Evidencias: ${state.evidence.length}. Tarjetas en el tablero: ${state.notes.length}. Conexiones: ${state.links.length}. Acontecimientos: ${state.events.length}.`;}
+$("saveReport").onclick=()=>{for(const k of ["facts","theory","questions","conclusion"])state.report[k]=$(k).value;save();$("reportStatus").textContent="Informe guardado · "+new Date().toLocaleTimeString("es-ES");notify("Informe guardado","Tus notas de investigación se han guardado.");};
+$("exportReport").onclick=()=>{for(const k of ["facts","theory","questions","conclusion"])state.report[k]=$(k).value;save();const text="EXPEDIENTE CERO — INFORME DEL AGENTE\nCaso EC-001: La última conexión\nFecha de exportación: "+new Date().toLocaleString("es-ES")+"\n\nHECHOS CONFIRMADOS\n"+state.report.facts+"\n\nHIPÓTESIS PRINCIPAL\n"+state.report.theory+"\n\nPREGUNTAS PENDIENTES\n"+state.report.questions+"\n\nCONCLUSIÓN PROVISIONAL\n"+state.report.conclusion+"\n\nAVISO: caso y pruebas ficticios.";const blob=new Blob([text],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="informe-EC-001.txt";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+$("notifyBtn").onclick=()=>{beep();notify("Central · Unidad de Investigación","Agente, documente cualquier contradicción temporal antes de formular una conclusión.");};
+$("notifyReport").onclick=()=>{beep();notify("Sala de coordinación","Actualización solicitada. Revise los datos de las 21:18, 21:30, 21:42 y 21:46.");};
+function tick(){const d=new Date();$("clock").textContent=d.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit",second:"2-digit"});$("phoneClock").textContent=d.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"});}
+tick();setInterval(tick,1000);
+renderEvidence();renderBoard();renderEvents();loadReport();
+})();
 </script>
 </body>
 </html>
