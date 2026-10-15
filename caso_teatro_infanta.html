@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#070b12">
+<title>Expediente Cero · NEXO</title>
+<style>
+:root{--bg:#070b12;--panel:#101824;--panel2:#151f2e;--line:#26384b;--blue:#55b8ff;--cyan:#83e5ff;--muted:#8b9aab;--white:#f4f7fb;--green:#72e0b0;--red:#ff697c;--gold:#efc879}
+*{box-sizing:border-box}
+body{margin:0;background:#05080d;color:var(--white);font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100dvh}
+button,input,textarea{font:inherit}
+button{cursor:pointer;color:inherit}
+button:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+button:disabled{opacity:.35;cursor:not-allowed}
+#app{min-height:100dvh}
+.topbar{height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-size:11px;letter-spacing:.4px;background:#080c13;position:relative;z-index:3}
+.status-right{display:flex;gap:7px;align-items:center}
+.signal{letter-spacing:-2px}
+.shell{width:min(100%,480px);min-height:calc(100dvh - 32px);margin:auto;position:relative;background:linear-gradient(160deg,#101a28,#060b12 70%);overflow:hidden}
+body.desktop-mode{background:radial-gradient(ellipse at 50% 0%,#20364a,#05080d 65%)}
+body.desktop-mode .shell{margin:22px auto;border:1px solid #31465b;border-radius:36px;min-height:min(900px,calc(100dvh - 44px));height:min(900px,calc(100dvh - 44px));box-shadow:0 25px 100px #000a}
+body.desktop-mode .view{height:calc(100% - 32px)}
+.view{display:none;min-height:calc(100dvh - 32px);position:relative;padding-bottom:24px;animation:appear .2s ease}
+.view.active{display:block}
+@keyframes appear{from{opacity:.35;transform:translateY(4px)}to{opacity:1;transform:none}}
+.wallpaper{background:linear-gradient(180deg,#07121a00 15%,#06101ce8 95%),url('https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1200&q=85') center/cover}
+.lock{min-height:calc(100dvh - 32px);padding:24px 20px;display:flex;flex-direction:column;justify-content:space-between}
+.locktop{text-align:center;color:#d5e5f3;font-size:12px;letter-spacing:2px}
+.lockclock{text-align:center;margin-top:55px}
+.lockclock .time{font-size:clamp(64px,18vw,88px);font-weight:200;letter-spacing:-4px;line-height:1}
+.lockclock .date{font-size:15px;margin-top:10px}
+.lockcard{background:#101a2bba;border:1px solid #ffffff2a;backdrop-filter:blur(20px);border-radius:17px;padding:14px;margin-top:12px;display:flex;gap:12px;align-items:flex-start}
+.lockcard .emoji{font-size:22px}
+.lockcard small{display:block;color:#b7c5d6;margin-top:5px;line-height:1.4}
+.lockbottom{text-align:center;color:#e4edf7;font-size:12px;padding-bottom:20px}
+.primary,.secondary,.danger{border:1px solid #365b79;background:linear-gradient(135deg,#153c5c,#12649a);padding:12px 16px;border-radius:13px;font-weight:650;transition:.15s}
+.primary:active,.secondary:active,.appicon:active{transform:scale(.97)}
+.secondary{background:#14202d;border-color:#314358}
+.danger{background:#421b27;border-color:#77313e}
+.full{width:100%}
+.header{padding:19px 19px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.header h1{font-size:29px;font-weight:750;letter-spacing:-1px;margin:0}
+.header p{margin:5px 0 0;color:var(--muted);font-size:12px}
+.iconbtn{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--line);background:#111c29;border-radius:50%;font-size:18px}
+.home{padding:14px 18px 26px;min-height:calc(100dvh - 32px);background:linear-gradient(180deg,#0b1522,#070b12)}
+.widgetrow{display:grid;grid-template-columns:1.1fr .9fr;gap:10px;margin-bottom:22px}
+.widget{border:1px solid #ffffff15;border-radius:20px;padding:15px;background:linear-gradient(145deg,#1c344a,#111b2a);min-height:115px}
+.widget .city{font-size:12px;color:#bed2e4}
+.widget .temp{font-size:34px;font-weight:250;margin:5px 0}
+.widget .sub{font-size:11px;color:#b6c7d7;line-height:1.5}
+.widget.events{background:linear-gradient(145deg,#2b2638,#141b29)}
+.eventline{font-size:11px;margin-top:8px;color:#d6dbea}
+.apps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px 8px}
+.appicon{border:0;background:transparent;display:flex;align-items:center;flex-direction:column;gap:7px;padding:0;min-width:0}
+.appglyph{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;font-size:27px;box-shadow:0 7px 18px #0005;border:1px solid #ffffff20}
+.appname{font-size:11px;color:#e5ebf3;white-space:nowrap}
+.g-green{background:linear-gradient(145deg,#44db9a,#087a65)}
+.g-blue{background:linear-gradient(145deg,#54baff,#1853c5)}
+.g-orange{background:linear-gradient(145deg,#ffc66d,#d75a22)}
+.g-purple{background:linear-gradient(145deg,#c3a0ff,#653cc3)}
+.g-red{background:linear-gradient(145deg,#ff8291,#b71d3e)}
+.g-slate{background:linear-gradient(145deg,#7189a0,#24364b)}
+.g-yellow{background:linear-gradient(145deg,#ffe08c,#c58c20)}
+.g-teal{background:linear-gradient(145deg,#71eee0,#127d90)}
+.dock{margin-top:27px;padding:13px 12px;background:#ffffff17;border:1px solid #ffffff1b;backdrop-filter:blur(18px);border-radius:25px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.dock .appglyph{width:51px;height:51px}
+.bottomhint{text-align:center;font-size:10px;color:#6f8296;margin-top:18px}
+.content{padding:0 17px 24px}
+.card{background:linear-gradient(145deg,#131e2b,#0e1621);border:1px solid var(--line);border-radius:17px;padding:15px;margin-bottom:11px}
+.card h3{margin:0 0 8px;font-size:15px}
+.muted{color:var(--muted)}
+.small{font-size:12px;line-height:1.55}
+.tag{display:inline-flex;padding:5px 8px;border-radius:7px;background:#172a3a;color:#a8dfff;border:1px solid #284961;font-size:10px;letter-spacing:.3px}
+.tag.green{color:#93efc4;background:#112b24;border-color:#235541}
+.tag.red{color:#ff9dab;background:#321821;border-color:#63303c}
+.row{display:flex;gap:11px;align-items:center}
+.between{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.avatar{width:45px;height:45px;flex:none;border-radius:50%;background:linear-gradient(135deg,#365a73,#172536);display:grid;place-items:center;font-size:20px;border:1px solid #ffffff26}
+.avatar.photo{background-size:cover;background-position:center}
+.listitem{width:100%;text-align:left;background:transparent;border:0;border-bottom:1px solid #253445;padding:13px 0;display:flex;align-items:center;gap:12px}
+.listitem:last-child{border-bottom:0}
+.listitem strong{display:block;font-size:13px;font-weight:650}
+.listitem small{display:block;color:var(--muted);font-size:11px;margin-top:4px;line-height:1.4}
+.listitem .right{margin-left:auto;text-align:right;flex:none;font-size:10px;color:var(--muted)}
+.back{background:none;border:0;color:var(--blue);font-size:14px;padding:0 0 12px}
+.search{width:100%;border:1px solid #2b3d50;background:#0c1420;border-radius:12px;padding:12px 13px;color:white;margin-bottom:12px;outline:none}
+.search:focus{border-color:var(--blue)}
+.tabs{display:flex;gap:6px;margin:0 0 13px;background:#0b131e;padding:4px;border-radius:12px}
+.tabs button{flex:1;border:0;border-radius:9px;background:transparent;padding:9px 5px;color:var(--muted);font-size:11px}
+.tabs button.selected{background:#204668;color:#e7f6ff}
+.chathead{display:flex;align-items:center;gap:11px;padding:7px 0 15px;border-bottom:1px solid var(--line)}
+.chatmessages{display:flex;flex-direction:column;gap:10px;padding:18px 0;min-height:260px}
+.bubble{max-width:84%;padding:11px 13px;border-radius:17px;background:#172434;border:1px solid #2a4054;line-height:1.5;font-size:13px}
+.bubble.mine{align-self:flex-end;background:linear-gradient(145deg,#15569a,#123d70);border-color:#3177b9}
+.bubble .stamp{display:block;font-size:9px;color:#a8bacb;text-align:right;margin-top:5px}
+.photo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.photo-tile{padding:0;position:relative;overflow:hidden;border-radius:13px;border:1px solid #314356;background:#101923;text-align:left;min-width:0}
+.photo-tile img{display:block;width:100%;height:150px;object-fit:cover}
+.photo-tile .photocap{padding:10px;font-size:11px;line-height:1.4}
+.photo-tile .evidence-dot{position:absolute;top:8px;right:8px;background:#0a111bd9;border:1px solid #6bcfff;padding:5px 7px;border-radius:7px;font-size:10px}
+.photo-viewer{position:fixed;inset:0;background:#020407f5;z-index:30;display:none;align-items:center;justify-content:center;padding:20px}
+.photo-viewer.open{display:flex}
+.photo-viewer img{max-width:100%;max-height:65vh;object-fit:contain;border-radius:10px}
+.photo-viewer .close{position:absolute;top:30px;right:22px;background:#1b2938;border:1px solid #4b6277;border-radius:50%;width:42px;height:42px;font-size:20px}
+.photo-viewer .caption{position:absolute;bottom:30px;left:22px;right:22px;max-width:480px;margin:auto}
+.note{border-left:3px solid var(--blue);padding:10px 12px;background:#101a27;margin:8px 0;border-radius:0 9px 9px 0;font-size:12px;line-height:1.55}
+.progress{height:5px;background:#1b2937;border-radius:9px;overflow:hidden}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,#288de3,#83e5ff);transition:width .25s}
+.sectiontitle{font-size:11px;letter-spacing:1.5px;color:#8ea4b9;margin:18px 0 10px}
+.clue{display:flex;gap:11px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #243345}
+.clue:last-child{border:0}
+.clue .num{width:29px;height:29px;border-radius:9px;display:grid;place-items:center;background:#17364b;color:#8cdbff;flex:none;font-size:12px}
+.clue strong{font-size:12px}
+.clue p{margin:5px 0 0;color:var(--muted);font-size:11px;line-height:1.5}
+.choice{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;border:1px solid #2a3b4e;border-radius:12px;background:#101a27;padding:12px;margin:8px 0;font-size:12px;line-height:1.5}
+.choice:active{border-color:var(--blue)}
+.choice .letter{width:25px;height:25px;display:grid;place-items:center;background:#20364b;border-radius:8px;flex:none}
+.choice.correct{border-color:#398765;background:#10251e}
+.choice.wrong{border-color:#8b4652;background:#2a151d}
+.choice.selected{border-color:var(--blue)}
+.policebg{background:linear-gradient(#080f1bdb,#080f1bf2),url('https://images.unsplash.com/photo-1453873531674-2151bcd01707?auto=format&fit=crop&w=1200&q=85') center/cover fixed}
+.casehero{border:1px solid #334b60;border-radius:18px;overflow:hidden;margin-bottom:13px;background:#0d1722}
+.casehero img{width:100%;height:155px;object-fit:cover;display:block;opacity:.82}
+.casehero .herotext{padding:14px}
+.casehero h2{margin:0 0 6px;font-size:20px}
+.metricgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.metric{border:1px solid #293d50;background:#101b28;border-radius:12px;padding:12px 7px;text-align:center}
+.metric b{font-size:20px;display:block}
+.metric small{font-size:9px;color:var(--muted)}
+.formlabel{display:block;font-size:12px;color:#b7c7d8;margin:14px 0 7px}
+textarea{width:100%;min-height:82px;resize:vertical;background:#0a131e;border:1px solid #304357;border-radius:12px;padding:12px;color:white}
+.resultmark{font-size:44px;text-align:center;margin:12px 0}
+.resulttitle{text-align:center;font-size:25px;margin:0 0 8px}
+.footer{padding:18px 0 4px;text-align:center;font-size:10px;color:#65798d}
+.toast{position:fixed;bottom:25px;left:50%;transform:translate(-50%,15px);opacity:0;pointer-events:none;background:#182838;border:1px solid #43637c;border-radius:13px;padding:12px 16px;z-index:50;box-shadow:0 10px 40px #0009;transition:.2s;max-width:90%;text-align:center;font-size:12px}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.homeindicator{width:110px;height:4px;background:#f2f6fb;border-radius:5px;position:fixed;bottom:5px;left:50%;transform:translateX(-50%);z-index:8;opacity:.7}
+.hidden{display:none!important}
+@media(min-width:650px){.shell{min-height:850px}.view{min-height:850px}.home,.lock{min-height:850px}.lockclock{margin-top:75px}.photo-tile img{height:180px}}
+@media(max-width:360px){.appglyph{width:48px;height:48px}.apps{gap:19px 4px}.appname{font-size:10px}.header h1{font-size:26px}}
+</style>
+</head>
+<body>
+<div id="app">
+<div class="shell">
+<div class="topbar"><span id="statusTime">02:45</span><span class="status-right"><span class="signal">▂▄▆</span> ◉ ▰</span></div>
+
+<section class="view active wallpaper" id="lockView">
+<div class="lock">
+<div>
+<div class="locktop">NEXO <span style="float:right">● ● ●</span></div>
+<div class="lockclock"><div style="font-size:22px;margin-bottom:12px">🎹</div><div class="time" id="lockTime">02:45</div><div class="date">Jueves, 15 de Octubre</div></div>
+<div style="margin-top:38px">
+<button class="lockcard" style="width:100%;text-align:left;color:white" onclick="openApp('messages')"><span class="emoji">👤</span><span><b>Número desconocido</b><small>Toca la última nota.<br>Fin de la función.</small></span><span class="muted" style="margin-left:auto;font-size:10px">02:38</span></button>
+<button class="lockcard" style="width:100%;text-align:left;color:white" onclick="openApp('calls')"><span class="emoji">📞</span><span><b>Llamada perdida (2)</b><small>Laura S. (Hermana)</small></span><span class="muted" style="margin-left:auto;font-size:10px">02:41</span></button>
+</div>
+</div>
+<div class="lockbottom"><button class="primary full" onclick="unlock()">Desbloquear NEXO　↑</button><p style="margin-top:15px;color:#a5b6c7">Caso 01: El Teatro Infanta · Terminal Recuperado</p></div>
+</div>
+</section>
+
+<section class="view" id="homeView">
+<div class="home">
+<div class="between" style="margin:3px 2px 20px"><div><div class="muted small">JUEVES, 15 DE OCTUBRE</div><div style="font-size:25px;font-weight:750;margin-top:4px">Elena S.</div></div><button class="iconbtn" onclick="openApp('settings')">⚙</button></div>
+<div class="widgetrow">
+<div class="widget"><div class="city">📍 Madrid · Ópera</div><div class="temp">9°</div><div class="sub">Niebla densa<br>Teatro Infanta Cerrado</div></div>
+<div class="widget events"><div class="city">ALERTAS CRÍTICAS</div><div style="font-size:24px;margin-top:5px">15 <span style="font-size:12px">OCT</span></div><div class="eventline">01:05 · iCloud Forzado</div><div class="eventline">01:45 · Mensajes acoso</div></div>
+</div>
+<div class="apps">
+<button class="appicon" onclick="openApp('messages')"><span class="appglyph g-green">✉</span><span class="appname">Mensajes</span></button>
+<button class="appicon" onclick="openApp('calls')"><span class="appglyph g-green">☎</span><span class="appname">Teléfono</span></button>
+<button class="appicon" onclick="openApp('photos')"><span class="appglyph g-orange">🌈</span><span class="appname">Fotos</span></button>
+<button class="appicon" onclick="openApp('camera')"><span class="appglyph g-slate">◉</span><span class="appname">Cámara</span></button>
+<button class="appicon" onclick="openApp('notes')"><span class="appglyph g-yellow">▤</span><span class="appname">Notas</span></button>
+<button class="appicon" onclick="openApp('files')"><span class="appglyph g-blue">📁</span><span class="appname">Archivos</span></button>
+<button class="appicon" onclick="openApp('calendar')"><span class="appglyph g-red">▦</span><span class="appname">Calendario</span></button>
+<button class="appicon" onclick="openApp('maps')"><span class="appglyph g-green">⌖</span><span class="appname">Mapas</span></button>
+<button class="appicon" onclick="openApp('voice')"><span class="appglyph g-purple">◖</span><span class="appname">Notas de voz</span></button>
+<button class="appicon" onclick="openApp('contacts')"><span class="appglyph g-slate">♙</span><span class="appname">Contactos</span></button>
+<button class="appicon" onclick="openApp('health')"><span class="appglyph g-red">♡</span><span class="appname">Salud</span></button>
+<button class="appicon" onclick="openApp('settings')"><span class="appglyph g-slate">⚙</span><span class="appname">Ajustes</span></button>
+</div>
+<div class="dock">
+<button class="appicon" onclick="openApp('messages')"><span class="appglyph g-green">✉</span></button>
+<button class="appicon" onclick="openApp('calls')"><span class="appglyph g-green">☎</span></button>
+<button class="appicon" onclick="openApp('photos')"><span class="appglyph g-orange">🌈</span></button>
+<button class="appicon" onclick="openApp('files')"><span class="appglyph g-blue">📁</span></button>
+</div>
+<div class="bottomhint">NEXO OS 4.1 · Reconstrucción Forense Exclusiva</div>
+<div class="card" style="margin-top:17px"><div class="between"><div><span class="tag">RESOLUCIÓN DE CARGOS</span><h3 style="margin-top:9px">Cerrar el Expediente</h3><div class="small muted">Cruza las pruebas extraídas del móvil para acusar al asesino.</div></div><div style="font-size:30px">🏢</div></div><button class="primary full" style="margin-top:13px" onclick="openPolice()">Abrir Panel de Veredicto →</button></div>
+</div>
+</section>
+
+<section class="view" id="appView">
+<div class="header"><div><button class="back" onclick="goHome()">‹ Inicio</button><h1 id="appTitle">Mensajes</h1><p id="appSubtitle">Conversaciones recuperadas</p></div><button class="iconbtn" onclick="openPolice()">🏢</button></div>
+<div class="content" id="appContent"></div>
+</section>
+
+<section class="view policebg" id="policeView">
+<div class="header"><div><button class="back" onclick="goHome()">‹ Volver al terminal</button><h1>Expediente Forense</h1><p>Control de Evidencias · Enlazar culpables</p></div><span class="tag">EC / 002</span></div>
+<div class="content" id="policeContent"></div>
+</section>
+
+<section class="view" id="interviewView">
+<div class="header"><div><button class="back" onclick="openPolice()">‹ Volver</button><h1>Contraste</h1><p>Declaración de sospechosos extraídas de actas</p></div><span class="tag red">RESERVADO</span></div>
+<div class="content" id="interviewContent"></div>
+</section>
+
+<section class="view" id="verdictView">
+<div class="header"><div><button class="back" onclick="openPolice()">‹ Volver</button><h1>Conclusión del caso</h1><p>Resolución de la investigación</p></div></div>
+<div class="content" id="verdictContent"></div>
+</section>
+</div>
+</div>
+
+<div class="photo-viewer" id="photoViewer">
+<button class="close" onclick="closePhoto()">×</button>
+<div style="width:min(100%,520px)">
+<img id="viewerImage" src="" alt="Fotografía del expediente">
+<div class="caption"><h3 id="viewerTitle"></h3><p class="small muted" id="viewerDescription"></p><button class="primary full" id="viewerClueButton" onclick="collectViewerClue()">Analizar y registrar pista</button></div>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="homeindicator"></div>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const photos=[
+{id:"p1",title:"Escenario · 02:22 AM",desc:"La última foto tomada por Elena. El escenario del teatro abandonado muestra un foco sobre el piano. En la oscuridad del palco superior derecho se aprecia un reflejo óptico semejante a unas gafas.",url:"https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1200&q=85",clue:"photo",clueTitle:"Fotografía del escenario",clueText:"Sitúa a Elena en el teatro a la hora del crimen. Confirma que una figura la acechaba desde las alturas en las sombras."},
+{id:"p2",title:"Frasco de Medicamentos · 19:40 PM",desc:"Imagen del bote de Clonazepam recetado a Elena. La etiqueta muestra el nombre del médico raspado intencionadamente con un objeto punzante.",url:"https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1100&q=85",clue:"receipt",clueTitle:"Frasco manipulado",clueText:"Elena sospechaba de su medicación. Alguien con acceso médico alteraba o encubría el origen del tratamiento para mermar su credibilidad."},
+{id:"p3",title:"Albarán de Mudanza",desc:"Un albarán recuperado de la papelera del conservatorio. Certifica el traslado urgente de un piano de cola al Teatro Infanta esa misma mañana por 'Transportes Atlas'.",url:"https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1100&q=85",clue:"door",clueTitle:"Albarán de transporte",clueText:"El instrumento fue llevado allí pocas horas antes del crimen. El asesino preparó el escenario meticulosamente para atraerla."},
+{id:"p4",title:"Patrón de Sangre (Forense)",desc:"Foto de la escena del crimen. Salpicaduras de sangre verticales directas sobre la partitura de Claro de Luna. Indican un ataque frontal mientras la víctima estaba erguida frente al teclado.",url:"https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1100&q=85",clue:"message",clueTitle:"Patrón de salpicaduras",clueText:"Desmiente accidentes o caídas desde el anfiteatro. El asesino la atacó por sorpresa mientras tocaba o examinaba el instrumento."},
+{id:"p5",title:"Captura · Alerta de iCloud",desc:"Captura de pantalla de un correo del sistema a las 01:05 AM: 'Su contraseña ha sido cambiada desde un terminal desconocido en la calle Fuencarral'.",url:"https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1100&q=85",clue:"corridor",clueTitle:"Acceso ilícito a la nube",clueText:"El asesino hackeó la cuenta de Elena poco antes de matarla para borrar archivos comprometedores de forma remota."},
+{id:"p6",title:"Mensaje en el Espejo",desc:"Foto hecha por Elena en su baño. Escrito con carmín: 'La frecuencia correcta es 432Hz. Tú estás desafinada'. Un claro acoso psicológico auditivo.",url:"https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=1100&q=85",clue:"note",clueTitle:"Mensaje intimidatorio",clueText:"Muestra una campaña de desestabilización psicológica perfectamente ejecutada para hacerla pasar por paranoica."}
+];
+const chats=[
+{id:"mara",name:"Dr. Sergio M. (Psiquiatra)",emoji:"👨🏼‍⚕️",time:"00:12",preview:"La dosis es la adecuada, Elena. Confía.",messages:[
+{from:"me",text:"Doctor, las pastillas nuevas me nublan la memoria. Me despierto sin saber dónde he estado.",time:"23:45"},
+{from:"them",text:"Es un efecto secundario común al principio. No interrumpas el tratamiento.",time:"23:50"},
+{from:"me",text:"He encontrado el frasco de la mesita con su nombre raspado... ¿Por qué?",time:"23:58"},
+{from:"them",text:"Estás sufriendo delirios de persecución. Deja de investigar cosas donde no las hay o tendré que reportar tu estado al tribunal.",time:"00:12",clue:"mara"}
+]},
+{id:"ivan",name:"Carlos T. (Ex-pareja / Director)",emoji:"👨🏻",time:"22:15",preview:"Deja de llamarme, necesitas ayuda.",messages:[
+{from:"them",text:"Elena, lo nuestro terminó. Que entres en bucle con que te robo las llaves y te desafino el piano es enfermizo.",time:"22:00"},
+{from:"me",text:"¡Sé que tienes una copia! Alguien entra aquí cuando no estoy.",time:"22:05"},
+{from:"them",text:"No voy a dignificar eso con una respuesta. Esta noche tengo el estreno de la ópera hasta la una. Búscate un abogado.",time:"22:15",clue:"ivan"}
+]},
+{id:"lucia",name:"Laura S. (Hermana)",emoji:"👩🏼",time:"01:20",preview:"No es tu firma. Te la han jugado.",messages:[
+{from:"them",text:"Elena, he conseguido el documento de tasación del Teatro Infanta por parte de la promotora inmobiliaria.",time:"01:10"},
+{from:"them",text:"Aparece tu firma autorizando el informe de ruina estructural... ¡Pero es una falsificación descarada!",time:"01:15"},
+{from:"me",text:"Lo sabía. Alguien me está citando en el teatro ahora mismo, dice que me dará los originales firmados si voy sola.",time:"01:18"},
+{from:"them",text:"¡No vayas! Llama a la policía. Esa firma te adjudica millones en deudas si el edificio se cae.",time:"01:20",clue:"lucia"}
+]},
+{id:"unknown",name:"Número Desconocido",emoji:"👤",time:"02:38",preview:"Fin de la función.",messages:[
+{from:"them",text:"Ya estás dentro del Infanta. Qué obediente.",time:"01:45"},
+{from:"them",text:"Te escucho caminar sobre las maderas del escenario.",time:"02:10"},
+{from:"them",text:"Mira hacia arriba, a los palcos. Disfruta de las vistas.",time:"02:25"},
+{from:"them",text:"Toca la última nota. Fin de la función.",time:"02:38",clue:"unknown"}
+]}
+];
+const files=[
+{name:"informe_ruina_falso.pdf",meta:"3,4 MB · 14 oct",icon:"📕",desc:"Documento inmobiliario donde se tasa el Teatro Infanta en cero euros. Contiene una firma digital falsificada a nombre de Elena S."},
+{name:"historial_recetas.xml",meta:"410 KB · 12 oct",icon:"🗜",desc:"Registro del servidor médico. El Dr. Sergio M. modificó los compuestos de las recetas de Elena añadiendo sedantes no declarados."},
+{name:"audio_cache.tmp",meta:"1,2 MB · Reconstruido",icon:"🎙",desc:"Grabación de audio de las 02:35 AM capturada por el micrófono ambiental del móvil."}
+];
+const defaultState={clues:[],seen:[],chatsRead:[],interviews:[],answers:{},verdict:null,notes:[],resetCount:0};
+let state=loadState(),currentPhoto=null,currentChat=null,toastTimer=null;
+function loadState(){try{return {...defaultState,...JSON.parse(localStorage.getItem("expedienteCeroSave")||"{}")}}catch(e){return {...defaultState}}}
+function save(){try{localStorage.setItem("expedienteCeroSave",JSON.stringify(state))}catch(e){}}
+function has(id){return state.clues.includes(id)}
+function addClue(id,title,text){
+ if(!has(id)){state.clues.push(id);save();notify("Evidencia indexada: "+title);renderPolice()}
+ else notify("Esta pista ya está registrada.");
+}
+function markSeen(id){if(!state.seen.includes(id)){state.seen.push(id);save()}}
+function notify(text){const t=$("toast");t.textContent=text;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2400)}
+function showView(id){document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));$(id).classList.add("active");window.scrollTo(0,0)}
+function unlock(){showView("homeView")}
+function goHome(){showView("homeView")}
+function openPolice(){renderPolice();showView("policeView")}
+function openApp(name){renderApp(name);showView("appView")}
+const appNames={messages:["Mensajes","Canales de Chat"],calls:["Registro Telefónico","Metadatos de red"],photos:["Galería local","Imágenes analizadas"],camera:["Lente","Capturas de escena"],notes:["Post-its Ocultos","Anotaciones de la víctima"],files:["Almacenamiento","Archivos de sistema interceptados"],calendar:["Agenda","Bitácora del 15 de Oct"],maps:["Geolocalización","Antenas de repetición"],voice:["Grabadora","Caché de audio"],contacts:["Directorio","Vínculos personales"],health:["Constantes","Datos biométricos"],settings:["Nexo OS","Opciones forenses"]};
+function renderApp(name){
+ $("appTitle").textContent=appNames[name]?.[0]||"NEXO";
+ $("appSubtitle").textContent=appNames[name]?.[1]||"";
+ const c=$("appContent");
+ const pages={messages:renderMessages,calls:renderCalls,photos:renderPhotos,camera:renderPhotos,notes:renderNotes,files:renderFiles,calendar:renderCalendar,maps:renderMaps,voice:renderVoice,contacts:renderContacts,health:renderHealth,settings:renderSettings};
+ c.innerHTML=(pages[name]||renderSettings)();
+}
+function renderMessages(){return `<input class="search" placeholder="⌕ Filtrar comunicaciones..." oninput="filterChats(this.value)"><div id="chatList">${chatListHTML(chats)}</div>`}
+function chatListHTML(items){return items.map(ch=>`<button class="listitem" onclick="openChat('${ch.id}')"><div class="avatar">${ch.emoji}</div><div style="min-width:0;flex:1"><strong>${ch.name}</strong><small>${ch.preview}</small></div><span class="right">${ch.time}<br><span style="color:#56b9ff">●</span></span></button>`).join("")}
+function filterChats(v){$("chatList").innerHTML=chatListHTML(chats.filter(c=>(c.name+" "+c.preview).toLowerCase().includes(v.toLowerCase())))}
+function openChat(id){
+ currentChat=id;const ch=chats.find(c=>c.id===id);if(!ch)return;
+ state.chatsRead=state.chatsRead||[];if(!state.chatsRead.includes(id))state.chatsRead.push(id);save();
+ $("appTitle").textContent=ch.name;$("appSubtitle").textContent="Canal Seguro Forense";
+ $("appContent").innerHTML=`<button class="back" onclick="openApp('messages')">‹ Volver a Mensajes</button><div class="chathead"><div class="avatar">${ch.emoji}</div><div><b>${ch.name}</b><div class="small muted">Volcado histórico de logs</div></div></div><div class="chatmessages">${ch.messages.map(m=>`<div class="bubble ${m.from==='me'?'mine':''}">${m.text}<span class="stamp">${m.time}</span></div>`).join("")}</div><button class="secondary full" onclick="inspectChat('${id}')">Extraer Prueba Textual</button>`;
+}
+function inspectChat(id){
+ const data={
+ mara:["mara","Historial del Psiquiatra","El Dr. Sergio presionaba a Elena para ignorar sus sospechas y la amenazaba veladamente con inhabilitarla."],
+ ivan:["ivan","Conversación con Carlos","Carlos niega el acoso y aporta una coartada pública: asistió a un estreno musical hasta la 01:00 AM."],
+ lucia:["lucia","Alerta del Fraude Inmobiliario","La hermana descubrió una falsificación de firma que vinculaba a Elena con deudas masivas del teatro."],
+ unknown:["unknown","Logs del Ejecutor","El acosador dirigió a Elena en tiempo real dentro del edificio, demostrando un acecho activo y premeditado."]
+ };
+ const d=data[id];addClue(d[0],d[1],d[2]);openChat(id)
+}
+function renderCalls(){return `<div class="tabs"><button class="selected">Recientes</button></div>${[
+["👩🏼","Laura S. (Hermana)","Perdida","02:41","lucia"],
+["👩🏼","Laura S. (Hermana)","Perdida","02:39","lucia"],
+["👨🏼‍⚕️","Dr. Sergio M.","Entrante (12 min)","00:01","mara"],
+["👨🏻","Carlos T.","Saliente (1 min)","21:55","ivan"]].map((a,i)=>`<button class="listitem" onclick="callDetail('${a[4]}','${a[1]}','${a[3]}')"><div class="avatar">${a[0]}</div><div style="flex:1"><strong>${a[1]}</strong><small style="color:var(--red)">${a[2]}</small></div><span class="right">${a[3]} ⓘ</span></button>`).join("")}`}
+function callDetail(id,name,time){addClue(id==="unknown"?"unknown":id,"Registro: "+name,"Llamada registrada a las "+time+". Relevante para estructurar las ventanas horarias.");notify("Metadato telefónico guardado")}
+function renderPhotos(){return `<div class="photo-grid">${photos.map((p,i)=>`<button class="photo-tile" onclick="viewPhoto('${p.id}')"><img loading="lazy" src="${p.url}"><span class="evidence-dot">${has(p.clue)?'✓ INDEXADA':'⌕ ANALIZAR'}</span><div class="photocap"><b>${p.title}</b></div></button>`).join("")}</div>`}
+function viewPhoto(id){currentPhoto=photos.find(p=>p.id===id);if(!currentPhoto)return;$("viewerImage").src=currentPhoto.url;$("viewerTitle").textContent=currentPhoto.title;$("viewerDescription").textContent=currentPhoto.desc;$("viewerClueButton").textContent=has(currentPhoto.clue)?"Evidencia ya recopilada":"Analizar Pixeles y Metadatos";$("photoViewer").classList.add("open")}
+function closePhoto(){$("photoViewer").classList.remove("open")}
+function collectViewerClue(){if(!currentPhoto)return;addClue(currentPhoto.clue,currentPhoto.clueTitle,currentPhoto.clueText);$("viewerClueButton").textContent="Evidencia ya recopilada"}
+function renderNotes(){return `<div class="card"><div class="between"><h3>Nota Rápida</h3><span class="tag">14 OCT</span></div><p style="line-height:1.7;color:var(--gold)">No estoy loca. No estoy loca. Las notas del piano cambian por la noche. Alguien se cuela. No es la afinación normal de concierto (440Hz), suena más baja... ¿432Hz?</p><div class="muted small">Modificado · 23:14</div><button class="secondary full" style="margin-top:12px" onclick="addClue('note','Nota de la Obsesión Auditiva','Elena constató variaciones intencionadas en la frecuencia de su instrumento doméstico.')">Analizar Nota</button></div>`}
+function renderFiles(){return `${files.map((f,i)=>`<button class="listitem" onclick="openFile(${i})"><div class="avatar">${f.icon}</div><div style="flex:1"><strong>${f.name}</strong><small>${f.meta}</small></div><span class="right">Examinar ›</span></button>`).join("")}`}
+function openFile(i){
+ const f=files[i];const ids=["backup","receipt","voice"];
+ addClue(ids[i],f.name,f.desc);notify("Archivo analizado.")
+}
+function renderCalendar(){return `<div class="card"><h3>Planificación del 15 Oct</h3><div class="clue"><div class="num">00:30</div><div><strong>Cita misteriosa en Teatro Infanta</strong><p>Anotación automática creada tras recibir enlace de mapas.</p></div></div></div>`}
+function renderMaps(){return `<div class="card" style="padding:0;overflow:hidden"><div style="height:200px;background:#101b28;display:grid;place-items:center;color:var(--blue)">🗺️ [Mapa Forense: Repetidor Fuencarral / Sector Ópera]</div><div style="padding:14px"><h3>Último rebote de señal</h3><p class="small muted">El terminal se conectó a la antena adyacente al teatro abandonado a las 01:40 AM.</p></div></div>`}
+function renderVoice(){return `<div class="card"><div style="font-size:36px;text-align:center;margin:15px">🎙️</div><h3 style="text-align:center">audio_cache.tmp</h3><p class="small muted" style="text-align:center">Extracción de micro ambiental</p><div class="progress" style="margin:18px 0"><span style="width:100%"></span></div><p style="line-height:1.7;font-size:12px;background:#0d1622;padding:10px;border-radius:8px"><i>«...¿Por qué haces esto? (Sonido de pasos lentos sobre maderas viejas)... Sé lo del informe de ruina... sé que el doctor te pagó... ¡Aléjate! (Golpe sordo contra cuerdas de piano, seguido de estática)...»</i></p><button class="primary full" onclick="addClue('voice','Grabación del Ataque','El audio demuestra que Elena descubrió el complot económico y reconoció a su agresor antes del impacto.')">Indexar Grabación</button></div>`}
+function renderContacts(){return `<p class="muted small" style="padding:10px">Accede directamente desde la aplicación de Mensajes para auditar perfiles.</p>`}
+function renderHealth(){return `<div class="card"><h3>Ritmo Cardíaco Forense</h3><p class="small" style="color:var(--red)">📈 02:36 AM: Pico crítico de 165 lpm (Shock o pánico absoluto).</p><p class="small" style="color:var(--muted)">📉 02:40 AM: Pérdida total de pulso.</p></div>`}
+function renderSettings(){return `<div class="card"><h3>Resumen de la Investigación</h3><p class="small">${state.clues.length} de 8 evidencias clave recuperadas en el terminal.</p><button class="danger full" onclick="resetGame()">Formatear Terminal (Reiniciar)</button></div>`}
+function renderPolice(){
+ const total=8,progress=Math.min(100,Math.round(state.clues.length/total*100));
+ $("policeContent").innerHTML=`<div class="casehero"><div class="herotext"><span class="tag red">EXPEDIENTE CRIMINAL</span><h2>Muerte en el Infanta</h2><p class="small muted">Víctima: Elena S. / Causa: Traumatismo Severo</p><div class="progress"><span style="width:${progress}%"></span></div><p class="small muted">${state.clues.length} de ${total} pruebas processed</p></div></div>
+ <div class="sectiontitle">ACTAS DE DECLARACIÓN DE SOSPECHOSOS</div>
+ <button class="listitem" onclick="openInterview('ivan')"><div class="avatar">👨🏻</div><div style="flex:1"><strong>Acta: Carlos T. (Ex-pareja)</strong><small>Revisar declaración oficial en jefatura</small></div><span>›</span></button>
+ <button class="listitem" onclick="openInterview('mara')"><div class="avatar">👨🏼‍⚕️</div><div style="flex:1"><strong>Acta: Dr. Sergio M. (Psiquiatra)</strong><small>Revisar coartada clínica</small></div><span>›</span></button>
+ <div class="card" style="margin-top:16px"><h3>Panel de Acusación Final</h3><p class="small muted">Debes dictaminar quién planificó el asesinato basándote en los datos objetivos del dispositivo.</p><button class="primary full" style="margin-top:13px" onclick="openVerdict()">Emitir Dictamen Final →</button></div>`;
+}
+const clueDictionary={
+photo:["photo","Fotografía del escenario","Sitúa a Elena en el teatro y muestra un reflejo sospechoso en los palcos."],
+receipt:["receipt","Frasco manipulado","Prueba la ocultación del remitente real de las sustancias de Elena."],
+door:["door","Albarán del instrumento","Muestra que el escenario fue preparado de forma coordinada horas antes."],
+message:["message","Patrón de salpicaduras","Descarta muertes accidentales; el ataque se ejecutó frente al piano."],
+corridor:["corridor","Acceso informático ilegal","Prueba el borrado remoto de datos para eliminar pruebas incriminatorias."],
+note:["note","Mensaje intimidatorio","Parte del plan sistemático para minar la cordura de la víctima."],
+mara:["mara","Log Clínico Oculto","El psiquiatra coaccionó a la víctima para que no denunciara."],
+ivan:["ivan","Coartada de Carlos","Carlos detalla su localización pública durante la noche."],
+lucia:["lucia","Fraude de Firmas","El móvil guardaba el motivo del crimen: un entramado inmobiliario millonario."],
+unknown:["unknown","Logs del Ejecutor","Demuestra ensañamiento y monitorización por parte del asesino."],
+backup:["backup","Informe de Ruina","Prueba documental del móvil sobre el fraude urbanístico."],
+voice:["voice","Grabación del Ataque","Prueba reina donde la víctima destapa el pago entre el asesino y el doctor."]
+};
+const interviews={
+ivan:{
+name:"Carlos T.",intro:"Director del Conservatorio. Mantuvo una relación sentimental con Elena hasta hace tres meses. Declaró en sede policial que estuvo en una cena de gala y luego en el estreno de una ópera en el centro de Madrid hasta pasada la medianoche.",
+questions:[
+{q:"¿Qué relación guarda con el Teatro Infanta?",opts:[
+{t:"Mostrar la conversación sobre las llaves del piano",need:"ivan",reply:"'Sí, discutimos por el piano. Yo coordiné su traslado porque el conservatorio vendió la pieza, pero no tengo nada que ver con inmobiliarias.'",clue:"i1"},
+{t:"Acusarle de falsificar las firmas de Elena",need:"lucia",reply:"'¡Están locos! Yo soy músico, no sé nada de recalificaciones de terrenos ni de empresas inmobiliarias.'",clue:"i2"}
+]}
+]},
+mara:{
+name:"Dr. Sergio M.",intro:"Psiquiatra asignado a Elena a través de su seguro privado. Afirma que pasó toda la noche cubriendo una guardia de urgencias médicas en su clínica privada y que Elena sufría un trastorno delirante agudo.",
+questions:[
+{q:"¿Por qué alteró las recetas de la víctima de forma encubierta?",opts:[
+{t:"Enfrentarlo al archivo de recetas médicas alteradas",need:"receipt",reply:"El doctor se altera notoriamente. 'Eso... es un ajuste farmacológico confidencial. Ella no coordinaba bien.'",clue:"m1"},
+{t:"Presentar el informe de ruina y el móvil falsificado",need:"lucia",reply:"'No pueden demostrar que yo tenga acciones en esa promotora. Mis consejos eran puramente psiquiátricos.'",clue:"m2"}
+]}
+}
+};
+function openInterview(id){
+ const data=interviews[id];if(!data)return;
+ state.answers[id]=state.answers[id]||{};save();
+ $("interviewContent").innerHTML=`<div class="card"><h2>${data.name}</h2><p class="small">${data.intro}</p></div>${data.questions.map((q,qi)=>`<div class="card"><h3>${q.q}</h3>${q.opts.map((o,oi)=>{const ans=state.answers[id][qi];return `<button class="choice ${ans===oi?'selected':''}" onclick="answerInterview('${id}',${qi},${oi})"><span class="letter">${String.fromCharCode(65+oi)}</span><span>${o.t}${o.need&&!has(o.need)?'<br><small class="muted">[Falta recabar la prueba en el móvil]</small>':''}</span></button>`}).join("")}${state.answers[id][qi]!==undefined?`<div class="note">${q.opts[state.answers[id][qi]].reply}</div>`:""}</div>`).join("")}<button class="secondary full" onclick="renderPolice()">Volver al Expediente</button>`;
+ showView("interviewView");
+}
+function answerInterview(id,qi,oi){
+ const q=interviews[id].questions[qi],o=q.opts[oi];
+ if(o.need&&!has(o.need)){notify("Evidencia no disponible en tu terminal.");return}
+ state.answers[id][qi]=oi;save();openInterview(id)
+}
+function openVerdict(){
+ $("verdictContent").innerHTML=`<div class="card"><h2>Cierre de Caso</h2><p class="small">Selecciona al autor intelectual y el motivo sustentado en el dispositivo.</p><div class="sectiontitle">AUTOR DETRÁS DEL COMPLOT</div>
+ <button class="choice" onclick="selectVerdict('mara')"><span class="letter">A</span><span><b>Dr. Sergio M.</b><br>Usó fármacos para desacreditarla y ocultar el fraude inmobiliario de la firma.</span></button>
+ <button class="choice" onclick="selectVerdict('ivan')"><span class="letter">B</span><span><b>Carlos T.</b><br>Movido por celos y obsesiones sentimentales tras la ruptura.</span></button>
+ <div class="sectiontitle">MOTIVACIÓN DETERMINANTE</div>
+ <button class="choice" onclick="selectMotive('record')"><span class="letter">1</span><span>Ocultar la falsificación de firmas del fraude inmobiliario del teatro.</span></button>
+ <button class="choice" onclick="selectMotive('personal')"><span class="letter">2</span><span>Un brote psicótico inducido por celos pasionales.</span></button>
+ <div class="sectiontitle">CONEXIÓN DE PRUEBAS DEL MÓVIL</div>
+ ${["photo","receipt","door","message","voice","lucia"].map(id=>{let d=clueDictionary[id]||[id,id,id];return `<label style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid #263546"><input type="checkbox" id="proof_${id}" ${has(id)?"checked":""} ${has(id)?"":"disabled"}><span>${d[1]} ${has(id)?"":"[Bloqueada]"}</span></label>`}).join("")}
+ <button class="primary full" style="margin-top:14px" onclick="submitVerdict()">Enviar Caso a Fiscalía</button></div>`;
+ showView("verdictView")
+}
+let selectedSuspect=null,selectedMotive=null;
+function selectVerdict(v){selectedSuspect=v;document.querySelectorAll("#verdictContent .choice").forEach((b,i)=>{if(i<2)b.classList.toggle("selected",["mara","ivan"][i]===v)})}
+function selectMotive(v){selectedMotive=v;document.querySelectorAll("#verdictContent .choice").forEach((b,i)=>{if(i>=2&&i<4)b.classList.toggle("selected",["record","personal"][i-2]===v)})}
+function submitVerdict(){
+ if(!selectedSuspect||!selectedMotive){notify("Completa los campos del veredicto.");return}
+ const correct=selectedSuspect="mara"&&selectedMotive="record"&&has("voice")&&has("receipt")&&has("lucia");
+ state.verdict={correct};save();
+ showVerdictResult()
+}
+function showVerdictResult(){
+ if(state.verdict.correct){
+ $("verdictContent").innerHTML=`<div class="card"><div class="resultmark" style="color:var(--green)">✓</div><h2 class="resulttitle">Caso Resuelto con Éxito</h2><p class="small">El **Dr. Sergio M.** ha sido arrestado. Al tener pleno acceso a Elena, manipuló sus compuestos médicos para inducirle lagunas mentales y paranoia, asegurándose de que nadie creyera sus denuncias de acoso. Todo era una tapadera para lucrarse con la demolición del Teatro Infanta mediante la firma falsificada que la hermana de Elena descubrió. La grabación de audio oculta en el terminal fue el pilar clave que destrozó su carrera y su coartada. ¡Excelente trabajo de análisis digital!</p><button class="danger full" style="margin-top:20px" onclick="resetGame()">Jugar de Nuevo</button></div>`;
+ }else{
+ $("verdictContent").innerHTML=`<div class="card"><div class="resultmark" style="color:var(--red)">❌</div><h2 class="resulttitle">Caso No Demostrado</h2><p class="small">Faltan pruebas concluyentes en tu argumentación o el culpable/motivo seleccionado no coincide con la cadena de custodia digital. Vuelve a examinar la aplicación de Notas, los Archivos del sistema y el caché de Audio de Elena.</p><button class="secondary full" style="margin-top:14px" onclick="openPolice()">Volver a intentarlo</button></div>`;
+ }
+}
+function resetGame(){localStorage.removeItem("expedienteCeroSave");state={...defaultState};window.location.reload()}
+function goHome(){showView("homeView")}
+function unlock(){showView("homeView")}
+</script>
+</body>
+</html>
