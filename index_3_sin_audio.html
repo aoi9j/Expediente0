@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#070b12">
+<title>Expediente Cero · Caso 001 · Sesión 9</title>
+<style>
+:root{--bg:#070b12;--panel:#101824;--line:#26384b;--blue:#55b8ff;--cyan:#83e5ff;--muted:#8b9aab;--white:#f4f7fb;--green:#72e0b0;--red:#ff697c;--gold:#efc879}
+*{box-sizing:border-box}
+body{margin:0;background:#05080d;color:var(--white);font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100dvh}
+button,input,textarea{font:inherit}
+button{cursor:pointer;color:inherit}
+button:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+button:disabled{opacity:.35;cursor:not-allowed}
+.topbar{height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-size:11px;letter-spacing:.4px;background:#080c13}
+.shell{width:min(100%,480px);min-height:100dvh;margin:auto;position:relative;background:linear-gradient(160deg,#101a28,#060b12 70%);overflow:hidden}
+.view{display:none;min-height:calc(100dvh - 32px);position:relative;padding-bottom:96px;animation:appear .2s ease}
+.view.active{display:block}
+@keyframes appear{from{opacity:.35;transform:translateY(4px)}to{opacity:1;transform:none}}
+.wallpaper{background:linear-gradient(180deg,#07121a00 15%,#06101ce8 95%),radial-gradient(ellipse at 30% 10%,#27465f,#0b1522 70%)}
+.primary,.secondary,.danger{border:1px solid #365b79;background:linear-gradient(135deg,#153c5c,#12649a);padding:12px 16px;border-radius:13px;font-weight:650;transition:.15s;display:block}
+.primary:active,.secondary:active,.appicon:active,.key:active{transform:scale(.97)}
+.secondary{background:#14202d;border-color:#314358}
+.danger{background:#421b27;border-color:#77313e}
+.full{width:100%}
+.header{padding:19px 19px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.header h1{font-size:27px;font-weight:750;letter-spacing:-1px;margin:0}
+.header p{margin:5px 0 0;color:var(--muted);font-size:12px}
+.content{padding:0 17px 24px}
+.card{background:linear-gradient(145deg,#131e2b,#0e1621);border:1px solid var(--line);border-radius:17px;padding:15px;margin-bottom:11px}
+.card h3{margin:0 0 8px;font-size:15px}
+.muted{color:var(--muted)}
+.small{font-size:12px;line-height:1.55}
+.tag{display:inline-flex;padding:5px 8px;border-radius:7px;background:#172a3a;color:#a8dfff;border:1px solid #284961;font-size:10px;letter-spacing:.3px}
+.tag.green{color:#93efc4;background:#112b24;border-color:#235541}
+.tag.red{color:#ff9dab;background:#321821;border-color:#63303c}
+.tag.gold{color:#ffe2a0;background:#33290f;border-color:#6b5520}
+.row{display:flex;gap:11px;align-items:center}
+.between{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.avatar{width:45px;height:45px;flex:none;border-radius:50%;background:linear-gradient(135deg,#365a73,#172536);display:grid;place-items:center;font-size:20px;border:1px solid #ffffff26;overflow:hidden}
+.avatar svg{width:100%;height:100%}
+.listitem{width:100%;text-align:left;background:transparent;border:0;border-bottom:1px solid #253445;padding:13px 0;display:flex;align-items:center;gap:12px}
+.listitem:last-child{border-bottom:0}
+.listitem strong{display:block;font-size:13px;font-weight:650}
+.listitem small{display:block;color:var(--muted);font-size:11px;margin-top:4px;line-height:1.4}
+.listitem .right{margin-left:auto;text-align:right;flex:none;font-size:10px;color:var(--muted)}
+.listitem.locked{opacity:.45}
+.back{background:none;border:0;color:var(--blue);font-size:14px;padding:0 0 12px}
+.search{width:100%;border:1px solid #2b3d50;background:#0c1420;border-radius:12px;padding:12px 13px;color:white;margin-bottom:12px;outline:none}
+.tabs{display:flex;gap:6px;margin:0 0 13px;background:#0b131e;padding:4px;border-radius:12px}
+.tabs button{flex:1;border:0;border-radius:9px;background:transparent;padding:9px 5px;color:var(--muted);font-size:11px}
+.tabs button.selected{background:#204668;color:#e7f6ff}
+.chathead{display:flex;align-items:center;gap:11px;padding:7px 0 15px;border-bottom:1px solid var(--line)}
+.chatmessages{display:flex;flex-direction:column;gap:10px;padding:18px 0;min-height:200px}
+.bubble{max-width:86%;padding:11px 13px;border-radius:17px;background:#172434;border:1px solid #2a4054;line-height:1.5;font-size:13px}
+.bubble.mine{align-self:flex-end;background:linear-gradient(145deg,#15569a,#123d70);border-color:#3177b9}
+.bubble.inv{align-self:flex-end;background:linear-gradient(145deg,#2a3a1f,#1b2a15);border-color:#4a6a35}
+.bubble .stamp{display:block;font-size:9px;color:#a8bacb;text-align:right;margin-top:5px}
+.bubble em{display:block;color:#9fb2c4;font-size:11px;margin-top:6px}
+.photo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.photo-tile{padding:0;position:relative;overflow:hidden;border-radius:13px;border:1px solid #314356;background:#101923;text-align:left;min-width:0}
+.photo-tile .ph{height:128px;background:#000}
+.photo-tile .photocap{padding:9px 10px;font-size:11px;line-height:1.4}
+.photo-tile .evidence-dot{position:absolute;top:8px;right:8px;background:#0a111bd9;border:1px solid #6bcfff;padding:4px 6px;border-radius:7px;font-size:9px}
+.photo-viewer{position:fixed;inset:0;background:#020407f7;z-index:30;display:none;align-items:center;justify-content:center;padding:16px;overflow:auto}
+.photo-viewer.open{display:flex}
+.photo-viewer .box{width:min(100%,520px)}
+.photo-viewer .big{width:100%;aspect-ratio:4/3;border-radius:12px;overflow:hidden;border:1px solid #3b5164;background:#000}
+.photo-viewer .close{position:absolute;top:14px;right:14px;background:#1b2938;border:1px solid #4b6277;border-radius:50%;width:42px;height:42px;font-size:20px;z-index:2}
+.note{border-left:3px solid var(--blue);padding:10px 12px;background:#101a27;margin:8px 0;border-radius:0 9px 9px 0;font-size:12px;line-height:1.55}
+.note.warn{border-left-color:var(--gold)}
+.note.red{border-left-color:var(--red)}
+.progress{height:6px;background:#1b2937;border-radius:9px;overflow:hidden}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,#288de3,#83e5ff);transition:width .35s}
+.progress.tension span{background:linear-gradient(90deg,#ff697c,#efc879)}
+.sectiontitle{font-size:11px;letter-spacing:1.5px;color:#8ea4b9;margin:18px 0 10px}
+.clue{display:flex;gap:11px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #243345}
+.clue:last-child{border:0}
+.clue .num{min-width:29px;height:29px;padding:0 5px;border-radius:9px;display:grid;place-items:center;background:#17364b;color:#8cdbff;flex:none;font-size:11px}
+.clue strong{font-size:12px}
+.clue p{margin:5px 0 0;color:var(--muted);font-size:11px;line-height:1.5}
+.choice{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;border:1px solid #2a3b4e;border-radius:12px;background:#101a27;padding:12px;margin:8px 0;font-size:12px;line-height:1.5}
+.choice .letter{width:25px;height:25px;display:grid;place-items:center;background:#20364b;border-radius:8px;flex:none}
+.choice.selected{border-color:var(--blue);background:#12283b}
+.policebg{background:linear-gradient(#080f1bdb,#080f1bf5),radial-gradient(ellipse at 70% 0%,#26384b,#080f1b 70%)}
+.metricgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:6px}
+.metric{border:1px solid #293d50;background:#101b28;border-radius:12px;padding:12px 7px;text-align:center}
+.metric b{font-size:20px;display:block}
+.metric small{font-size:9px;color:var(--muted)}
+.formlabel{display:block;font-size:12px;color:#b7c7d8;margin:14px 0 7px}
+textarea{width:100%;min-height:82px;resize:vertical;background:#0a131e;border:1px solid #304357;border-radius:12px;padding:12px;color:white}
+.resultmark{font-size:44px;text-align:center;margin:12px 0}
+.resulttitle{text-align:center;font-size:25px;margin:0 0 8px}
+.toast{position:fixed;bottom:84px;left:50%;transform:translate(-50%,15px);opacity:0;pointer-events:none;background:#182838;border:1px solid #43637c;border-radius:13px;padding:12px 16px;z-index:60;box-shadow:0 10px 40px #0009;transition:.2s;max-width:90%;text-align:center;font-size:12px}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,480px);display:grid;grid-template-columns:1fr 1fr;background:#0a111bf2;border-top:1px solid #26384b;z-index:20;padding:8px 10px calc(8px + env(safe-area-inset-bottom));gap:8px;backdrop-filter:blur(14px)}
+.nav button{border:1px solid #26384b;background:#101a27;border-radius:13px;padding:10px;font-size:12px;font-weight:650;color:#9fb2c4}
+.nav button.on{background:#17456b;color:#fff;border-color:#3d87bd}
+.hidden{display:none!important}
+/* móvil */
+.home{padding:14px 18px 26px}
+.widgetrow{display:grid;grid-template-columns:1.1fr .9fr;gap:10px;margin-bottom:22px}
+.widget{border:1px solid #ffffff15;border-radius:20px;padding:15px;background:linear-gradient(145deg,#1c344a,#111b2a);min-height:115px}
+.widget .city{font-size:12px;color:#bed2e4}
+.widget .temp{font-size:30px;font-weight:250;margin:5px 0}
+.widget .sub{font-size:11px;color:#b6c7d7;line-height:1.5}
+.widget.events{background:linear-gradient(145deg,#2b2638,#141b29)}
+.eventline{font-size:11px;margin-top:8px;color:#d6dbea}
+.apps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px 8px}
+.appicon{border:0;background:transparent;display:flex;align-items:center;flex-direction:column;gap:7px;padding:0;min-width:0;position:relative}
+.appglyph{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;font-size:25px;box-shadow:0 7px 18px #0005;border:1px solid #ffffff20}
+.appname{font-size:11px;color:#e5ebf3;white-space:nowrap}
+.badge{position:absolute;top:-5px;right:2px;background:#55b8ff;color:#04121d;border-radius:9px;font-size:9px;font-weight:800;padding:2px 5px}
+.g-green{background:linear-gradient(145deg,#44db9a,#087a65)}.g-blue{background:linear-gradient(145deg,#54baff,#1853c5)}.g-orange{background:linear-gradient(145deg,#ffc66d,#d75a22)}.g-purple{background:linear-gradient(145deg,#c3a0ff,#653cc3)}.g-red{background:linear-gradient(145deg,#ff8291,#b71d3e)}.g-slate{background:linear-gradient(145deg,#7189a0,#24364b)}.g-yellow{background:linear-gradient(145deg,#ffe08c,#c58c20)}.g-teal{background:linear-gradient(145deg,#71eee0,#127d90)}
+.lock{min-height:calc(100dvh - 32px);padding:24px 20px 100px;display:flex;flex-direction:column;align-items:center}
+.lock .time{font-size:72px;font-weight:200;letter-spacing:-3px;line-height:1;margin-top:26px}
+.dots{display:flex;gap:14px;margin:22px 0 14px}
+.dots i{width:14px;height:14px;border-radius:50%;border:2px solid #cfe6f7;display:block}
+.dots i.f{background:#cfe6f7}
+.dots.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-9px)}75%{transform:translateX(9px)}}
+.keypad{display:grid;grid-template-columns:repeat(3,72px);gap:14px;margin-top:8px}
+.key{height:72px;border-radius:50%;border:1px solid #ffffff2a;background:#ffffff14;font-size:26px;font-weight:300}
+.transcript{font-size:12px;line-height:1.7;font-style:italic;color:#cfdbe7}
+.polaroid{border-radius:12px;overflow:hidden;border:1px solid #3b5164;background:#000}
+.cap{font-size:10px;color:#8fa5b8;margin:6px 0 10px}
+.lockitem{display:flex;gap:6px;align-items:center;color:#9fb2c4}
+.confirm{color:var(--green)}
+@media(max-width:360px){.appglyph{width:48px;height:48px}.apps{gap:19px 4px}.header h1{font-size:24px}.keypad{grid-template-columns:repeat(3,64px)}.key{height:64px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<div class="topbar"><span id="statusTime">00:00</span><span>EXPEDIENTE CERO · 001</span></div>
+
+<section class="view active policebg" id="introView">
+<div class="header"><div><h1>Sesión 9</h1><p>Caso 001 · Unidad de delitos especiales</p></div><span class="tag red">CONFIDENCIAL</span></div>
+<div class="content" id="introContent"></div>
+</section>
+
+<section class="view policebg" id="policeView"><div class="header"><div><h1>Comisaría</h1><p>Expediente EC / 001 · Acceso autorizado</p></div><span class="tag" id="clueCount">0 pistas</span></div><div class="content" id="policeContent"></div></section>
+
+<section class="view wallpaper" id="lockView"><div class="lock">
+<div class="muted small" style="letter-spacing:2px">DISPOSITIVO EN CUSTODIA · EVIDENCIA 07</div>
+<div class="time" id="lockTime">00:00</div>
+<div class="small" style="margin-top:8px;color:#cfe0ee">Jueves 23 de octubre · último desbloqueo 23:31</div>
+<div class="small muted" style="margin:30px 0 4px">Introduce el código de Á. Quintana</div>
+<div class="dots" id="pinDots"><i></i><i></i><i></i><i></i></div>
+<div class="keypad" id="keypad"></div>
+<div class="note warn" style="margin-top:22px;max-width:340px" id="pinHint">Pista: Álvaro usaba como código la fecha de una pérdida que nunca superó (DDMM). El expediente policial recoge los antecedentes del caso.</div>
+</div></section>
+
+<section class="view wallpaper" id="homeView"><div class="home" id="homeContent"></div></section>
+
+<section class="view" id="appView"><div class="header"><div><button class="back" onclick="goPhone()">‹ Inicio</button><h1 id="appTitle"></h1><p id="appSubtitle"></p></div></div><div class="content" id="appContent"></div></section>
+
+<section class="view policebg" id="interviewView"><div class="content" id="interviewContent" style="padding-top:18px"></div></section>
+
+<section class="view policebg" id="verdictView"><div class="header"><div><button class="back" onclick="goPolice()">‹ Expediente</button><h1>Conclusión</h1><p>Resolución de la investigación</p></div></div><div class="content" id="verdictContent"></div></section>
+
+<nav class="nav hidden" id="nav"><button id="navPolice" onclick="goPolice()">🏢 Comisaría</button><button id="navPhone" onclick="goPhone()">📱 Móvil de Álvaro</button></nav>
+</div>
+
+<div class="photo-viewer" id="photoViewer"><button class="close" onclick="closePhoto()">×</button><div class="box"><div class="big" id="viewerImage"></div><h3 id="viewerTitle" style="margin:14px 0 4px"></h3><p class="small muted" id="viewerDesc"></p><button class="primary full" id="viewerBtn" onclick="collectViewer()">Analizar y registrar pista</button></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* ====================== DATOS DEL CASO ====================== */
+const DATA={
+pin:"1403",
+clues:{
+ msg_sofia:{t:"Mensajes con Sofía (22:10–22:14)",src:"Móvil · Mensajes",key:1,d:"A las 22:10 Álvaro le dice a Sofía que sabe que la historia clínica de Lucas fue alterada. A las 22:14 ella responde que irá esa misma noche a la consulta y le pide que le lleve algo caliente. Sofía sabía que Álvaro estaría solo."},
+ msg_irene:{t:"Mensaje de Irene",src:"Móvil · Mensajes",d:"Irene escribe: «Mañana no vas a abrir la consulta, ¿verdad? Siento que me dejas». Álvaro no contesta. Suena a obsesión, pero no es una amenaza."},
+ msg_hector:{t:"Héctor pide 8.000 €",src:"Móvil · Mensajes",d:"Héctor, el hermano, pide dinero con urgencia a las 21:05. Álvaro lo emplaza al fin de semana. Hay deudas, pero no hay violencia."},
+ call_sofia:{t:"Buzón de voz de Sofía (22:02)",src:"Móvil · Teléfono",d:"Sofía llama a las 22:02 y deja un mensaje: le han avisado de que Álvaro pidió la historia clínica de Lucas. Está alterada."},
+ photo_recibo:{t:"Recibo de la cafetería (22:58)",src:"Móvil · Fotos",d:"Álvaro fotografió un recibo del Café Aurora de las 22:58: dos infusiones. Compró dos porque esperaba a alguien."},
+ photo_tazas:{t:"Dos tazas sobre la mesa (23:34)",src:"Móvil · Fotos",key:1,d:"A las 23:34 Álvaro fotografió su mesa: dos tazas humeantes, preparadas para dos personas. Nadie que va a quitarse la vida prepara una infusión para su invitada."},
+ photo_clinica:{t:"Comparativa de historia clínica",src:"Móvil · Fotos",d:"Captura que enfrenta la versión original y la versión 2 de la historia de Lucas. Las líneas sobre la sesión nocturna y el protocolo de riesgo desaparecen en la v2."},
+ photo_pizarra:{t:"Pizarra de la consulta",src:"Móvil · Fotos",d:"Anotación a medio borrar: «L.M. – hist. cl. v2 – 13/03 → 15/03 – ¿quién?». Álvaro investigaba quién cambió la historia."},
+ photo_parte:{t:"Parte de defunción de Lucas M.",src:"Móvil · Fotos",d:"Lucas Marín falleció el 14 de marzo. La familia demanda a la consulta Quintana & Lemos."},
+ note_borrador:{t:"Borrador: declaración sobre L.M.",src:"Móvil · Notas",key:1,d:"Álvaro escribe que la v2 se guardó la madrugada del 15/03 desde la consulta y que debe decirlo en el juicio. Pretendía hablar antes con Sofía y darle la oportunidad de contarlo ella."},
+ health_pulso:{t:"Pulso del reloj: se detiene a las 00:19",src:"Móvil · Salud",key:1,d:"El reloj de Álvaro registra un pulso que cae desde las 23:58 y se detiene a las 00:19. Sin movimiento desde las 23:58. Murió a las 00:19, no antes."},
+ voice_nota:{t:"Nota de voz de las 23:46",src:"Móvil · Notas de voz",key:1,d:"Álvaro graba que la v2 se guardó desde la consulta con el usuario de Sofía. Dice que va a darle la oportunidad de contárselo ella. Termina con el timbre y la frase «ya has llegado»."},
+ cal_juicio:{t:"Declaración judicial: viernes 10:00",src:"Móvil · Calendario",d:"Álvaro declaraba al día siguiente a las 10:00 en el juzgado. Tenía un recordatorio: «llevar copia de la v1»."},
+ files_clinica:{t:"Dos versiones de la historia clínica",src:"Móvil · Archivos",key:1,d:"En el móvil hay la v1 (copia de seguridad) y la v2 modificada el 15/03 a las 01:26 por el usuario «slemos». Sofía Lemos alteró la historia de Lucas horas después de su muerte."},
+ maps_cafe:{t:"Café Aurora, planta baja",src:"Móvil · Mapas",d:"La cafetería está en el mismo edificio y cierra a las 23:00. Encaja con la compra de las 22:58."},
+ pol_general:{t:"Escena: plano general del despacho",src:"Policía · Escena",d:"Despacho ordenado. Sin forzar, sin desorden. La puerta se abrió con tarjeta."},
+ pol_cuerpo:{t:"Escena: Álvaro en su silla",src:"Policía · Escena",d:"Álvaro, sentado a su mesa, sin lesiones visibles. La Científica no encuentra signos de lucha."},
+ pol_taza:{t:"Escena: taza con restos",src:"Policía · Escena",d:"Taza de Álvaro con restos de infusión. El laboratorio detecta un sedante disuelto: el mismo que tenía recetado."},
+ pol_lavada:{t:"Escena: segunda taza lavada",src:"Policía · Escena",key:1,d:"En el lavabo hay una segunda taza recién lavada, aún húmeda. Alguien bebió con Álvaro y limpió su taza."},
+ pol_pastillero:{t:"Escena: pastillero abierto",src:"Policía · Escena",d:"El pastillero de Álvaro está abierto y vacío. Pone en escena una sobredosis voluntaria."},
+ pol_nota:{t:"Escena: nota de despedida impresa",src:"Policía · Escena",d:"Una nota impresa, sin firma manuscrita. Álvaro siempre firmaba a mano sus cartas."},
+ pol_portatil:{t:"Escena: portátil de Álvaro",src:"Policía · Escena",d:"El portátil conserva el documento de la nota. Las propiedades del archivo se analizan en el informe informático."},
+ inf_forense:{t:"Informe forense",src:"Policía · Informes",d:"Causa de la muerte: depresión respiratoria por sedante. Sin lesiones de defensa. Hora de la muerte estimada entre las 23:30 y las 00:30."},
+ inf_accesos:{t:"Registro de accesos de la consulta",src:"Policía · Informes",key:1,d:"La tarjeta de Sofía Lemos entra a las 23:47 y sale a las 00:52. La de Álvaro había entrado a las 22:59. Nadie más accedió."},
+ inf_informatica:{t:"Informe informático",src:"Policía · Informes",key:1,d:"La nota de despedida se creó a las 00:38, el correo se programó a las 00:41 y se imprimió a las 00:44, con Álvaro ya muerto desde las 00:19."},
+ inf_clinica:{t:"Auditoría del sistema clínico",src:"Policía · Informes",d:"La v2 de la historia de Lucas se guardó el 15/03 a las 01:26 desde un terminal de la consulta con credenciales de «slemos»."},
+ inf_huellas:{t:"Huellas en el pastillero",src:"Policía · Informes",d:"Huellas parciales de Sofía Lemos en el pastillero. Compartían despacho, así que no es concluyente por sí sola."},
+ inf_cafe:{t:"Declaración del camarero del Café Aurora",src:"Policía · Informes",d:"Un hombre pidió dos infusiones a las 22:58. Dijo: «una es para una compañera que viene».",},
+ inf_irene:{t:"Coartada de Irene Calvo verificada",src:"Policía · Interrogatorio",d:"La doctora Pons confirma la videollamada con Irene de 23:30 a 00:30."},
+ inf_hector:{t:"Coartada de Héctor Quintana verificada",src:"Policía · Interrogatorio",d:"Un billete de tren y un pago en un restaurante de Valencia a las 22:30 lo sitúan lejos de Madrid."},
+ ctx_sofia_insiste:{t:"Sofía presionaba para dejar el tema",src:"Policía · Interrogatorio",d:"Héctor: Sofía insistía a Álvaro en que dejara de remover lo de Lucas."},
+ ctx_irene_sofia:{t:"Sofía preguntaba por las notas de Álvaro",src:"Policía · Interrogatorio",d:"Irene recuerda que Sofía le preguntó una vez qué le contaba a Álvaro en sus sesiones."},
+ t_camara:{t:"Cámara del portal estropeada",src:"Policía · Interrogatorio",d:"El portero Tomás confirma que la cámara del portal no funciona desde septiembre. Vio salir a una mujer a las 00:52."},
+ conf_sofia:{t:"Confesión de Sofía Lemos",src:"Policía · Interrogatorio",key:1,d:"Sofía confiesa: alteró la historia de Lucas, disolvió el sedante de Álvaro en su infusión y escenificó el suicidio."}
+},
+keyset:["msg_sofia","photo_tazas","note_borrador","health_pulso","voice_nota","files_clinica","pol_lavada","inf_accesos","inf_informatica"],
+photos:[
+ {id:"ph1",clue:"photo_recibo",t:"Recibo · 22:58",desc:"Fotografía de un recibo guardada en la galería a las 23:01."},
+ {id:"ph2",clue:"photo_tazas",t:"Mi mesa · 23:34",desc:"Foto tomada desde la mesa del despacho."},
+ {id:"ph3",clue:"photo_clinica",t:"Hist. clínica v1 / v2",desc:"Captura de pantalla de dos versiones de un mismo documento."},
+ {id:"ph4",clue:"photo_pizarra",t:"Pizarra de la consulta",desc:"Una pizarra con notas a medio borrar."},
+ {id:"ph5",clue:"photo_parte",t:"Parte de defunción",desc:"Documento oficial fotografiado."}
+],
+scene:[
+ {id:"s1",clue:"pol_general",t:"Nº 1 · Plano general",desc:"Policía Científica. Vista general del despacho al llegar el equipo."},
+ {id:"s2",clue:"pol_cuerpo",t:"Nº 2 · Álvaro Quintana",desc:"Posición en la que fue hallado, sentado frente a su mesa."},
+ {id:"s3",clue:"pol_taza",t:"Nº 3 · Taza sobre la mesa",desc:"Taza con restos de líquido. Se recogió muestra."},
+ {id:"s4",clue:"pol_lavada",t:"Nº 4 · Lavabo",desc:"Una segunda taza en el escurridor del lavabo del despacho."},
+ {id:"s5",clue:"pol_pastillero",t:"Nº 5 · Pastillero",desc:"Pastillero semanal, abierto y vacío."},
+ {id:"s6",clue:"pol_nota",t:"Nº 6 · Nota impresa",desc:"Hoja impresa hallada sobre la mesa."},
+ {id:"s7",clue:"pol_portatil",t:"Nº 7 · Portátil",desc:"Pantalla del portátil del fallecido, encendido."}
+],
+reports:[
+ {id:"inf_forense",t:"Informe forense",need:()=>phoneCount()>=3,hint:"Se emitirá cuando tengas 3 pistas del móvil."},
+ {id:"inf_accesos",t:"Registro de accesos",need:()=>has("msg_sofia"),hint:"Necesitas saber quién iba a ir a la consulta (Mensajes)."},
+ {id:"inf_informatica",t:"Informe informático",need:()=>has("pol_portatil"),hint:"Examina la foto del portátil en la escena."},
+ {id:"inf_clinica",t:"Auditoría del sistema clínico",need:()=>has("files_clinica"),hint:"Revisa el móvil: Archivos."},
+ {id:"inf_huellas",t:"Huellas en el pastillero",need:()=>has("pol_pastillero"),hint:"Examina la foto del pastillero."},
+ {id:"inf_cafe",t:"Camarero del Café Aurora",need:()=>has("photo_recibo"),hint:"Encuentra el recibo en el móvil."}
+],
+timeline:[
+ ["18:40","Termina la sesión 9 con Irene.","cal_juicio"],
+ ["20:34","Sofía sale de la consulta (según el registro).","inf_accesos"],
+ ["21:05","Héctor pide dinero a Álvaro.","msg_hector"],
+ ["22:02","Sofía llama y deja un mensaje de voz.","call_sofia"],
+ ["22:10","Álvaro escribe a Sofía: sabe lo de la historia clínica.","msg_sofia"],
+ ["22:14","Sofía responde que irá esa noche.","msg_sofia"],
+ ["22:58","Álvaro compra dos infusiones.","photo_recibo"],
+ ["23:34","Foto de las dos tazas en su mesa.","photo_tazas"],
+ ["23:46","Última nota de voz: «ya has llegado».","voice_nota"],
+ ["23:47","La tarjeta de Sofía abre la puerta.","inf_accesos"],
+ ["23:58","El reloj de Álvaro registra la última actividad.","health_pulso"],
+ ["00:19","El pulso se detiene.","health_pulso"],
+ ["00:38","Se crea la nota de despedida en el portátil.","inf_informatica"],
+ ["00:44","Se imprime la nota.","inf_informatica"],
+ ["00:52","Sofía sale de la consulta.","inf_accesos"],
+ ["07:40","La limpiadora halla el cuerpo.","pol_cuerpo"]
+],
+contradictions:[
+ {id:"k1",t:"Sofía dice que no volvió a la consulta",d:"Afirma que se fue a las 20:30 y no regresó, pero su tarjeta abre la puerta a las 23:47.",ok:()=>flag("alibi")&&has("inf_accesos")},
+ {id:"k2",t:"Dos tazas, un solo «suicida»",d:"Álvaro preparó dos infusiones. Alguien lavó la segunda. No estaba solo.",ok:()=>has("photo_tazas")&&has("pol_lavada")},
+ {id:"k3",t:"La nota se escribió con él ya muerto",d:"El pulso se detiene a las 00:19. La nota se crea a las 00:38.",ok:()=>has("health_pulso")&&has("inf_informatica")},
+ {id:"k4",t:"La historia clínica «corregida»",d:"La v2 se guardó a la 01:26 del día siguiente a la muerte de Lucas con el usuario de Sofía.",ok:()=>has("files_clinica")&&has("inf_clinica")},
+ {id:"k5",t:"«Cruzamos unos mensajes»",d:"Sofía restó importancia a los mensajes. Pero ella misma anunció su visita esa noche.",ok:()=>flag("said_msg")&&has("msg_sofia")},
+ {id:"k6",t:"Irene no pudo estar allí",d:"Su mensaje era desesperado, pero estaba en videollamada de 23:30 a 00:30.",ok:()=>has("inf_irene")&&has("msg_irene")},
+ {id:"k7",t:"Héctor no estaba en Madrid",d:"Tiene deudas y pidió dinero, pero estaba en Valencia.",ok:()=>has("inf_hector")}
+],
+people:{
+ sofia:{n:"Sofía Lemos",r:"Socia · psicóloga",tag:"red",hair:"#2c1c14",skin:"#d1a98a",cloth:"#2c2230",bio:"43 años. Socia de Álvaro desde hace doce. Su versión: salió a las 20:30 y no volvió. Copropietaria de la consulta."},
+ irene:{n:"Irene Calvo",r:"Paciente · sesión 9",tag:"",hair:"#5a3a2a",skin:"#e0b49a",cloth:"#3a4f66",bio:"29 años. Paciente de Álvaro. Tuvo la sesión 9 a las 18:40. Mensajes intensos y angustiados."},
+ hector:{n:"Héctor Quintana",r:"Hermano",tag:"",hair:"#3a3a40",skin:"#c79a7c",cloth:"#3b3b42",bio:"51 años. Vive en Valencia. Tiene deudas y pidió dinero a Álvaro esa noche."},
+ tomas:{n:"Tomás Rey",r:"Portero nocturno",tag:"",hair:"#808080",skin:"#b98b6b",cloth:"#27384a",bio:"58 años. Portero del edificio. Estuvo de guardia toda la noche."}
+}
+};
+const INTERVIEWS={
+sofia:{
+ intro:"Sofía Lemos te recibe con una taza de té frío entre las manos. Serena, correcta, demasiado preparada. Dice que la muerte de su socio la ha destrozado.",
+ topics:[
+  {id:"t1",q:"¿Dónde estuvo anoche?",say:"Salí de la consulta a las ocho y media y no volví. Cené en casa y me acosté pronto. Álvaro… llevaba semanas pasándolo mal.",note:"Su alibi suena a guion ensayado.",flag:"alibi"},
+  {id:"t2",q:"¿Cómo era su relación con Álvaro?",say:"Éramos socios desde hace doce años. Más que eso. Me duele más de lo que puedo explicar.",note:"Se le humedecen los ojos justo al decirlo."},
+  {id:"t3",q:"¿Qué pasó con Lucas Marín?",say:"Fue una tragedia. Hicimos todo lo que el protocolo exigía. A veces, por mucho que hagas, el paciente decide.",note:"Sale rápido, sin pestañear."},
+  {id:"t4",q:"¿Habló con Álvaro anoche?",need:"msg_sofia",say:"Cruzamos unos mensajes, nada importante. Quedamos en vernos hoy, en la consulta, con calma.",note:"Traga saliva. Resta importancia.",flag:"said_msg",drop:10},
+  {id:"t5",q:"¿Sabía que Álvaro iba a declarar sobre Lucas?",need:"note_borrador",say:"Sobre el caso, sí. Contra mí no. Álvaro estaba obsesionado con ese tema, y no era sano.",note:"Cruza los brazos.",drop:10}
+ ],
+ present:{
+  photo_recibo:{say:"Álvaro siempre compraba dos infusiones. Es un detalle bonito, no una prueba.",drop:8},
+  photo_tazas:{say:"Esperaba a alguien, quizá. No tengo por qué ser yo.",drop:8},
+  msg_sofia:{say:"Le dije que iría… pero no llegué a ir. Me arrepentí. Me quedé en casa.",note:"Primera grieta en su relato.",drop:12},
+  inf_accesos:{say:"Mi tarjeta… la dejé en el coche. Alguien pudo usarla.",note:"Su voz tiembla por primera vez.",drop:18},
+  files_clinica:{say:"La v2 es una corrección administrativa. Lo hacemos continuamente.",drop:15},
+  inf_clinica:{say:"Revisé la historia esa madrugada. Estaba destrozada por Lucas. No recuerdo qué toqué.",note:"Mira hacia otro lado.",drop:10},
+  inf_informatica:{say:"Álvaro pudo programar esa nota antes de… antes de hacerlo.",note:"Se enreda: la nota se creó a las 00:38.",drop:15},
+  health_pulso:{say:"Los relojes fallan. Ese dato no demuestra nada.",drop:12},
+  voice_nota:{say:"Él grababa muchas cosas. No sé qué quería decir con eso.",note:"No parpadea. Aprieta la taza hasta que los nudillos se le ponen blancos.",drop:15},
+  pol_lavada:{say:"Mi taza de la mañana. Siempre la lavo antes de irme.",drop:10},
+  inf_huellas:{say:"Compartimos despacho. Toqué ese pastillero mil veces.",drop:8},
+  note_borrador:{say:"Él quería hablar conmigo. Yo nunca le negué nada.",drop:10},
+  pol_pastillero:{say:"Esos pastilleros estaban en todo el despacho.",drop:5}
+ },
+ generic:["Eso no me concierne. Está buscando culpables donde no los hay.","Me pregunta por cosas que no tienen relación conmigo."],
+ confession:[
+  {say:"Lucas me llamó esa noche. No era una sesión; era mi teléfono personal. Yo estaba cansada. Le dije que no pasaba nada.",note:"Su máscara se rompe."},
+  {say:"Murió al amanecer. Y yo sabía que si alguien leía lo que yo había escrito, se acababa todo. Entré en el sistema esa madrugada y lo borré.",note:"Habla bajo, sin mirarle."},
+  {say:"Álvaro fue a por mí. No quería castigarme; quería que yo lo dijera. Pero yo no podía. Disolví el sedante en su infusión mientras salió a contestar al portero. Se durmió… y luego escribí la nota yo.",note:"Se queda callada. Después, sólo la respiración."}
+ ]
+},
+irene:{
+ intro:"Irene Calvo mira sus manos todo el rato. Llegó a la comisaría por su propio pie. Dice que Álvaro era el único que la entendía.",
+ topics:[
+  {id:"t1",q:"¿Qué pasó en su última sesión?",say:"Me dijo que la semana que viene no estaría. Que tenía que declarar en un juicio. Sentí que me dejaba como todos."},
+  {id:"t2",q:"¿Por qué le escribió que mañana no abriría la consulta?",need:"msg_irene",say:"Porque me lo dijo él. Iba a un juicio. No era una amenaza. Era miedo a quedarme sola."},
+  {id:"t3",q:"¿Dónde estuvo anoche?",say:"En mi casa. En videollamada con mi anterior psicóloga, la doctora Pons, de once y media a doce y media. Lo hago cuando no duermo.",note:"Ofrece su móvil sin que se lo pidan.",gives:"inf_irene"},
+  {id:"t4",q:"¿Conocía a Sofía Lemos?",say:"La veía en la sala de espera. Siempre amable… demasiado. Una vez me preguntó qué le contaba yo a Álvaro en mis sesiones.",gives:"ctx_irene_sofia"}
+ ],
+ present:{
+  photo_pizarra:{say:"«L.M.» es Lucas. Coincidimos una vez en la sala de espera. Álvaro estaba hundido desde entonces."},
+  msg_irene:{say:"Sí… esos son míos. Perdone que sea tan pesada."}
+ },
+ generic:["No sé qué quiere que le diga sobre eso.","Eso no tiene nada que ver conmigo."]
+},
+hector:{
+ intro:"Héctor Quintana llega con el abrigo aún puesto, con la cara de quien no ha dormido. Su hermano ha muerto y él no sabe qué hacer con las manos.",
+ topics:[
+  {id:"t1",q:"¿Dónde estaba anoche?",say:"En Valencia. Llegué en el tren de las tres y cuarenta y cené con unos amigos. Tienen mi tique.",gives:"inf_hector"},
+  {id:"t2",q:"¿Por qué le pidió dinero a Álvaro?",need:"msg_hector",say:"Tengo deudas. Se lo pedí. Me dijo que hablaríamos el fin de semana. No maté a mi hermano por ocho mil euros."},
+  {id:"t3",q:"¿Notó raro a su hermano?",say:"Estaba tenso por el juicio. Decía que sería lo más difícil que había hecho como profesional. Pero un suicidio, no. Álvaro no era de rendirse."},
+  {id:"t4",q:"¿Qué sabe de Sofía?",say:"Sofía nunca me cayó bien. Siempre le decía a Álvaro que dejara el tema de Lucas. «Remover el pasado no sirve», le repetía.",gives:"ctx_sofia_insiste"}
+ ],
+ present:{
+  msg_hector:{say:"Vale, sí, pedí dinero. Me avergüenza. Pero no estuve allí."}
+ },
+ generic:["No sé de qué me habla.","Mi hermano no se habría matado."]
+},
+tomas:{
+ intro:"Tomás Rey lleva veinte años de portero nocturno. Habla despacio, y con la tele puesta de fondo en la garita.",
+ topics:[
+  {id:"t1",q:"¿Qué vio anoche?",say:"El doctor subió poco antes de las once con dos vasos del café de abajo. Luego, pasada la medianoche, vi bajar a una mujer con el abrigo al brazo. Serían las doce y cincuenta."},
+  {id:"t2",q:"¿Vio su cara?",say:"No. La cámara del portal está estropeada desde septiembre. Era una mujer de unos cuarenta, delgada, con prisa. No me fijé más.",gives:"t_camara"},
+  {id:"t3",q:"¿Quién tiene tarjeta de acceso?",say:"Los dos socios, la limpiadora y yo. Nadie más. Si alguien subió, tenía tarjeta."}
+ ],
+ present:{
+  inf_accesos:{say:"Entonces la mujer que bajó… no digo que la reconociera, pero si es su tarjeta… eso encaja."}
+ },
+ generic:["No sé nada de eso, de verdad.","Yo sólo vigilo el portal."]
+},
+};
+const ENDINGS={
+ maestria:{icon:"✓",t:"Caso resuelto con maestría",txt:"Sofía Lemos es detenida. Ante el juez repite lo que dijo en la sala de interrogatorios. La nota de voz de Álvaro, su declaración sin firmar y la historia clínica original se leen en el juicio de la familia Marín. Irene, por primera vez en meses, duerme una noche entera. Héctor se queda con la llave de la consulta y una carta de su hermano que nunca llegó a enviar. La última pista de Álvaro no era para acusar a nadie, sino para que alguien dijera la verdad. Lo ha conseguido."},
+ resuelto:{icon:"◷",t:"Caso resuelto",txt:"Sofía Lemos es detenida y acabará confesando. Pero tu informe deja huecos: hubo pruebas que no cruzaste. El fiscal logra una condena, aunque el juicio por Lucas Marín queda en una nebulosa. Habrías podido darle a la familia algo más: la certeza de lo que pasó esa madrugada."},
+ error:{icon:"!",t:"Error judicial",txt:"Tu informe acusa a la persona equivocada. Se abre un proceso, y mientras tanto Sofía Lemos, con la consulta y los registros en su poder, tiene tiempo para destruir lo que queda. Cuando se descubre el error, ya han pasado semanas y la verdad sobre Lucas Marín ha quedado enterrada. Vuelve al expediente: las pruebas señalaban a otro sitio."},
+ archivado:{icon:"…",t:"Caso archivado",txt:"Cierras el caso como suicidio. La nota existe, el pastillero está vacío, la lógica parece perfecta. Y Sofía Lemos sigue adelante con su vida, con la consulta y con el nombre de su socio en una placa. Pero la nota se creó cuando él ya no respiraba. Puedes reabrir el expediente."},
+ insuficiente:{icon:"…",t:"Pruebas insuficientes",txt:"Señalas a la persona correcta, pero la fiscalía rechaza tu informe por falta de pruebas. Hay detalles que no has reunido. Vuelve al móvil y a la comisaría y cruza los datos antes de volver a presentar."}
+};
+/* ====================== ESTADO ====================== */
+const DEFAULT={intro:false,unlocked:false,clues:[],viewed:[],flags:{},tension:100,presented:{},asked:{},logs:{},confessed:false,closed:[],verdict:null};
+let state=load();
+function load(){try{const s=JSON.parse(localStorage.getItem("caso001")||"null");return s?Object.assign(JSON.parse(JSON.stringify(DEFAULT)),s):JSON.parse(JSON.stringify(DEFAULT))}catch(e){return JSON.parse(JSON.stringify(DEFAULT))}}
+function save(){try{localStorage.setItem("caso001",JSON.stringify(state))}catch(e){}}
+const $=id=>document.getElementById(id);
+const has=id=>state.clues.includes(id);
+const flag=id=>!!state.flags[id];
+const phoneCount=()=>state.clues.filter(c=>(DATA.clues[c]||{}).src?.startsWith("Móvil")).length;
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+let toastTimer=null;
+function notify(t){const e=$("toast");e.textContent=t;e.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.remove("show"),2600)}
+function addClue(id){
+ if(!DATA.clues[id])return false;
+ if(has(id)){notify("Esta pista ya está registrada.");return false}
+ state.clues.push(id);
+ const before=DATA.contradictions.filter(c=>state.flags["k_"+c.id]);
+ notify("Pista añadida: "+DATA.clues[id].t);
+ DATA.contradictions.forEach(c=>{if(!state.flags["k_"+c.id]&&c.ok()){state.flags["k_"+c.id]=true;setTimeout(()=>notify("⚡ Contradicción detectada: "+c.t),1700)}});
+ save();updateCount();return true;
+}
+function setFlag(f){state.flags[f]=true;DATA.contradictions.forEach(c=>{if(!state.flags["k_"+c.id]&&c.ok()){state.flags["k_"+c.id]=true;setTimeout(()=>notify("⚡ Contradicción detectada: "+c.t),400)}});save()}
+function updateCount(){$("clueCount").textContent=state.clues.length+" pistas"}
+function showView(id){document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));$(id).classList.add("active");window.scrollTo(0,0);
+ const n=$("nav");n.classList.toggle("hidden",id==="introView");
+ $("navPolice").classList.toggle("on",["policeView","interviewView","verdictView","introView"].includes(id));
+ $("navPhone").classList.toggle("on",["lockView","homeView","appView"].includes(id))}
+/* ====================== ILUSTRACIONES ====================== */
+function mk(x,y,n){return `<g><circle cx="${x}" cy="${y}" r="9" fill="#ffd23f" stroke="#000" stroke-width="1"/><text x="${x}" y="${y+3.6}" text-anchor="middle" font-family="Arial" font-size="10" font-weight="700" fill="#000">${n}</text></g>`}
+function svgWrap(u,inner,o){o=o||{};
+ return `<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(o.alt||"")}" style="width:100%;height:100%;display:block"><defs><radialGradient id="vg${u}" cx="50%" cy="50%" r="75%"><stop offset="55%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity=".8"/></radialGradient><filter id="gr${u}"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="${o.seed||3}"/><feColorMatrix values="0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .6 0"/></filter></defs>${inner}<rect width="400" height="300" fill="url(#vg${u})"/><rect width="400" height="300" filter="url(#gr${u})" opacity=".16"/>${o.cam?`<g font-family="monospace" font-size="9" fill="#ffd36b" opacity=".92"><text x="10" y="16">${o.cam}</text><text x="390" y="16" text-anchor="end">${o.stamp||""}</text><text x="10" y="291">${o.tag||""}</text></g>`:""}</svg>`}
+const POL={cam:"POLICÍA CIENTÍFICA · EC/001",stamp:"24/10 · 08:12"};
+const ART={
+ph1:u=>svgWrap(u,`<defs><linearGradient id="w${u}" x1="0" x2="1"><stop offset="0" stop-color="#3a2a1d"/><stop offset="1" stop-color="#1e150e"/></linearGradient></defs><rect width="400" height="300" fill="url(#w${u})"/><g transform="rotate(-4 200 150)"><path d="M120 18H280V272L270 280 260 272 250 280 240 272 230 280 220 272 210 280 200 272 190 280 180 272 170 280 160 272 150 280 140 272 130 280 120 272Z" fill="#f3efe6"/><g font-family="monospace" font-size="9.5" fill="#222"><text x="200" y="46" text-anchor="middle" font-weight="700" font-size="13">CAFÉ AURORA</text><text x="200" y="62" text-anchor="middle">C/ Ballesta 12 · Madrid</text><text x="200" y="76" text-anchor="middle">------------------------------</text><text x="132" y="96">FECHA 23/10      HORA 22:58</text><text x="132" y="112">MESA  —        CAMARERO 02</text><text x="132" y="128">------------------------------</text><text x="132" y="146">2 x INFUSIÓN MELISA     5,20</text><text x="132" y="162">                     ------</text><text x="132" y="178" font-weight="700">TOTAL EUR              5,20</text><text x="132" y="196">PAGO: TARJETA</text><text x="132" y="212">------------------------------</text><text x="200" y="236" text-anchor="middle">GRACIAS POR SU VISITA</text><text x="200" y="250" text-anchor="middle">CIERRE DE COCINA 23:00</text></g></g>`,{alt:"Recibo del Café Aurora, 22:58, dos infusiones",seed:5}),
+ph2:u=>svgWrap(u,`<defs><linearGradient id="d${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2d231b"/><stop offset="1" stop-color="#17110c"/></linearGradient><radialGradient id="l${u}" cx="75%" cy="12%" r="60%"><stop offset="0" stop-color="#ffd58a" stop-opacity=".55"/><stop offset="1" stop-color="#ffd58a" stop-opacity="0"/></radialGradient></defs><rect width="400" height="300" fill="url(#d${u})"/><rect width="400" height="300" fill="url(#l${u})"/><rect x="30" y="196" width="150" height="90" rx="6" fill="#1b2430" stroke="#2f3b4a"/><rect x="38" y="203" width="134" height="70" rx="3" fill="#0f1620"/><g><ellipse cx="130" cy="150" rx="52" ry="14" fill="#000" opacity=".4"/><path d="M92 105H168V148Q168 165 130 165T92 148Z" fill="#e9e4da"/><ellipse cx="130" cy="105" rx="38" ry="10" fill="#d6cfc0"/><ellipse cx="130" cy="106" rx="31" ry="7" fill="#7a5a2a"/><path d="M168 118Q196 118 196 138Q196 156 166 150" fill="none" stroke="#e9e4da" stroke-width="7"/></g><g><ellipse cx="290" cy="170" rx="52" ry="14" fill="#000" opacity=".4"/><path d="M252 125H328V168Q328 185 290 185T252 168Z" fill="#cfe0ea"/><ellipse cx="290" cy="125" rx="38" ry="10" fill="#b8ccd8"/><ellipse cx="290" cy="126" rx="31" ry="7" fill="#7a5a2a"/><path d="M328 138Q356 138 356 158Q356 176 326 170" fill="none" stroke="#cfe0ea" stroke-width="7"/></g><g fill="none" stroke="#fff" stroke-width="2.4" opacity=".28" stroke-linecap="round"><path d="M118 94q-8-12 0-22t0-22"/><path d="M138 94q-8-12 0-22t0-22"/><path d="M278 114q-8-12 0-22t0-22"/><path d="M298 114q-8-12 0-22t0-22"/></g><g font-family="monospace" font-size="9" fill="#f0e2c0" opacity=".85"><text x="12" y="289">23:34</text></g>`,{alt:"Dos tazas humeantes sobre la mesa a las 23:34",seed:7}),
+ph3:u=>svgWrap(u,`<rect width="400" height="300" fill="#0d1520"/><rect x="18" y="20" width="364" height="262" rx="10" fill="#f4f6f9"/><g font-family="Arial" font-size="10"><text x="30" y="42" font-weight="700" font-size="12" fill="#1a2b3d">HISTORIA CLÍNICA · L.M. — comparativa</text><rect x="30" y="52" width="165" height="214" fill="#ffffff" stroke="#c9d2dc"/><rect x="205" y="52" width="165" height="214" fill="#ffffff" stroke="#c9d2dc"/><text x="38" y="68" font-weight="700" fill="#1a2b3d">v1 · copia de seguridad</text><text x="213" y="68" font-weight="700" fill="#1a2b3d">v2 · modificado 15/03 01:26</text><g fill="#334"><text x="38" y="88">12/03 Sesión regular. Ánimo bajo.</text><rect x="36" y="95" width="157" height="26" fill="#ffd1d6"/><text x="38" y="106" fill="#8c1c2c">13/03 Llamada nocturna al móvil</text><text x="38" y="118" fill="#8c1c2c">personal. Ideación. Sin protocolo.</text><rect x="36" y="127" width="157" height="26" fill="#ffd1d6"/><text x="38" y="138" fill="#8c1c2c">Encuentro extraordinario fuera</text><text x="38" y="150" fill="#8c1c2c">de consulta. No documentado.</text><text x="38" y="172">14/03 Fallecimiento. Aviso a familia.</text></g><g fill="#334"><text x="213" y="88">12/03 Sesión regular. Ánimo bajo.</text><rect x="211" y="95" width="157" height="58" fill="#eef1f4"/><text x="213" y="118" fill="#7b8794">13/03 Sin incidencias.</text><text x="213" y="172">14/03 Fallecimiento. Aviso a familia.</text></g><text x="30" y="276" font-size="9" fill="#a02032" font-weight="700">▲ Líneas eliminadas en la v2 · autor: slemos</text></g>`,{alt:"Comparativa de las versiones 1 y 2 de la historia clínica",seed:2}),
+ph4:u=>svgWrap(u,`<defs><linearGradient id="p${u}" x1="0" x2="1"><stop offset="0" stop-color="#e8edf0"/><stop offset="1" stop-color="#c5ced4"/></linearGradient></defs><rect width="400" height="300" fill="#222a33"/><rect x="24" y="30" width="352" height="232" rx="6" fill="url(#p${u})" stroke="#6b7782" stroke-width="5"/><g fill="#a8b2b9" opacity=".6"><ellipse cx="90" cy="210" rx="60" ry="12"/><ellipse cx="300" cy="90" rx="40" ry="10"/></g><g font-family="Comic Sans MS,Segoe Print,cursive" fill="#1d3b8a" font-size="24" font-weight="700"><text x="56" y="86">L.M. — hist. cl. v2</text><text x="56" y="130" fill="#2d6b3b">13/03  →  15/03</text><text x="56" y="176" fill="#b0262f" font-size="30">¿quién?</text></g><path d="M170 120Q230 90 270 128" fill="none" stroke="#b0262f" stroke-width="3" marker-end="url(#a${u})"/><path d="M262 120l12 9-14 3" fill="none" stroke="#b0262f" stroke-width="3"/><g transform="translate(300 215)"><rect width="70" height="18" rx="3" fill="#2d6b3b"/><rect y="-3" width="14" height="24" rx="3" fill="#1b3f24"/></g>`,{alt:"Pizarra con la anotación L.M. – hist. cl. v2",seed:4}),
+ph5:u=>svgWrap(u,`<rect width="400" height="300" fill="#2c2a26"/><g transform="rotate(2 200 150)"><rect x="60" y="22" width="280" height="256" fill="#efece2"/><rect x="60" y="22" width="280" height="18" fill="#3a4a63"/><g font-family="Georgia,serif" fill="#222" text-anchor="middle"><text x="200" y="36" fill="#fff" font-size="9" font-family="Arial">REGISTRO CIVIL · MADRID</text><text x="200" y="76" font-size="15" font-weight="700">PARTE DE DEFUNCIÓN</text><text x="200" y="104" font-size="11">Nombre: Lucas Marín Vidal</text><text x="200" y="124" font-size="11">Edad: 31 años</text><text x="200" y="148" font-size="13" font-weight="700" fill="#8a1c2c">Fecha: 14 de marzo</text><text x="200" y="172" font-size="11">Hora: 06:40</text><text x="200" y="194" font-size="11">Lugar: domicilio</text></g><g transform="translate(250 220)"><circle r="22" fill="none" stroke="#3a4a63" stroke-width="2" opacity=".7"/><circle r="15" fill="none" stroke="#3a4a63" stroke-width="1" opacity=".7"/></g><path d="M90 250H210" stroke="#222" stroke-width="1"/></g>`,{alt:"Parte de defunción de Lucas Marín, 14 de marzo",seed:9}),
+s1:u=>svgWrap(u,`<defs><linearGradient id="wl${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2c313a"/><stop offset="1" stop-color="#1a1d22"/></linearGradient><radialGradient id="fl${u}" cx="50%" cy="55%" r="55%"><stop offset="0" stop-color="#fff6dc" stop-opacity=".35"/><stop offset="1" stop-color="#fff6dc" stop-opacity="0"/></radialGradient></defs><rect width="400" height="190" fill="url(#wl${u})"/><polygon points="0,190 400,190 400,300 0,300" fill="#241b14"/><rect x="26" y="40" width="96" height="110" fill="#0c1c33" stroke="#4a5360" stroke-width="5"/><g fill="#ffd27a" opacity=".8"><circle cx="46" cy="110" r="2"/><circle cx="70" cy="96" r="2"/><circle cx="94" cy="120" r="2"/><circle cx="104" cy="82" r="2"/></g><rect x="290" y="30" width="90" height="140" fill="#20252c" stroke="#3b434c"/><g stroke="#3b434c"><path d="M290 76H380M290 122H380"/></g><g fill="#4a3a2c"><rect x="298" y="40" width="12" height="32"/><rect x="314" y="46" width="10" height="26"/><rect x="330" y="42" width="14" height="30"/><rect x="302" y="86" width="14" height="32" fill="#2c4a5c"/><rect x="322" y="90" width="12" height="28" fill="#5c3a2c"/></g><polygon points="90,200 330,200 360,250 60,250" fill="#3b2a1c"/><rect x="90" y="196" width="240" height="8" fill="#4d3825"/><rect x="170" y="150" width="60" height="42" rx="3" fill="#161c24"/><rect x="176" y="155" width="48" height="31" fill="#27425e"/><g><path d="M276 196L290 150L310 150L298 196Z" fill="#33383f"/><ellipse cx="302" cy="148" rx="22" ry="8" fill="#e2b560"/></g><polygon points="260,156 330,230 220,230" fill="#ffd58a" opacity=".12"/><rect x="190" y="205" width="22" height="36" rx="4" fill="#d4ccbe" opacity=".0"/>${mk(155,232,"1")}${mk(305,222,"2")}<rect width="400" height="300" fill="url(#fl${u})"/>`,{...POL,alt:"Plano general del despacho",tag:"PLANO GENERAL · Nº 1",seed:3}),
+s2:u=>svgWrap(u,`<defs><linearGradient id="r${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#232830"/><stop offset="1" stop-color="#14171b"/></linearGradient><radialGradient id="fl${u}" cx="50%" cy="55%" r="50%"><stop offset="0" stop-color="#fff6dc" stop-opacity=".42"/><stop offset="1" stop-color="#fff6dc" stop-opacity="0"/></radialGradient></defs><rect width="400" height="300" fill="url(#r${u})"/><rect x="0" y="212" width="400" height="88" fill="#241b14"/><polygon points="40,206 360,206 390,262 10,262" fill="#3b2a1c"/><rect x="40" y="200" width="320" height="8" fill="#4d3825"/><path d="M168 218L172 150Q172 140 182 140H228Q238 140 238 150L242 218Z" fill="#242a33"/><g><path d="M206 205L210 176Q232 150 260 158L272 170Q252 176 244 204Z" fill="#46505e"/><path d="M172 208Q186 168 212 160L240 164Q252 190 248 210Z" fill="#59626f"/><circle cx="196" cy="148" r="17" fill="#af8b72"/><path d="M180 144Q190 128 208 136Q214 148 206 156" fill="#2f2a28"/><path d="M246 190Q272 200 276 232" fill="none" stroke="#59626f" stroke-width="14" stroke-linecap="round"/><circle cx="278" cy="238" r="8" fill="#af8b72"/></g><rect x="170" y="154" width="70" height="52" rx="3" fill="#161c24" transform="translate(70 -10)"/><rect x="282" y="146" width="56" height="34" fill="#27425e" opacity=".7" transform="translate(30 0)"/>${mk(125,200,"2")}<polygon points="0,0 100,0 0,120" fill="#000" opacity=".5"/><rect width="400" height="300" fill="url(#fl${u})"/><g stroke="#ffd23f" stroke-width="6" opacity=".9"><path d="M-10 276L410 252"/></g><g font-family="monospace" font-size="8" fill="#000"><text x="8" y="276" transform="rotate(-3.2 8 276)" letter-spacing="2" font-weight="700"> POLICÍA ▪ NO PASAR ▪ POLICÍA ▪ NO PASAR ▪ POLICÍA ▪ NO PASAR</text></g>`,{...POL,alt:"Silueta de la víctima sentada en su silla",tag:"VÍCTIMA IN SITU · Nº 2",seed:6}),
+s3:u=>svgWrap(u,`<defs><linearGradient id="d${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2a1d"/><stop offset="1" stop-color="#150f0a"/></linearGradient></defs><rect width="400" height="300" fill="url(#d${u})"/><ellipse cx="200" cy="170" rx="104" ry="26" fill="#000" opacity=".5"/><path d="M120 90H280V158Q280 190 200 190T120 158Z" fill="#e9e4da"/><ellipse cx="200" cy="90" rx="80" ry="20" fill="#d6cfc0"/><ellipse cx="200" cy="92" rx="68" ry="14" fill="#4b3a20"/><ellipse cx="190" cy="96" rx="30" ry="5" fill="#2d2210" opacity=".8"/><path d="M280 106Q326 106 326 138Q326 170 276 160" fill="none" stroke="#e9e4da" stroke-width="12"/><g fill="#f2ece0" opacity=".22"><ellipse cx="170" cy="80" rx="20" ry="3"/></g><g fill="#ffe9ae" opacity=".9"><rect x="26" y="256" width="348" height="18" fill="#f1d87f" stroke="#000"/><g stroke="#000" stroke-width="1.5"><path d="M42 256v10M62 256v6M82 256v10M102 256v6M122 256v10M142 256v6M162 256v10M182 256v6M202 256v10M222 256v6M242 256v10M262 256v6M282 256v10M302 256v6M322 256v10M342 256v6M362 256v10"/></g></g>${mk(60,120,"A")}`,{...POL,alt:"Taza con restos de infusión y marcador A",tag:"MUESTRA A · Nº 3",seed:5}),
+s4:u=>svgWrap(u,`<defs><linearGradient id="t${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfd5d9"/><stop offset="1" stop-color="#858c92"/></linearGradient></defs><rect width="400" height="300" fill="#2c3138"/><rect x="40" y="170" width="320" height="100" rx="8" fill="url(#t${u})"/><rect x="60" y="188" width="280" height="60" rx="6" fill="#b4bbc0"/><g stroke="#8d949a" stroke-width="3"><path d="M72 192V244M100 192V244M128 192V244M156 192V244M184 192V244M212 192V244M240 192V244M268 192V244M296 192V244M324 192V244"/></g><g transform="rotate(-8 190 150)"><path d="M148 150H238V198Q238 220 193 220T148 198Z" fill="#e9e4da"/><ellipse cx="193" cy="150" rx="45" ry="11" fill="#d6cfc0"/><ellipse cx="193" cy="151" rx="38" ry="8" fill="#c3b9a2"/><path d="M238 160Q266 160 266 180Q266 198 236 192" fill="none" stroke="#e9e4da" stroke-width="8"/></g><g fill="#9fd4ee" opacity=".75"><path d="M120 176q3 14 0 20q-5-6 0-20Z"/><circle cx="226" cy="238" r="3"/><circle cx="148" cy="244" r="2.5"/></g><rect x="236" y="60" width="16" height="70" rx="4" fill="#c0c7cc"/><rect x="226" y="52" width="40" height="12" rx="4" fill="#9aa1a6"/><circle cx="140" cy="262" r="1.5" fill="#9fd4ee"/>${mk(64,150,"B")}`,{...POL,alt:"Segunda taza lavada en el lavabo",tag:"MUESTRA B · Nº 4",seed:8}),
+s5:u=>svgWrap(u,`<rect width="400" height="300" fill="#241a12"/><g transform="rotate(-3 200 150)"><rect x="30" y="100" width="340" height="110" rx="14" fill="#6c7a8a" stroke="#3a444f" stroke-width="3"/><g fill="#0f151c">${[0,1,2,3,4,5,6].map(i=>`<rect x="${42+i*46}" y="112" width="40" height="86" rx="8"/>`).join("")}</g><g font-family="Arial" font-size="12" font-weight="700" fill="#e8edf2" text-anchor="middle">${["L","M","X","J","V","S","D"].map((d,i)=>`<text x="${62+i*46}" y="226">${d}</text>`).join("")}</g><g fill="#d8dde2" opacity=".9"><ellipse cx="84" cy="270" rx="7" ry="3" transform="rotate(20 84 270)"/><ellipse cx="260" cy="262" rx="7" ry="3"/></g><g fill="#6f8aa0" opacity=".35">${[0,1,2,3,4,5,6].map(i=>`<ellipse cx="${62+i*46}" cy="186" rx="3" ry="1.5"/>`).join("")}</g></g>${mk(55,92,"5")}`,{...POL,alt:"Pastillero semanal abierto y vacío",tag:"PASTILLERO · Nº 5",seed:2}),
+s6:u=>svgWrap(u,`<rect width="400" height="300" fill="#2a1f16"/><g transform="rotate(2.5 200 150)"><rect x="70" y="22" width="260" height="256" fill="#f4f1e8"/><g font-family="Arial" fill="#222"><text x="96" y="62" font-size="13">A quien corresponda:</text><text x="96" y="92" font-size="12">Ya no puedo seguir con todo esto.</text><text x="96" y="112" font-size="12">Pido perdón a quienes me quieren.</text><text x="96" y="132" font-size="12">No ha sido culpa de nadie.</text><text x="96" y="182" font-size="12">Álvaro Quintana</text></g><rect x="90" y="196" width="200" height="1" fill="#d6d3c9"/><text x="96" y="214" font-size="9" fill="#7a766b" font-family="monospace">(sin firma manuscrita)</text></g>${mk(70,40,"6")}`,{...POL,alt:"Nota de despedida impresa, sin firma manuscrita",tag:"NOTA · Nº 6",seed:7}),
+s7:u=>svgWrap(u,`<rect width="400" height="300" fill="#12161c"/><polygon points="40,260 360,260 330,70 70,70" fill="#1a1f27" stroke="#2f3946" stroke-width="4"/><rect x="82" y="82" width="236" height="162" fill="#0e1b2b"/><g font-family="monospace" fill="#a9d4f5" font-size="10"><text x="98" y="108" font-weight="700" fill="#fff">Propiedades · nota_despedida.docx</text><text x="98" y="132">Autor ............ AQuintana</text><text x="98" y="150" fill="#ffd36b">Creado ........... 00:38</text><text x="98" y="168" fill="#ffd36b">Correo prog. ..... 00:41</text><text x="98" y="186" fill="#ffd36b">Impreso .......... 00:44</text><text x="98" y="210" fill="#8a9bad">Última edición: 00:44</text></g><rect x="150" y="262" width="100" height="10" fill="#242a33"/>${mk(60,92,"7")}<path d="M200 70v-8" stroke="#2f3946" stroke-width="3"/>`,{...POL,alt:"Pantalla del portátil con la hora de creación de la nota: 00:38",tag:"PORTÁTIL · Nº 7",seed:4})
+};
+function art(id){return (ART[id]||(()=>""))("a"+Math.random().toString(36).slice(2,7))}
+function portrait(id){const p=DATA.people[id];return `<svg viewBox="0 0 100 100" role="img" aria-label="${p.n}"><rect width="100" height="100" fill="#142235"/><path d="M12 100Q50 52 88 100Z" fill="${p.cloth}"/><circle cx="50" cy="44" r="19" fill="${p.skin}"/><path d="M30 42Q50 8 70 42Q60 26 50 26Q40 26 30 42Z" fill="${p.hair}"/><circle cx="43" cy="44" r="1.6" fill="#1a1a1a"/><circle cx="57" cy="44" r="1.6" fill="#1a1a1a"/><path d="M44 54Q50 58 56 54" fill="none" stroke="#7a4a3a" stroke-width="1.5"/></svg>`}
+/* ====================== INTRO ====================== */
+function renderIntro(){
+ $("introContent").innerHTML=`<div class="card"><span class="tag gold">INFORME DE APERTURA</span><h3 style="margin-top:10px;font-size:19px">Muerte del Dr. Álvaro Quintana</h3>
+<p class="small">Viernes, 24 de octubre. 07:40. La limpiadora de la consulta <b>Quintana &amp; Lemos</b> encuentra al psicólogo Álvaro Quintana, 46 años, sentado a su mesa. Sin signos de violencia, una taza sobre la mesa, el pastillero vacío y una nota de despedida impresa.</p>
+<p class="small">Todo apunta a suicidio. Todo, salvo un detalle: Álvaro tenía fijada para esa mañana, a las 10:00, su declaración como perito en la demanda de la familia de <b>Lucas Marín</b>, antiguo paciente de la consulta fallecido el <b>14 de marzo</b>.</p>
+<div class="note">«Nadie se suicida la noche antes de declarar por casualidad… o sí. Demuéstramelo.» — Comisario Duarte</div></div>
+<div class="card"><h3>Cómo funciona</h3>
+<div class="clue"><div class="num">🏢</div><div><strong>Comisaría</strong><p>Fotos de la escena, informes, cronología, contradicciones e interrogatorios. Algunos informes solo llegan cuando encuentras la pista correcta.</p></div></div>
+<div class="clue"><div class="num">📱</div><div><strong>Móvil de Álvaro</strong><p>Recuperado de su bolsillo, bloqueado. Dentro están sus mensajes, fotos, notas, notas de voz y datos de salud. Tendrás que averiguar su código.</p></div></div>
+<div class="clue"><div class="num">⚖</div><div><strong>Conclusión</strong><p>Cuando estés listo, presenta tu resolución: quién, cómo, por qué y con qué pruebas.</p></div></div></div>
+<button class="primary full" onclick="startCase()">Abrir expediente →</button>
+`;
+}
+function startCase(){state.intro=true;save();goPolice()}
+/* ====================== COMISARÍA ====================== */
+function goPolice(){renderPolice();showView("policeView")}
+function renderPolice(){
+ if(!state.intro){renderIntro();showView("introView");return}
+ const keys=DATA.contradictions.filter(c=>state.flags["k_"+c.id]).length;
+ $("policeContent").innerHTML=`<div class="metricgrid"><div class="metric"><b>${state.clues.length}</b><small>PISTAS</small></div><div class="metric"><b>${keys}/${DATA.contradictions.length}</b><small>CONTRADICCIONES</small></div><div class="metric"><b>${state.closed.length}</b><small>INTERROGATORIOS</small></div></div>
+ <div class="sectiontitle">CENTRO DE INVESTIGACIÓN</div>
+ <button class="listitem" onclick="renderScene()"><div class="avatar">📷</div><div style="flex:1"><strong>Fotos de la escena</strong><small>Policía Científica · 7 imágenes</small></div><span class="right">${DATA.scene.filter(s=>has(s.clue)).length}/7 ›</span></button>
+ <button class="listitem" onclick="renderReports()"><div class="avatar">📑</div><div style="flex:1"><strong>Informes y registros</strong><small>Forense, accesos, informática…</small></div><span class="right">${DATA.reports.filter(r=>has(r.id)).length}/${DATA.reports.length} ›</span></button>
+ <button class="listitem" onclick="renderEvidence()"><div class="avatar">🗂</div><div style="flex:1"><strong>Pruebas y evidencias</strong><small>Todo lo que has recogido</small></div><span class="right">${state.clues.length} ›</span></button>
+ <button class="listitem" onclick="renderTimeline()"><div class="avatar">◷</div><div style="flex:1"><strong>Cronología</strong><small>Reconstruye la noche del 23 al 24</small></div><span class="right">›</span></button>
+ <button class="listitem" onclick="renderContradictions()"><div class="avatar">⚡</div><div style="flex:1"><strong>Contradicciones</strong><small>Donde las versiones no encajan</small></div><span class="right">${keys} ›</span></button>
+ <div class="sectiontitle">INTERROGATORIOS</div>
+ ${Object.keys(DATA.people).map(id=>`<button class="listitem" onclick="openInterview('${id}')"><div class="avatar">${portrait(id)}</div><div style="flex:1"><strong>${DATA.people[id].n}</strong><small>${DATA.people[id].r}${state.closed.includes(id)?" · interrogatorio cerrado":""}</small></div><span class="right">›</span></button>`).join("")}
+ <div class="card" style="margin-top:16px"><h3>Conclusión del caso</h3><p class="small muted">Elige culpable, método, motivo y las pruebas que lo sustentan.</p><button class="primary full" onclick="openVerdict()">Preparar resolución →</button></div>
+ <button class="secondary full" onclick="renderIntro();showView('introView')">Releer el informe de apertura</button>`;
+ updateCount();
+}
+function openPoliceSub(html){$("policeContent").innerHTML=`<button class="back" onclick="renderPolice()">‹ Expediente</button>`+html;showView("policeView")}
+function renderScene(){
+ openPoliceSub(`<h2 style="margin-top:0">Fotos de la escena</h2><p class="small muted">Pulsa una imagen para ampliarla y registrarla como pista.</p><div class="photo-grid">${DATA.scene.map(s=>`<button class="photo-tile" onclick="viewPhoto('scene','${s.id}')"><div class="ph">${art(s.id)}</div><span class="evidence-dot">${has(s.clue)?"✓ REGISTRADA":"⌕ ANALIZAR"}</span><div class="photocap"><b>${s.t}</b></div></button>`).join("")}</div>`);
+}
+function renderReports(){
+ openPoliceSub(`<h2 style="margin-top:0">Informes y registros</h2><p class="small muted">Los laboratorios solo trabajan con lo que les envías. Algunos informes se desbloquean al encontrar la pista adecuada.</p><div class="card">${DATA.reports.map(r=>{const ok=r.need();return `<button class="listitem ${ok?"":"locked"}" onclick="openReport('${r.id}')"><div class="avatar">${has(r.id)?"✓":ok?"📄":"🔒"}</div><div style="flex:1"><strong>${r.t}</strong><small>${ok?(has(r.id)?"Archivado en el expediente":"Disponible · pulsa para abrir"):r.hint}</small></div></button>`}).join("")}</div>`);
+}
+function openReport(id){
+ const r=DATA.reports.find(x=>x.id===id);const c=DATA.clues[id];
+ if(!r.need()){notify("Todavía no hay informe: "+r.hint);return}
+ addClue(id);
+ let extra="";
+ if(id==="inf_informatica")extra=`<div class="polaroid" style="aspect-ratio:4/3;margin-top:12px">${art("s7")}</div>`;
+ if(id==="inf_accesos")extra=`<div class="card" style="margin-top:12px;font-family:monospace;font-size:11px;line-height:1.9"><div>20:34 · SALIDA · SOFIA LEMOS</div><div>22:59 · ENTRADA · A. QUINTANA</div><div style="color:#ffd36b">23:47 · ENTRADA · SOFIA LEMOS</div><div style="color:#ffd36b">00:52 · SALIDA · SOFIA LEMOS</div></div>`;
+ openPoliceSub(`<div class="card"><span class="tag gold">${esc(c.src.toUpperCase())}</span><h2 style="margin:10px 0 8px">${esc(c.t)}</h2><p class="small" style="line-height:1.7">${esc(c.d)}</p>${extra}</div><button class="secondary full" onclick="renderReports()">‹ Volver a informes</button>`);
+}
+function renderEvidence(){
+ openPoliceSub(`<h2 style="margin-top:0">Pruebas y evidencias</h2>${state.clues.length?`<div class="card">${state.clues.map((id,i)=>{const d=DATA.clues[id];return `<div class="clue"><div class="num">${String(i+1).padStart(2,"0")}</div><div><strong>${esc(d.t)}</strong> ${d.key?'<span class="tag gold">CLAVE</span>':""}<p>${esc(d.d)}</p><p style="color:#5f7589">${esc(d.src)}</p></div></div>`}).join("")}</div>`:`<div class="card"><h3>Sin pruebas todavía</h3><p class="small muted">Examina las fotos de la escena y abre el móvil de Álvaro.</p></div>`}`);
+}
+function renderTimeline(){
+ openPoliceSub(`<h2 style="margin-top:0">Cronología</h2><p class="small muted">Las horas con ✓ están respaldadas por una prueba.</p><div class="card">${DATA.timeline.map(([t,d,id])=>`<div class="clue"><div class="num">${t}</div><div><strong>${has(id)?d:"· · ·"}</strong><p>${has(id)?"✓ Prueba incorporada":"○ Aún no confirmada"}</p></div></div>`).join("")}</div>`);
+}
+function renderContradictions(){
+ openPoliceSub(`<h2 style="margin-top:0">Contradicciones</h2><p class="small muted">Se detectan cuando cruzas pruebas que no pueden ser todas ciertas.</p>${DATA.contradictions.map(c=>state.flags["k_"+c.id]?`<div class="card"><span class="tag red">DETECTADA</span><h3 style="margin-top:9px">${esc(c.t)}</h3><p class="small muted">${esc(c.d)}</p></div>`:`<div class="card" style="opacity:.5"><span class="tag">SIN DETECTAR</span><h3 style="margin-top:9px">· · ·</h3><p class="small muted">Te faltan pruebas para conectar esta pista.</p></div>`).join("")}`);
+}
+/* ====================== VISOR DE FOTOS ====================== */
+let viewing=null;
+function viewPhoto(kind,id){const list=kind==="scene"?DATA.scene:DATA.photos;const p=list.find(x=>x.id===id);if(!p)return;viewing=p;
+ $("viewerImage").innerHTML=art(p.id);$("viewerTitle").textContent=p.t;$("viewerDesc").textContent=p.desc+(has(p.clue)?" · "+DATA.clues[p.clue].d:"");
+ $("viewerBtn").textContent=has(p.clue)?"Pista ya registrada":"Analizar y registrar pista";$("photoViewer").classList.add("open")}
+function closePhoto(){$("photoViewer").classList.remove("open")}
+function collectViewer(){if(!viewing)return;addClue(viewing.clue);$("viewerBtn").textContent="Pista ya registrada";$("viewerDesc").textContent=viewing.desc+" · "+DATA.clues[viewing.clue].d;
+ if(!$("policeView").classList.contains("active")&&$("appView").classList.contains("active")&&typeof reopen==="function")reopen()}
+let reopen=null;
+/* ====================== MÓVIL ====================== */
+let pinBuf="",pinFails=0;
+function goPhone(){if(!state.intro){renderIntro();showView("introView");notify("Primero lee el informe y abre el expediente.");return}
+ if(!state.unlocked){renderLock();showView("lockView")}else{renderHome();showView("homeView")}}
+function renderLock(){pinBuf="";drawDots();
+ $("keypad").innerHTML=["1","2","3","4","5","6","7","8","9","","0","⌫"].map(k=>k===""?"<span></span>":`<button class="key" onclick="pinKey('${k}')" aria-label="Tecla ${k}">${k}</button>`).join("")}
+function drawDots(){$("pinDots").innerHTML=[0,1,2,3].map(i=>`<i class="${i<pinBuf.length?"f":""}"></i>`).join("")}
+function pinKey(k){if(k==="⌫"){pinBuf=pinBuf.slice(0,-1);drawDots();return}
+ if(pinBuf.length>=4)return;pinBuf+=k;drawDots();
+ if(pinBuf.length===4){if(pinBuf===DATA.pin){state.unlocked=true;save();notify("Dispositivo desbloqueado");setTimeout(()=>{renderHome();showView("homeView")},350)}
+ else{pinFails++;const d=$("pinDots");d.classList.add("shake");setTimeout(()=>{d.classList.remove("shake");pinBuf="";drawDots()},380);
+ if(pinFails>=3)$("pinHint").innerHTML="Pista: la fecha del fallecimiento de Lucas Marín está en el expediente: 14 de marzo → <b>DDMM</b>."}}}
+const APPS=[["messages","Mensajes","✉","g-green"],["calls","Teléfono","☎","g-green"],["photos","Fotos","🌈","g-orange"],["notes","Notas","▤","g-yellow"],["health","Salud","♡","g-red"],["voice","Notas de voz","◖","g-purple"],["calendar","Calendario","▦","g-red"],["files","Archivos","📁","g-blue"],["maps","Mapas","⌖","g-teal"],["contacts","Contactos","♙","g-slate"]];
+const APP_CLUES={messages:["msg_sofia","msg_irene","msg_hector"],calls:["call_sofia"],photos:["photo_recibo","photo_tazas","photo_clinica","photo_pizarra","photo_parte"],notes:["note_borrador"],health:["health_pulso"],voice:["voice_nota"],calendar:["cal_juicio"],files:["files_clinica"],maps:["maps_cafe"],contacts:[]};
+function renderHome(){
+ $("homeContent").innerHTML=`<div class="between" style="margin:3px 2px 20px"><div><div class="muted small">JUEVES, 23 DE OCTUBRE</div><div style="font-size:24px;font-weight:750;margin-top:4px">Álvaro Quintana</div></div><span class="tag">EVIDENCIA 07</span></div>
+ <div class="widgetrow"><div class="widget"><div class="city">📍 Madrid · Centro</div><div class="temp">11°</div><div class="sub">Noche despejada</div></div><div class="widget events"><div class="city">AGENDA</div><div style="font-size:21px;margin-top:5px">24 <span style="font-size:12px">OCT</span></div><div class="eventline">10:00 · Juzgado</div></div></div>
+ <div class="apps">${APPS.map(a=>{const tot=APP_CLUES[a[0]].length;const got=APP_CLUES[a[0]].filter(has).length;return `<button class="appicon" onclick="openApp('${a[0]}')"><span class="appglyph ${a[3]}">${a[2]}</span><span class="appname">${a[1]}</span>${tot&&got<tot?`<span class="badge">${tot-got}</span>`:""}</button>`}).join("")}</div>
+ <div class="note" style="margin-top:26px">Los números sobre los iconos indican pistas aún sin registrar en esa app. Las pistas confirmadas se guardan en el expediente de comisaría.</div>
+ <button class="secondary full" style="margin-top:14px" onclick="goPolice()">🏢 Ir a comisaría</button>`;
+}
+const APPNAME={messages:["Mensajes","Conversaciones del dispositivo"],calls:["Teléfono","Registro de llamadas"],photos:["Fotos","Galería · 23 oct"],notes:["Notas","Apuntes personales"],health:["Salud","Datos del reloj"],voice:["Notas de voz","Grabaciones"],calendar:["Calendario","Jueves 23 · viernes 24"],files:["Archivos","Documentos y copias"],maps:["Mapas","Lugares frecuentes"],contacts:["Contactos","Agenda"]};
+function openApp(n){
+ $("appTitle").textContent=APPNAME[n][0];$("appSubtitle").textContent=APPNAME[n][1];
+ const pages={messages:pMessages,calls:pCalls,photos:pPhotos,notes:pNotes,health:pHealth,voice:pVoice,calendar:pCalendar,files:pFiles,maps:pMaps,contacts:pContacts};
+ $("appContent").innerHTML=pages[n]();reopen=()=>openApp(n);showView("appView");
+}
+function regBtn(id,label){return has(id)?`<div class="tag green">✓ PISTA REGISTRADA</div>`:`<button class="secondary full" style="margin-top:12px" onclick="addClue('${id}');reopen&&reopen()">${label||"Registrar como pista"}</button>`}
+/* mensajes */
+const CHATS=[
+ {id:"sofia",n:"Sofía Lemos",e:"sofia",t:"22:15",pre:"Vale. Aquí te espero.",clue:"msg_sofia",m:[["them","¿Has visto el correo del abogado de los Marín? Quieren tu declaración.","19:02"],["me","Sí. Lo he visto.","19:40"],["me","Sofía, sé lo de la historia clínica de Lucas. La v2 no es la original. Mañana lo hablamos con calma, antes de declarar. No quiero abogados de por medio.","22:10"],["them","Mejor hoy. Voy a la consulta, llego en una hora. Tráeme algo caliente, por favor.","22:14"],["me","Vale. Aquí te espero.","22:15"]]},
+ {id:"irene",n:"Irene Calvo",e:"irene",t:"23:05",pre:"Perdona. Soy insoportable.",clue:"msg_irene",m:[["them","Gracias por la sesión de hoy.","18:50"],["them","Mañana no vas a abrir la consulta, ¿verdad? Siento que me dejas.","21:30"],["them","Dime algo.","21:34"],["them","Perdona. Soy insoportable.","23:05"]]},
+ {id:"hector",n:"Héctor",e:"hector",t:"21:41",pre:"Siempre igual.",clue:"msg_hector",m:[["them","Necesito 8.000. Es urgente.","21:05"],["me","Hablamos el finde. Ahora no puedo.","21:40"],["them","Siempre igual.","21:41"]]}
+];
+function pMessages(){return `<div id="chatList">${CHATS.map(c=>`<button class="listitem" onclick="openChat('${c.id}')"><div class="avatar">${portrait(c.e)}</div><div style="min-width:0;flex:1"><strong>${c.n}</strong><small>${c.pre}</small></div><span class="right">${c.t}<br>${has(c.clue)?"✓":"●"}</span></button>`).join("")}</div><div class="note">Abre cada conversación y analízala para registrarla como pista.</div>`}
+function openChat(id){const c=CHATS.find(x=>x.id===id);
+ $("appTitle").textContent=c.n;$("appSubtitle").textContent="Mensajes del dispositivo";
+ $("appContent").innerHTML=`<button class="back" onclick="openApp('messages')">‹ Conversaciones</button><div class="chatmessages">${c.m.map(m=>`<div class="bubble ${m[0]==="me"?"mine":""}">${esc(m[1])}<span class="stamp">${m[2]}</span></div>`).join("")}</div>${regBtn(c.clue,"Analizar conversación")}`;reopen=()=>openChat(id)}
+/* llamadas */
+function pCalls(){return `<div class="card"><button class="listitem" onclick="openCall()"><div class="avatar">${portrait("sofia")}</div><div style="flex:1"><strong>Sofía Lemos</strong><small style="color:#ff9dab">Llamada perdida · buzón 0:14</small></div><span class="right">22:02<br>🎙</span></button><button class="listitem"><div class="avatar">${portrait("hector")}</div><div style="flex:1"><strong>Héctor</strong><small>Entrante · 01:12</small></div><span class="right">21:05</span></button><button class="listitem"><div class="avatar">${portrait("irene")}</div><div style="flex:1"><strong>Irene Calvo</strong><small>Perdida</small></div><span class="right">21:50</span></button></div>`}
+function openCall(){$("appContent").innerHTML=`<button class="back" onclick="openApp('calls')">‹ Llamadas</button><div class="card"><div class="row"><div class="avatar">${portrait("sofia")}</div><div><b>Buzón de voz · Sofía Lemos</b><div class="small muted">Jueves 22:02 · 0:14</div></div></div><p class="transcript">«Álvaro, soy Sofía. Me ha escrito Dolores, la abogada, diciendo que has pedido la historia clínica de Lucas a los técnicos. Llámame, por favor. Es importante. Llámame.»</p>${regBtn("call_sofia")}</div>`;reopen=openCall}
+/* fotos */
+function pPhotos(){return `<div class="between" style="margin-bottom:13px"><span class="muted small">23 OCT · ${DATA.photos.length} ELEMENTOS</span><span class="tag">${DATA.photos.filter(p=>has(p.clue)).length}/${DATA.photos.length}</span></div><div class="photo-grid">${DATA.photos.map(p=>`<button class="photo-tile" onclick="viewPhoto('phone','${p.id}')"><div class="ph">${art(p.id)}</div><span class="evidence-dot">${has(p.clue)?"✓ REGISTRADA":"⌕ ANALIZAR"}</span><div class="photocap"><b>${p.t}</b></div></button>`).join("")}</div>`}
+/* notas */
+function pNotes(){return `<div class="card"><div class="between"><h3>Declaración sobre L.M.</h3><span class="tag">23 OCT</span></div><p class="small" style="line-height:1.75">Hallé dos versiones de la historia clínica de Lucas. La v2 se guardó el 15/03 a las 01:26, desde la consulta. Lo diré mañana en el juicio.<br><br>Antes quiero hablar con Sofía. Darle la oportunidad de contarlo ella. No quiero hundirla; quiero que se haga justicia con Lucas.</p><div class="muted small">Última modificación · 21:57</div>${regBtn("note_borrador","Registrar nota como pista")}</div>
+ <div class="card"><h3>Viernes</h3><p class="small">10:00 · Juzgado nº 14. Llevar copia de la v1. No dormir hasta releerlo todo.</p></div>
+ <div class="card"><h3>Compra</h3><p class="small">Café · papel de impresora · llamar a Héctor.</p></div>`}
+/* salud */
+function pHealth(){
+ const pts=[[0,72],[20,70],[40,73],[47,90],[52,95],[58,78],[64,60],[70,45],[76,30],[79,0],[90,0]];
+ const X=m=>20+m/90*360,Y=b=>150-b/100*120;
+ const path=pts.map((p,i)=>(i?"L":"M")+X(p[0]).toFixed(1)+" "+Y(p[1]).toFixed(1)).join(" ");
+ return `<div class="card"><div class="between"><h3>Ritmo cardíaco</h3><span class="tag">23:00 → 00:30</span></div><svg viewBox="0 0 400 180" style="width:100%"><g stroke="#243345"><path d="M20 30H380M20 90H380M20 150H380"/></g><g fill="#7a8da0" font-size="9" font-family="monospace"><text x="2" y="34">100</text><text x="6" y="94">50</text><text x="12" y="154">0</text><text x="20" y="172">23:00</text><text x="140" y="172">23:30</text><text x="260" y="172">00:00</text><text x="340" y="172">00:30</text></g><path d="${path}" fill="none" stroke="#ff697c" stroke-width="2.5" stroke-linejoin="round"/><circle cx="${X(79)}" cy="${Y(0)}" r="5" fill="#ff697c"/><text x="${X(79)-62}" y="${Y(0)-12}" fill="#ffb3bd" font-size="10" font-family="monospace">00:19 · sin pulso</text></svg><p class="small muted">Sin actividad de movimiento desde las 23:58. El reloj dejó de registrar pulso a las 00:19.</p>${regBtn("health_pulso","Registrar datos del reloj")}</div>`}
+/* voz */
+function pVoice(){return `<div class="card"><h3>Nota 23:46</h3><div class="small muted">Jueves · 0:41 · grabación recuperada</div><p class="transcript">«Nota para mí, jueves, once y cuarenta y seis de la noche. Si mañana no… no, tonterías. Sofía viene de camino. Voy a darle la oportunidad de contármelo ella. La versión dos de la historia de Lucas se guardó la madrugada del quince de marzo, desde la consulta, con el usuario de ella. Lucas no merecía… [timbre] Ya has llegado.»</p>${regBtn("voice_nota","Guardar transcripción")}</div>`}
+/* calendario */
+function pCalendar(){return `<div class="card"><h3>Jueves 23</h3><div class="clue"><div class="num">18:00</div><div><strong>Sesión 9 · Irene C.</strong><p>Terminó a las 18:40</p></div></div><div class="clue"><div class="num">20:00</div><div><strong>Cena con Héctor</strong><p>Cancelada</p></div></div></div><div class="card"><h3>Viernes 24</h3><div class="clue"><div class="num">10:00</div><div><strong>Declaración · Juzgado nº 14</strong><p>Demanda familia Marín · llevar copia de la v1</p></div></div>${regBtn("cal_juicio","Registrar la declaración")}</div>`}
+/* archivos */
+function pFiles(){return `<div class="card"><button class="listitem" onclick="openFileD('v1')"><div class="avatar">📕</div><div style="flex:1"><strong>historia_LM_v1_backup.pdf</strong><small>Copia de seguridad · 21:40</small></div><span class="right">›</span></button><button class="listitem" onclick="openFileD('v2')"><div class="avatar">📘</div><div style="flex:1"><strong>historia_LM_v2.pdf</strong><small>Modificado 15/03 01:26 · slemos</small></div><span class="right">›</span></button><button class="listitem"><div class="avatar">⚖</div><div style="flex:1"><strong>citacion_juzgado.pdf</strong><small>Citación</small></div></button></div>`}
+function openFileD(w){$("appContent").innerHTML=`<button class="back" onclick="openApp('files')">‹ Archivos</button><div class="card"><div class="polaroid" style="aspect-ratio:4/3">${art("ph3")}</div><div class="cap">${w==="v1"?"v1: conserva las líneas eliminadas más tarde.":"v2: modificación posterior. Propiedades: autor «slemos» · 15/03 01:26"}</div>${regBtn("files_clinica","Registrar comparación de versiones")}</div>`;reopen=()=>openFileD(w)}
+/* mapas */
+function pMaps(){return `<div class="card" style="padding:0;overflow:hidden"><svg viewBox="0 0 400 240" style="width:100%;display:block;background:#0e1a25"><g stroke="#2e4558" stroke-width="2" fill="none"><path d="M-20 35L120 95 170 25 260 95 420 25M-10 120L100 145 165 120 240 155 420 120M40 -10L60 250M140 -10L130 250M230 -10L220 250M320 -10L310 250"/></g><circle cx="210" cy="110" r="11" fill="#55b8ff"/><text x="226" y="106" fill="#e8f4ff" font-size="11">Consulta Quintana &amp; Lemos</text><circle cx="210" cy="140" r="7" fill="#efc879"/><text x="226" y="150" fill="#e8f4ff" font-size="10">Café Aurora (planta baja · cierra 23:00)</text><circle cx="70" cy="195" r="8" fill="#ff697c"/><text x="84" y="199" fill="#e8f4ff" font-size="10">Domicilio de Sofía · 25 min</text></svg><div style="padding:14px"><h3>Lugares frecuentes</h3><p class="small muted">El café está en el mismo edificio que la consulta.</p>${regBtn("maps_cafe","Registrar ubicación")}</div></div>`}
+/* contactos */
+function pContacts(){return Object.keys(DATA.people).map(id=>`<div class="card"><div class="row"><div class="avatar">${portrait(id)}</div><div><strong>${DATA.people[id].n}</strong><div class="small muted">${DATA.people[id].r}</div></div></div><p class="small" style="margin-top:10px">${DATA.people[id].bio}</p></div>`).join("")}
+/* ====================== INTERROGATORIOS ====================== */
+let curI=null;
+function openInterview(id){curI=id;if(!state.logs[id])state.logs[id]=[];renderInterview();showView("interviewView")}
+function renderInterview(){
+ const id=curI,I=INTERVIEWS[id],P=DATA.people[id],log=state.logs[id]||[];
+ const asked=state.asked[id]||[],pres=state.presented[id]||[];
+ const done=id==="sofia"&&state.confessed;
+ const owned=state.clues.filter(c=>!["inf_irene","inf_hector","ctx_sofia_insiste","ctx_irene_sofia","t_camara","conf_sofia"].includes(c));
+ $("interviewContent").innerHTML=`<button class="back" onclick="goPolice()">‹ Expediente</button>
+ <div class="card"><div class="row"><div class="avatar" style="width:62px;height:62px">${portrait(id)}</div><div><h2 style="margin:0 0 4px">${P.n}</h2><span class="tag ${P.tag}">${P.r.toUpperCase()}</span></div></div><p class="small" style="margin-top:12px;line-height:1.65">${I.intro}</p>
+ ${id==="sofia"?`<div class="sectiontitle" style="margin-top:12px">COMPOSTURA DE SOFÍA · ${Math.max(0,state.tension)}%</div><div class="progress tension"><span style="width:${Math.max(0,state.tension)}%"></span></div><p class="small muted" style="margin-top:6px">Presenta las pruebas correctas para romper su versión.</p>`:""}</div>
+ <div id="logArea" class="chatmessages" style="min-height:0;padding-top:0">${log.map(b=>b.who==="inv"?`<div class="bubble inv">${esc(b.text)}</div>`:`<div class="bubble">${esc(b.text)}${b.note?`<em>${esc(b.note)}</em>`:""}</div>`).join("")}</div>
+ ${done?`<div class="note red"><b>Confesión registrada.</b> Sofía Lemos ha reconocido su participación. Puedes cerrar el interrogatorio y presentar tu resolución.</div>`:`
+ <div class="sectiontitle">PREGUNTAR</div>${I.topics.map(t=>{const locked=t.need&&!has(t.need);const a=asked.includes(t.id);return `<button class="choice ${a?"selected":""}" ${locked?"disabled":""} onclick="askTopic('${t.id}')"><span class="letter">${a?"✓":"?"}</span><span>${t.q}${locked?'<br><small class="muted">Requiere una prueba relacionada</small>':""}</span></button>`}).join("")}
+ <div class="sectiontitle">PRESENTAR PRUEBA</div>${owned.length?`<div style="display:flex;flex-wrap:wrap;gap:7px">${owned.map(c=>`<button class="tag" style="${pres.includes(c)?"opacity:.4;":"cursor:pointer;"}padding:8px 10px;font-size:11px" onclick="presentClue('${c}')">${esc(DATA.clues[c].t)}</button>`).join("")}</div>`:`<p class="small muted">Todavía no tienes pruebas que presentar. Examina el móvil y la escena.</p>`}`}
+ <button class="secondary full" style="margin-top:18px" onclick="closeInterview()">Cerrar interrogatorio</button>`;
+}
+function pushLog(inv,say,note,key){state.logs[curI].push({who:"inv",text:inv});state.logs[curI].push({who:"sus",text:say,note:note||"",key:key||""});}
+function askTopic(tid){
+ const I=INTERVIEWS[curI],t=I.topics.find(x=>x.id===tid);const a=(state.asked[curI]=state.asked[curI]||[]);
+ if(a.includes(tid))return;a.push(tid);
+ pushLog(t.q,t.say,t.note,curI+"_"+tid);
+ if(t.flag)setFlag(t.flag);
+ if(t.gives)addClue(t.gives);
+ if(t.drop&&curI==="sofia")dropTension(t.drop);
+ save();afterAction();
+}
+function presentClue(cid){
+ const I=INTERVIEWS[curI],pr=(state.presented[curI]=state.presented[curI]||[]);
+ if(pr.includes(cid)){notify("Ya presentaste esa prueba.");return}
+ pr.push(cid);const r=I.present[cid];const title=DATA.clues[cid].t;
+ if(r){pushLog("Presenta: "+title,r.say,r.note,curI+"_p_"+cid);if(r.drop&&curI==="sofia")dropTension(r.drop)}
+ else{const gi=cid.length%I.generic.length;pushLog("Presenta: "+title,I.generic[gi],"",curI+"_generico_"+(gi+1));if(curI==="sofia")state.tension=Math.min(100,state.tension+4)}
+ save();afterAction();
+}
+function dropTension(n){state.tension=state.tension-n;
+ if(state.tension<=0&&!state.confessed){state.confessed=true;const C=INTERVIEWS.sofia.confession;C.forEach((c,i)=>{state.logs.sofia.push({who:"sus",text:c.say,note:c.note,key:"sofia_conf_"+(i+1)})});addClue("conf_sofia");notify("Sofía se derrumba y confiesa")}}
+function afterAction(){renderInterview();const el=$("logArea");if(el&&el.scrollIntoView)el.scrollIntoView({behavior:"smooth",block:"end"})}
+function closeInterview(){if(!state.closed.includes(curI)){state.closed.push(curI);save()}goPolice()}
+/* ====================== VEREDICTO ====================== */
+let sel={culprit:null,method:null,motive:null};
+function openVerdict(){
+ sel={culprit:null,method:null,motive:null};
+ const G=(k,list)=>list.map((o,i)=>`<button class="choice" data-g="${k}" data-v="${o[0]}" onclick="pick('${k}','${o[0]}')"><span class="letter">${String.fromCharCode(65+i)}</span><span>${o[1]}</span></button>`).join("");
+ $("verdictContent").innerHTML=`<div class="card"><span class="tag red">RESOLUCIÓN</span><h2 style="margin-top:12px">¿Qué ocurrió con Álvaro Quintana?</h2><p class="small muted" style="line-height:1.65">Una conclusión sólida distingue hechos, testimonios y sospechas.</p>
+ <div class="sectiontitle">RESPONSABLE</div>${G("culprit",[["sofia","Sofía Lemos · socia"],["irene","Irene Calvo · paciente"],["hector","Héctor Quintana · hermano"],["tomas","Tomás Rey · portero"],["suicide","Nadie: fue un suicidio"]])}
+ <div class="sectiontitle">MÉTODO</div>${G("method",[["sedante","Sedante disuelto en la infusión y puesta en escena de suicidio"],["golpe","Una discusión violenta y un golpe"],["voluntario","Ingesta voluntaria de su medicación"],["accidente","Mezcla accidental de medicación"]])}
+ <div class="sectiontitle">MOTIVO</div>${G("motive",[["historia","Ocultar la alteración de la historia clínica de Lucas antes del juicio"],["dinero","Dinero o herencia"],["despecho","Despecho de una paciente"],["celos","Rivalidad profesional"]])}
+ <div class="sectiontitle">PRUEBAS QUE SUSTENTAN LA CONCLUSIÓN</div>
+ ${state.clues.length?state.clues.map(id=>`<label style="display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #263546"><input type="checkbox" id="pf_${id}"><span class="small">${esc(DATA.clues[id].t)}</span></label>`).join(""):`<p class="small muted">Aún no tienes pruebas registradas.</p>`}
+ <label class="formlabel">Tu razonamiento</label><textarea id="reasoning" placeholder="Explica cómo conectan las pruebas con tu conclusión…"></textarea>
+ <button class="primary full" style="margin-top:14px" onclick="submitVerdict()">Presentar resolución final</button></div>`;
+ showView("verdictView");
+}
+function pick(k,v){sel[k]=v;document.querySelectorAll(`#verdictContent .choice[data-g="${k}"]`).forEach(b=>b.classList.toggle("selected",b.dataset.v===v))}
+function submitVerdict(){
+ if(!sel.culprit||!sel.method||!sel.motive){notify("Elige responsable, método y motivo.");return}
+ const proofs=state.clues.filter(id=>{const e=$("pf_"+id);return e&&e.checked});
+ const keys=proofs.filter(id=>DATA.keyset.includes(id)||id==="conf_sofia").length;
+ const okC=sel.culprit==="sofia",okM=sel.method==="sedante",okV=sel.motive==="historia";
+ let end;
+ if(sel.culprit==="suicide")end="archivado";
+ else if(!okC)end="error";
+ else if(okM&&okV&&keys>=4)end="maestria";
+ else if(keys>=2&&(okM||okV))end="resuelto";
+ else end="insuficiente";
+ state.verdict={...sel,proofs,keys,end,reason:$("reasoning").value};save();showResult();
+}
+function showResult(){
+ const v=state.verdict;if(!v)return;const E=ENDINGS[v.end];
+ $("verdictContent").innerHTML=`<div class="card"><div class="resultmark">${E.icon}</div><h2 class="resulttitle">${E.t}</h2><p class="small muted" style="text-align:center">Resolución registrada · EC / 001</p><div class="note">${E.txt}</div><p class="small">Pruebas clave presentadas: <b>${v.keys}</b> · Pruebas totales: <b>${v.proofs.length}</b> · Contradicciones: <b>${DATA.contradictions.filter(c=>state.flags["k_"+c.id]).length}/${DATA.contradictions.length}</b></p><h3 style="margin-top:16px">Tu razonamiento</h3><p class="small">${esc(v.reason||"No añadiste una explicación escrita.")}</p>
+ <button class="primary full" onclick="goPolice()">Volver al expediente</button><button class="secondary full" style="margin-top:8px" onclick="openVerdict()">Revisar conclusión</button><button class="danger full" style="margin-top:8px" onclick="resetCase()">Reiniciar el caso</button></div>`;
+ showView("verdictView");
+}
+function resetCase(){if(!confirm("¿Borrar todo el progreso y empezar de nuevo?"))return;localStorage.removeItem("caso001");state=JSON.parse(JSON.stringify(DEFAULT));pinFails=0;updateCount();renderIntro();showView("introView")}
+/* ====================== ARRANQUE ====================== */
+function tick(){const t=new Date().toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit",hour12:false});$("statusTime").textContent=t;$("lockTime").textContent=t}
+tick();setInterval(tick,30000);
+$("photoViewer").addEventListener("click",e=>{if(e.target.id==="photoViewer")closePhoto()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closePhoto()});
+renderIntro();updateCount();
+if(state.intro)goPolice();
+</script>
+</body>
+</html>
