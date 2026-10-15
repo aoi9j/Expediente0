@@ -1,172 +1,190 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#08111e">
-<title>Expediente Cero | NEXO</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101c2d">
+<title>Expediente Cero — NEXO</title>
 <style>
-:root{color-scheme:dark;--bg:#08111e;--panel:#111e2e;--line:#293b50;--cyan:#83edfa;--muted:#9aacc0}
+:root{--ink:#152438;--muted:#718197;--paper:#f4f6fa;--blue:#557ce8;--glass:#ffffff25}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:#eef6ff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-button,input{font:inherit}
-button{cursor:pointer}
+body{margin:0;background:#080f1b;color:#edf4ff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input{font:inherit}button{cursor:pointer}button:focus-visible{outline:2px solid #81e8ff}
 .hidden{display:none!important}
-header{padding:20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
-header b{letter-spacing:3px;font-size:14px}
-header small,.muted{color:var(--muted)}
-main{max-width:1050px;margin:auto;padding:22px}
-h1{font-size:clamp(27px,6vw,42px);margin:12px 0}
-p{line-height:1.6}
-.layout{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px}
-.tag{font-size:10px;letter-spacing:2px;color:var(--cyan);font-weight:bold}
-.fact{padding:12px;background:#091421;border:1px solid var(--line);border-radius:10px;margin:8px 0;font-size:13px}
-button.action{width:100%;padding:14px;border-radius:10px;border:1px solid #397080;background:#123343;color:#c7f8ff;font-weight:bold;margin-top:12px}
-.phone{position:relative;background:#0b1729;border:1px solid #42566e;border-radius:30px;overflow:hidden;max-width:410px;margin:auto;height:660px}
-.wallpaper{position:absolute;inset:0;background:radial-gradient(ellipse at 70% 25%,#6c9aa0,transparent 25%),radial-gradient(ellipse at 20% 70%,#294a68,transparent 45%),linear-gradient(145deg,#1e3048,#091321 70%)}
-.status{position:absolute;z-index:3;top:12px;left:22px;right:22px;display:flex;justify-content:space-between;font-size:12px}
-.island{position:absolute;z-index:4;top:8px;left:50%;transform:translateX(-50%);width:90px;height:24px;border-radius:20px;background:#020407}
-.screen{position:absolute;inset:0;z-index:2;padding:70px 18px 22px;overflow:auto}
-.lock{text-align:center;padding-top:40px}
-.date{font-size:12px}
-.clock{font-size:78px;font-weight:200;letter-spacing:-4px;margin:6px}
-.notification{background:#e6edf0;color:#1c2b38;border-radius:12px;padding:12px;text-align:left;margin:10px 0;font-size:12px}
-.notification b{display:block;margin:5px 0}
-.unlock{position:absolute;bottom:22px;left:15px;right:15px;text-align:center}
-.unlock button{border:1px solid #ffffff60;background:#17283bcb;color:white;border-radius:20px;padding:12px 18px}
-.widgets{background:#ffffff20;border:1px solid #ffffff30;padding:15px;border-radius:15px;margin:4px 0 18px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px 8px}
-.app{border:0;background:transparent;color:white;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:6px}
-.icon{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;font-size:23px;background:linear-gradient(145deg,#4ca7c4,#244e7b);box-shadow:0 5px 12px #0005}
-.appview{position:absolute;z-index:6;inset:0;background:#eef3f7;color:#17283a;padding:55px 16px 25px;overflow:auto}
-.appview h2{font-size:22px}
-.appview button{padding:8px 12px;border-radius:8px;border:1px solid #c5d1dc;background:#dfe9f0;color:#17283a}
-.item{background:white;border:1px solid #d9e1e8;padding:13px;border-radius:11px;margin:10px 0;font-size:13px;line-height:1.5}
-.exit{display:none;position:absolute;z-index:12;right:14px;top:42px;width:36px;height:36px;border-radius:50%;background:#101d2dcc;color:white;border:1px solid #ffffff70;font-size:22px}
-#workspace.immersive{position:fixed;z-index:100;inset:0;overflow:auto;background:#050913;padding:0;display:block;width:100%;height:100dvh}
-.immersive .case{display:none}
-.immersive .phone-panel{border:0;border-radius:0;padding:0;background:#050913}
-.immersive .phone{width:100%;max-width:480px;height:100dvh;border:0;border-radius:0}
-.immersive .exit{display:block}
-.immersive .screen{padding-top:75px}
-@media(max-width:700px){main{padding:14px}.layout{grid-template-columns:1fr}.phone{height:min(680px,calc(100dvh - 30px));min-height:570px}.phone-panel{order:1}.case{order:2}}
+#briefing{max-width:980px;margin:auto;padding:22px}
+.top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #29384b;padding:14px 0 20px}
+.logo{font-weight:900;letter-spacing:3px}.sub{font-size:10px;color:#8fa5bf;letter-spacing:2px;margin-top:5px}
+.case{margin-top:24px;border:1px solid #29394e;border-radius:18px;padding:23px;background:#101a29}
+.tag{font-size:10px;letter-spacing:2px;color:#7fe5f4;font-weight:800}
+.case h1{font-size:32px;margin:12px 0}.case p{line-height:1.7;color:#a8b8cc}
+.fact{background:#0a1320;border:1px solid #26364b;border-radius:10px;padding:12px;margin:8px 0;font-size:12px}
+.action{background:#153746;color:#c8f8ff;border:1px solid #427887;padding:14px;border-radius:10px;width:100%;font-weight:800;margin-top:15px}
+#briefing .hint{font-size:12px;color:#8fa5bf}
+#immersive{display:none}
+#immersive.active{display:block;position:fixed;inset:0;z-index:100;background:#080d15}
+.device{position:relative;width:100%;max-width:480px;height:100%;height:100dvh;margin:auto;overflow:hidden;background:#111c2e;isolation:isolate}
+.wallpaper{position:absolute;inset:0;overflow:hidden;background:linear-gradient(145deg,#253e52 0%,#627d85 28%,#24394d 48%,#111d31 75%,#080e1c)}
+.wallpaper:before{content:"";position:absolute;width:130%;height:58%;left:-15%;top:22%;border-radius:50%;transform:rotate(-24deg);background:linear-gradient(160deg,#91aeb0,#365667 45%,#15273a 80%);filter:blur(2px)}
+.wallpaper:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#09132130,#07111b15 35%,#06101b9c 100%)}
+.status{position:absolute;z-index:30;top:0;left:0;right:0;padding:13px 23px 0;display:flex;justify-content:space-between;font-size:12px;font-weight:700;pointer-events:none}
+.island{position:absolute;z-index:35;top:8px;left:50%;transform:translateX(-50%);width:92px;height:25px;border-radius:18px;background:#020305}
+#exit{position:absolute;display:none;z-index:60;right:13px;top:calc(env(safe-area-inset-top) + 43px);width:34px;height:34px;border-radius:50%;border:1px solid #ffffff50;background:#142236d9;color:white;font-size:23px}
+#immersive.active #exit{display:block}
+.screen{position:absolute;z-index:5;inset:0;overflow:hidden}
+#lock{padding:calc(env(safe-area-inset-top) + 65px) 19px 25px;text-align:center;color:white}
+.lockdate{font-size:12px;letter-spacing:.3px;text-shadow:0 2px 12px #0007}
+.lockclock{font-size:clamp(76px,21vw,100px);font-weight:200;letter-spacing:-6px;line-height:1.1;margin-top:3px;text-shadow:0 2px 20px #0004}
+.lockcaption{font-size:11px;color:#f1f5f7;margin-top:9px}
+.lockbottom{position:absolute;left:15px;right:15px;bottom:calc(env(safe-area-inset-bottom) + 29px)}
+.notification{border:1px solid #ffffff4a;background:#e9f0f0e8;color:#182a37;border-radius:15px;padding:12px 13px;margin:8px 0;text-align:left;backdrop-filter:blur(18px);box-shadow:0 6px 20px #0002}
+.notifhead{font-size:9px;color:#63717d;display:flex;justify-content:space-between;letter-spacing:.6px}
+.notification strong{font-size:12px;display:block;margin:5px 0}
+.notification p{font-size:11px;line-height:1.4;margin:0;color:#354654}
+.lockcontrols{display:flex;justify-content:space-between;align-items:center;margin:20px 5px 25px}
+.round{height:43px;width:43px;border:1px solid #ffffff50;border-radius:50%;background:#1724388c;color:white;font-size:19px}
+.swipe{font-size:9px;letter-spacing:2px;text-shadow:0 2px 5px #000}
+#home{padding:calc(env(safe-area-inset-top) + 52px) 17px calc(env(safe-area-inset-bottom) + 102px);overflow:auto;background:linear-gradient(180deg,#0e20338a,#0b1425b0)}
+.greeting{font-size:11px;color:#e0eaf0;margin:5px 2px 12px}
+.widgetrow{display:grid;grid-template-columns:1.1fr .9fr;gap:10px}
+.widget{padding:14px;border:1px solid #ffffff35;border-radius:18px;background:#d9e5ed20;backdrop-filter:blur(18px);min-width:0}
+.widgetlabel{font-size:9px;letter-spacing:1px;color:#d5e2eb}
+.wtime{font-size:30px;font-weight:300;margin:9px 0 4px}
+.wsmall{font-size:10px;color:#e0e8ef;line-height:1.5}
+.weathericon{font-size:26px;margin:8px 0}
+.dayrow{display:flex;justify-content:space-between;font-size:9px;margin-top:13px;color:#d7e4ed}
+.sectiontitle{font-size:10px;letter-spacing:1.5px;color:#e2eaf0;margin:20px 3px 13px}
+.appgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px 5px}
+.appbutton{border:0;background:transparent;color:white;padding:0;display:flex;flex-direction:column;align-items:center;gap:7px;min-width:0}
+.appicon{width:51px;height:51px;border-radius:15px;display:grid;place-items:center;font-size:24px;color:white;box-shadow:0 5px 12px #0003;border:1px solid #ffffff25}
+.appname{font-size:10px;text-shadow:0 1px 4px #000;white-space:nowrap}
+.dock{position:absolute;z-index:12;bottom:calc(env(safe-area-inset-bottom) + 19px);left:14px;right:14px;display:flex;justify-content:space-around;align-items:center;padding:11px 5px;border:1px solid #ffffff30;border-radius:23px;background:#ffffff26;backdrop-filter:blur(24px)}
+.dock .appicon{width:45px;height:45px}
+.homebar{position:absolute;z-index:50;bottom:calc(env(safe-area-inset-bottom) + 7px);left:50%;transform:translateX(-50%);width:100px;height:4px;border-radius:5px;background:#fff}
+#app{background:#f1f4f8;color:#17283a;padding:calc(env(safe-area-inset-top) + 45px) 17px calc(env(safe-area-inset-bottom) + 35px);overflow:auto}
+.apphead{display:flex;align-items:center;gap:11px;margin:7px 0 20px}
+.back{background:#e0e8ef;border:0;border-radius:10px;padding:9px 12px;color:#203448;font-size:12px}
+.apphead h2{margin:0;font-size:22px;letter-spacing:-.5px}
+.apphead small{font-size:9px;color:#748496;display:block;margin-top:4px;letter-spacing:1px}
+.appbody{font-size:13px;line-height:1.55}
+.appcard{background:white;border:1px solid #e0e6ec;border-radius:14px;padding:14px;margin:10px 0;box-shadow:0 4px 12px #142b3d08}
+.appcard h3{font-size:13px;margin:0 0 7px}
+.appcard p{margin:5px 0;color:#4c5f70}
+.bubble{padding:11px 12px;border-radius:13px;margin:9px 0;max-width:90%;background:#e0e7ee;font-size:12px}
+.bubble.out{margin-left:auto;background:#bcebd6}
+.bubble small{display:block;color:#657889;font-size:9px;margin-bottom:4px}
+.appbutton2{border:1px solid #c5d1dc;background:#eaf0f5;color:#203348;padding:10px 12px;border-radius:9px;font-size:11px;margin:5px 4px 0 0}
+.textfield{width:100%;padding:12px;background:white;color:#17283a;border:1px solid #bdcbd8;border-radius:9px;margin:8px 0}
+.mapmock{height:180px;border-radius:12px;position:relative;overflow:hidden;background:repeating-linear-gradient(30deg,transparent 0 31px,#fff 32px 37px,transparent 38px 67px),repeating-linear-gradient(120deg,#d5e3d8 0 35px,#c4d9cc 36px 39px,#dce8de 40px 68px)}
+.mapmock:after{content:"17";position:absolute;left:55%;top:42%;background:#3e7f73;color:white;border-radius:50% 50% 50% 0;transform:rotate(-45deg);padding:8px;font-size:12px}
+.toast{position:absolute;z-index:70;bottom:calc(env(safe-area-inset-bottom) + 90px);left:10%;width:80%;padding:12px;border-radius:12px;background:#18293b;color:white;text-align:center;font-size:12px;border:1px solid #52667b}
+@media(min-width:700px){#immersive.active .device{border-left:1px solid #28384c;border-right:1px solid #28384c}}
 </style>
 </head>
 <body>
-<div id="login" style="position:fixed;z-index:200;inset:0;background:#08111e;display:grid;place-items:center;padding:22px">
- <form id="loginForm" class="panel" style="width:min(400px,100%)">
-  <div class="tag">UNIDAD DE ANÁLISIS DIGITAL</div>
-  <h1>Expediente Cero</h1>
-  <p class="muted">Identificación del agente para abrir el archivo reservado.</p>
-  <label for="agent">Nombre del agente</label>
-  <input id="agent" required maxlength="45" placeholder="Tu nombre" style="display:block;width:100%;margin:10px 0;padding:13px;background:#08111e;border:1px solid #42566e;border-radius:9px;color:white">
-  <button class="action">Acceder al sistema ↗</button>
- </form>
-</div>
-<header><div><b>EXPEDIENTE CERO</b><br><small>UNIDAD DE INVESTIGACIÓN DIGITAL</small></div><small>● SISTEMA ACTIVO</small></header>
-<main>
- <div style="margin-bottom:22px"><div class="tag">ARCHIVO RESERVADO · EC-001</div><h1>Las pruebas no cuentan toda la historia.</h1><p class="muted">Examina el dispositivo recuperado. Cruza las horas, las conversaciones y los archivos antes de sacar conclusiones.</p><p id="agentInfo" class="muted"></p></div>
- <div class="layout" id="workspace">
-  <section class="panel case">
-   <div class="tag">CASO EC-001 / PRIORIDAD ALTA</div>
-   <h2>La última conexión</h2>
-   <p>Un teléfono NEXO fue encontrado apagado cerca de la estación vieja. Su propietario desapareció esa noche. Los registros no coinciden con los testimonios.</p>
-   <div class="fact">DISPOSITIVO: NEXO NX-11</div>
-   <div class="fact">ÚLTIMA SEÑAL: 23:48 · ZONA NORTE</div>
-   <div class="fact">INTEGRIDAD: PARCIAL · 82%</div>
-   <p class="muted">Nota del analista: una pista aislada puede engañar. Busca contradicciones entre distintas aplicaciones.</p>
-   <button class="action" id="startPhone">⌕ EXAMINAR TELÉFONO NEXO</button>
-   <h3>Pistas revisadas</h3>
-   <div id="clues">
-    <div class="fact" id="clue1">Pista 01 · Pendiente: conversación fijada.</div>
-    <div class="fact" id="clue2">Pista 02 · Pendiente: llamadas recientes.</div>
-    <div class="fact" id="clue3">Pista 03 · Pendiente: notas y fotografías.</div>
+<section id="briefing">
+ <div class="top"><div><div class="logo">EXPEDIENTE CERO</div><div class="sub">UNIDAD DE ANÁLISIS DIGITAL</div></div><div class="tag">EC / 001</div></div>
+ <section class="case">
+  <div class="tag">EXPEDIENTE ACTIVO · PRIORIDAD ALTA</div>
+  <h1>La última conexión</h1>
+  <p>Un teléfono NEXO fue encontrado cerca de la estación vieja. Su propietario desapareció durante la noche. Las comunicaciones recuperadas no encajan con la versión de sus conocidos.</p>
+  <div class="fact">DISPOSITIVO: NEXO NX-11</div><div class="fact">ÚLTIMA SEÑAL: 23:48 · SECTOR NORTE</div><div class="fact">INTEGRIDAD DEL SISTEMA: 82%</div>
+  <p class="hint">Examina el dispositivo. Explora sus aplicaciones, compara las horas y busca información que alguien intentó ocultar.</p>
+  <button class="action" id="openPhone">⌕ &nbsp; EXAMINAR TELÉFONO NEXO</button>
+  <div class="tag" style="margin-top:25px">REGISTRO DE PISTAS</div>
+  <div class="fact" id="clue1">PISTA 01 · Pendiente: conversación fijada.</div>
+  <div class="fact" id="clue2">PISTA 02 · Pendiente: registro de llamadas.</div>
+  <div class="fact" id="clue3">PISTA 03 · Pendiente: nota y fotografía del número 17.</div>
+ </section>
+</section>
+<section id="immersive">
+ <div class="device">
+  <div class="wallpaper"></div>
+  <div class="status"><span id="statusTime">09:41</span><span>● ▮▮▮ ▰</span></div>
+  <div class="island"></div><button id="exit">×</button>
+  <section class="screen" id="lock">
+   <div class="lockdate" id="lockdate">DISPOSITIVO RECUPERADO</div>
+   <div class="lockclock" id="clock">09:41</div>
+   <div class="lockcaption">MIENTRAS HAYA DATOS, HAY RESPUESTAS.</div>
+   <div class="lockbottom">
+    <div class="notification"><div class="notifhead"><span>MENSAJES · NEXO</span><span>AHORA</span></div><strong>Mensaje sin leer</strong><p>«No vayas por la entrada principal. Te explico cuando llegues.»</p></div>
+    <div class="notification"><div class="notifhead"><span>NEXO CLOUD</span><span>AYER</span></div><strong>Sincronización incompleta</strong><p>Se han recuperado elementos de la copia local.</p></div>
+    <div class="lockcontrols"><button class="round" id="flash">◉</button><span class="swipe">TOCA PARA DESBLOQUEAR</span><button class="round" id="quickCamera">▣</button></div>
    </div>
   </section>
-  <section class="panel phone-panel">
-   <div class="phone" id="phone">
-    <div class="wallpaper"></div><div class="status"><span id="statusTime">09:41</span><span>● ▮▮▮ ▰</span></div><div class="island"></div>
-    <button class="exit" id="exitPhone" aria-label="Volver al expediente">×</button>
-    <div class="screen lock" id="lockScreen">
-     <div class="date" id="lockDate">DISPOSITIVO RECUPERADO</div>
-     <div class="clock" id="clock">09:41</div>
-     <p>Todo lo importante deja un rastro.</p>
-     <div class="notification"><small>MENSAJES · NEXO</small><b>Mensaje sin leer</b>«No vayas por la entrada principal. Te explico cuando llegues.»</div>
-     <div class="notification"><small>SISTEMA</small><b>Sincronización incompleta</b>Se recuperaron elementos de la copia local.</div>
-     <div class="unlock"><button id="unlock">TOCAR PARA DESBLOQUEAR</button></div>
-    </div>
-    <div class="screen hidden" id="homeScreen">
-     <div class="widgets"><div class="tag">MI DÍA · NEXO</div><div style="font-size:27px;margin:8px 0" id="homeClock">09:41</div><small>Última conexión conocida: 23:48</small></div>
-     <div class="grid" id="apps"></div>
-    </div>
-    <div class="appview hidden" id="appView">
-     <button id="back">‹ Inicio</button><h2 id="appTitle">Mensajes</h2><div id="appContent"></div>
-    </div>
+  <section class="screen hidden" id="home">
+   <div class="greeting" id="greeting">MIÉRCOLES · BUENAS NOCHES</div>
+   <div class="widgetrow">
+    <div class="widget"><div class="widgetlabel">NEXO · AGENDA</div><div class="wtime" id="homeclock">09:41</div><div class="wsmall">3 avisos por revisar</div></div>
+    <div class="widget"><div class="widgetlabel">CLIMA LOCAL</div><div class="weathericon">☁</div><div class="wsmall">Nublado<br>Sector norte</div></div>
    </div>
+   <div class="widget" style="margin-top:10px"><div class="widgetlabel">ACTIVIDAD RECIENTE</div><p style="font-size:11px;margin:8px 0 0">Última conexión conocida <b>23:48</b></p><div class="dayrow"><span>MENSAJES 2</span><span>ARCHIVOS 3</span><span>AVISOS 1</span></div></div>
+   <div class="sectiontitle">TUS APLICACIONES</div>
+   <div class="appgrid" id="appgrid"></div>
+   <div class="dock" id="dock"></div>
   </section>
+  <section class="screen hidden" id="app">
+   <div class="apphead"><button class="back" id="back">‹ Inicio</button><div><h2 id="apptitle">Mensajes</h2><small id="appsubtitle">NEXO OS · DATOS LOCALES</small></div></div>
+   <div class="appbody" id="appbody"></div>
+  </section>
+  <div class="homebar" id="homebar"></div>
+  <div class="toast hidden" id="toast"></div>
  </div>
- <p class="muted" style="text-align:center;font-size:11px;margin-top:24px">Experiencia ficticia interactiva · El progreso se guarda en este navegador.</p>
-</main>
+</section>
 <script>
 (()=>{
 const $=id=>document.getElementById(id);
-let agent=localStorage.getItem('ec_agent')||'';
-let badge=localStorage.getItem('ec_badge');
-if(!badge){badge='EC-'+Math.floor(1000+Math.random()*9000);localStorage.setItem('ec_badge',badge)}
-if(agent){$('login').classList.add('hidden');$('agentInfo').textContent='AGENTE: '+agent+' · PLACA: '+badge}
-$('loginForm').addEventListener('submit',e=>{
- e.preventDefault();agent=$('agent').value.trim();if(!agent)return;
- localStorage.setItem('ec_agent',agent);
- $('agentInfo').textContent='AGENTE: '+agent+' · PLACA: '+badge;
- $('login').classList.add('hidden');
-});
+let seen=JSON.parse(localStorage.getItem('nexo_seen')||'[]');
 const apps=[
- ['messages','Mensajes','▤'],['calls','Llamadas','☎'],['photos','Fotos','✿'],
- ['notes','Notas','▧'],['files','Archivos','▰'],['contacts','Contactos','♙'],
- ['maps','Mapas','⌖'],['browser','Navegador','◎'],['deleted','Eliminados','⌫']
+['messages','Mensajes','▤','#38b978'],['calls','Llamadas','☎','#239b87'],['photos','Fotos','✿','#c47ac7'],['notes','Notas','▧','#e6b54e'],
+['files','Archivos','▰','#4f9fdf'],['contacts','Contactos','♙','#7e91a7'],['maps','Mapas','⌖','#57a987'],['browser','Navegador','◎','#548ed8'],
+['health','Salud','♡','#e86c83'],['settings','Ajustes','⚙','#8292a6'],['voice','Notas voz','♫','#9774d9'],['deleted','Eliminados','⌫','#66778b']
 ];
 const data={
- messages:['Conversación fijada','Mara V. · 23:16: «¿Sigues en el mismo sitio?»','Tú · 23:18: «Sí. Espero cinco minutos más.»','Mara V. · 23:21: «No vayas por la entrada principal. Te explico cuando llegues.»','Número desconocido · 23:47: «Ya te he visto. No estás solo.»','El mensaje de las 23:47 aparece entregado, pero no leído.'],
- calls:['Registro de llamadas','23:42 · Saliente · Mara V. · Duración: 18 segundos.','23:46 · Entrante · Número oculto · Llamada perdida.','23:49 · Saliente · Mara V. · No conectada.','La última conexión de datos figura a las 23:48.'],
- photos:['Galería recuperada','IMG_2048 · 22:58 · Reflejo de un letrero azul. Se distingue el número 17.','IMG_2049 · 23:03 · Calle lateral junto a la estación vieja.','IMG_2050 · 23:44 · Archivo dañado, tamaño inusual.'],
- notes:['Notas locales','«17. La puerta azul no es la entrada. Si el reloj del andén está parado, voy tarde.»','«Mara dice que no confíe en el registro compartido. Comprobar la copia local.»','Nota eliminada: «No era una cita. Era una entrega.»'],
- files:['Archivos recuperados','backup_local_2310.zip · Copia parcial · 18,4 MB.','recibo_17.pdf · Documento sin vista previa.','audio_cache.tmp · Audio incompleto de 7 segundos.','La sincronización en nube falló a las 23:45.'],
- contacts:['Contactos','Mara V. · Favorito · Último contacto: 23:42.','Iván R. · Compañero de trabajo.','Mara aparece como favorita, pero su conversación se archivó antes de la última conexión.'],
- maps:['Ubicación recuperada','Estación vieja · Sector norte.','Última ubicación guardada: 23:03. Punto de referencia cercano: acceso lateral 17.','El historial muestra una ruta incompleta que termina a dos calles de la estación.'],
- browser:['Historial del navegador','Búsqueda: «entrada lateral estación vieja horario».','Plano de accesos guardado ayer a las 22:51.','El historial fue borrado a las 23:51.'],
- deleted:['Carpeta protegida','Introduce el PIN de cuatro cifras. La pista está en una de las notas.']
+messages:{title:'Mensajes',items:[
+['Mara V. · 23:16','¿Sigues en el mismo sitio?','in'],['Tú · 23:18','Sí. Espero cinco minutos más.','out'],['Mara V. · 23:21','No vayas por la entrada principal. Te explico cuando llegues.','in'],['Número desconocido · 23:47','Ya te he visto. No estás solo.','in']],note:'El último mensaje figura como entregado, pero no leído. La conversación se archivó manualmente.'},
+calls:{title:'Llamadas',items:[['23:42 · Mara V.','Saliente · Duración: 00:18'],['23:46 · Número oculto','Entrante · Llamada perdida'],['23:49 · Mara V.','Saliente · Sin conexión']],note:'La última conexión de datos se registró a las 23:48, justo entre las llamadas.'},
+photos:{title:'Fotos',items:[['IMG_2048 · 22:58','Fotografía nocturna. En el reflejo de un letrero azul se distingue el número 17.'],['IMG_2049 · 23:03','Calle lateral junto a la estación vieja.'],['IMG_2050 · 23:44','Archivo dañado. Tamaño inusual para una fotografía.']],note:'La imagen de las 23:03 se guardó cinco minutos después de ser tomada.'},
+notes:{title:'Notas',items:[['No olvidar','17. La puerta azul no es la entrada. Si el reloj del andén está parado, voy tarde.'],['Borrador sin título','Mara dice que no confíe en el registro compartido. Comprobar la copia local antes de salir.'],['Nota eliminada parcialmente','No era una cita. Era una entrega.']],note:'El número 17 también aparece en la galería.'},
+files:{title:'Archivos',items:[['backup_local_2310.zip','Copia local parcial · 18,4 MB'],['recibo_17.pdf','Documento sin vista previa'],['audio_cache.tmp','Audio incompleto · 00:07']],note:'La sincronización en la nube falló a las 23:45. La copia local conserva datos más recientes.'},
+contacts:{title:'Contactos',items:[['Mara V.','Favorito · Último contacto: 23:42'],['Iván R.','Compañero de trabajo'],['Servicio técnico','Contacto añadido ayer a las 18:07']],note:'La conversación de Mara fue archivada antes de la última conexión.'},
+maps:{title:'Mapas',map:true,items:[['Estación vieja · Sector norte','Última ubicación guardada: 23:03. Referencia cercana: acceso lateral 17.']],note:'El historial muestra una ruta incompleta que termina a dos calles de la estación.'},
+browser:{title:'Navegador',items:[['Búsqueda reciente','«entrada lateral estación vieja horario»'],['Página guardada','Plano de accesos de la estación · 22:51'],['Historial eliminado','Borrado a las 23:51']],note:'El historial desapareció tres minutos después de perderse la señal.'},
+health:{title:'Salud',items:[['Actividad diaria','Pasos registrados hasta las 23:39. Después no hay actividad sincronizada.'],['Última lectura','Pulso registrado a las 23:41.'],['Dispositivo asociado','Dejó de recibir datos a las 23:44']],note:'La desconexión del reloj precede a la pérdida de señal del teléfono.'},
+settings:{title:'Ajustes',items:[['Cuenta NEXO','Última sincronización completa: 22:58'],['Privacidad','Historial compartido desactivado a las 23:45'],['Red y conexión','Pérdida de señal registrada a las 23:48']],note:'No se ha registrado un reinicio del dispositivo.'},
+voice:{title:'Notas de voz',items:[['Audio 01 · 23:39','Duración 00:07. Transcripción: «…la puerta azul, no la principal…»'],['Audio 02 · 23:44','Contenido dañado; la entrada de grabación sí se conserva.']],note:'El primer audio se guardó localmente, pero nunca se subió a la nube.'},
+deleted:{title:'Eliminados',pin:true,items:[['Carpeta protegida','Introduce el PIN de cuatro cifras que dejó el propietario.']],note:'Pista: el número aparece tanto en una nota como en una fotografía.'}
 };
-apps.forEach(([id,name,glyph])=>{
- const b=document.createElement('button');b.className='app';b.innerHTML='<span class="icon">'+glyph+'</span>'+name;
- b.addEventListener('click',()=>openApp(id,name));$('apps').appendChild(b);
-});
-function openApp(id,name){
- $('homeScreen').classList.add('hidden');$('lockScreen').classList.add('hidden');$('appView').classList.remove('hidden');
- $('appTitle').textContent=name;$('appContent').innerHTML='';
- (data[id]||['Sin datos recuperados']).forEach((line,i)=>{
-  const d=document.createElement('div');d.className='item';d.textContent=line;
-  if(i===0)d.style.fontWeight='bold';$('appContent').appendChild(d);
- });
- if(id==='deleted'){
-  const input=document.createElement('input');input.placeholder='PIN de cuatro cifras';input.inputMode='numeric';input.maxLength=4;input.style.cssText='padding:12px;width:100%;color:#17283a;background:white;border:1px solid #ccd6df;border-radius:8px';
-  const btn=document.createElement('button');btn.textContent='Desbloquear';btn.style.marginTop='10px';
-  const result=document.createElement('div');result.className='item';
-  btn.onclick=()=>{result.textContent=input.value==='2317'?'Pista recuperada: «La entrega era a las 23:50. Busca el recibo 17».':'Código incorrecto. Mira el número que aparece en la nota y la fotografía.'};
-  $('appContent').append(input,btn,result);
- }
- const clue={messages:'clue1',calls:'clue2',notes:'clue3',photos:'clue3',files:'clue3'}[id];
- if(clue)$(clue).textContent=$(clue).textContent.replace('Pendiente','Revisada');
+function toast(s){$('toast').textContent=s;$('toast').classList.remove('hidden');setTimeout(()=>$('toast').classList.add('hidden'),2600)}
+function showHome(){$('lock').classList.add('hidden');$('app').classList.add('hidden');$('home').classList.remove('hidden');$('homebar').style.background='white'}
+function unlock(){showHome()}
+function openApp(id){
+ const d=data[id];if(!d)return;
+ $('home').classList.add('hidden');$('lock').classList.add('hidden');$('app').classList.remove('hidden');$('apptitle').textContent=d.title;$('appbody').innerHTML='';
+ if(d.map){const m=document.createElement('div');m.className='mapmock';$('appbody').appendChild(m)}
+ d.items.forEach((it,i)=>{const c=document.createElement('div');c.className='appcard';c.innerHTML='<h3></h3><p></p>' ;c.querySelector('h3').textContent=it[0];c.querySelector('p').textContent=it[1];$('appbody').appendChild(c)});
+ if(d.note){const n=document.createElement('div');n.className='appcard';n.innerHTML='<h3>Información recuperada</h3><p></p>';n.querySelector('p').textContent=d.note;$('appbody').appendChild(n)}
+ if(d.pin){
+ const input=document.createElement('input');input.className='textfield';input.placeholder='PIN de cuatro cifras';input.inputMode='numeric';input.maxLength=4;
+ const b=document.createElement('button');b.className='appbutton2';b.textContent='Desbloquear';
+ const result=document.createElement('div');result.className='appcard';
+ b.onclick=()=>{result.textContent=input.value==='2317'?'Código aceptado. «La entrega era a las 23:50. Busca el recibo 17».':'Código incorrecto. Comprueba el número de la nota y la fotografía.';if(input.value==='2317')toast('Nueva pista recuperada')};
+ $('appbody').append(input,b,result)}
+ if(!seen.includes(id)){seen.push(id);localStorage.setItem('nexo_seen',JSON.stringify(seen))}
+ const clues={messages:'clue1',calls:'clue2',notes:'clue3',photos:'clue3',files:'clue3'};
+ if(clues[id])$(clues[id]).textContent=$(clues[id]).textContent.replace('Pendiente','Revisada');
 }
-function unlock(){$('lockScreen').classList.add('hidden');$('appView').classList.add('hidden');$('homeScreen').classList.remove('hidden')}
-$('unlock').addEventListener('click',unlock);
-$('lockScreen').addEventListener('click',e=>{if(!e.target.closest('button'))unlock()});
-$('back').addEventListener('click',unlock);
-$('startPhone').addEventListener('click',()=>{
- $('workspace').classList.add('immersive');$('lockScreen').classList.remove('hidden');$('homeScreen').classList.add('hidden');$('appView').classList.add('hidden');window.scrollTo(0,0);
+apps.forEach(([id,name,glyph,color])=>{
+ const b=document.createElement('button');b.className='appbutton';const icon=document.createElement('span');icon.className='appicon';icon.style.background='linear-gradient(145deg,'+color+',#24364f)';icon.textContent=glyph;const label=document.createElement('span');label.className='appname';label.textContent=name;b.append(icon,label);b.onclick=()=>openApp(id);$('appgrid').appendChild(b)
 });
-$('exitPhone').addEventListener('click',()=>{$('workspace').classList.remove('immersive');window.scrollTo({top:0,behavior:'smooth'})});
-function tick(){const d=new Date(),t=d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit',hour12:false});$('clock').textContent=t;$('homeClock').textContent=t;$('statusTime').textContent=t;$('lockDate').textContent=d.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'}).toUpperCase()}
+['messages','calls','photos','settings'].forEach(id=>{const a=apps.find(x=>x[0]===id);const b=document.createElement('button');b.className='appbutton';const icon=document.createElement('span');icon.className='appicon';icon.style.background='linear-gradient(145deg,'+a[3]+',#24364f)';icon.textContent=a[2];b.appendChild(icon);b.onclick=()=>openApp(id);$('dock').appendChild(b)});
+$('openPhone').onclick=()=>{$('immersive').classList.add('active');$('lock').classList.remove('hidden');$('home').classList.add('hidden');$('app').classList.add('hidden');window.scrollTo(0,0)};
+$('exit').onclick=()=>{$('immersive').classList.remove('active');window.scrollTo(0,0)};
+$('lock').onclick=e=>{if(!e.target.closest('button'))unlock()};
+$('back').onclick=showHome;
+$('flash').onclick=e=>{e.stopPropagation();toast('Linterna activada')};
+$('quickCamera').onclick=e=>{e.stopPropagation();openApp('photos')};
+function tick(){const d=new Date(),t=d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit',hour12:false});$('clock').textContent=t;$('homeclock').textContent=t;$('statusTime').textContent=t;$('lockdate').textContent=d.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'}).toUpperCase();$('greeting').textContent=d.toLocaleDateString('es-ES',{weekday:'long'}).toUpperCase()+' · DISPOSITIVO NEXO'}
 tick();setInterval(tick,15000);
 })();
 </script>
