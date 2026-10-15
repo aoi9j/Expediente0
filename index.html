@@ -1,747 +1,590 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#06111e">
-<title>Expediente Cero | Sistema policial</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080d17">
+<title>Expediente Cero · NEXO</title>
 <style>
 :root {
-  --bg: #06111e;
-  --panel: #0a1b2b;
-  --panel2: #0d2335;
-  --blue: #55baff;
-  --blue2: #168de0;
-  --text: #edf6ff;
-  --muted: #8ba4ba;
-  --line: #24445d;
-  --green: #5ce0ad;
+  --bg:#080d17; --panel:#111a29; --line:#28384b;
+  --blue:#76c9ff; --text:#f4f7fc; --muted:#94a4b8;
+  --green:#75e0b1;
 }
-* { box-sizing: border-box; }
+*{box-sizing:border-box}
 body {
-  margin: 0;
-  min-height: 100vh;
-  color: var(--text);
+  margin:0; min-height:100vh; color:var(--text);
+  background:radial-gradient(ellipse at top,#182d46,#080d17 65%);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+button,input{font:inherit}
+button{cursor:pointer;color:inherit}
+.hidden{display:none!important}
+header{
+  height:65px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;border-bottom:1px solid #26374a;background:#080d17eF;
+}
+.logo{font-size:13px;font-weight:800;letter-spacing:2px}
+.logo span{color:var(--blue)}
+.header-status{font-size:10px;color:var(--green);letter-spacing:1px}
+main{max-width:850px;margin:auto;padding:28px 16px 45px}
+h1{font-size:26px;margin:10px 0}
+p{line-height:1.6}
+.eyebrow{font-size:10px;letter-spacing:2.5px;color:var(--blue);font-weight:700}
+.muted{color:var(--muted);font-size:13px}
+.card{
+  background:linear-gradient(145deg,#142235,#0d1522);
+  border:1px solid var(--line);border-radius:18px;padding:24px;
+  box-shadow:0 18px 55px #0005;
+}
+input{
+  display:block;width:100%;margin:9px 0 20px;padding:15px;
+  border:1px solid #354b62;background:#080f1b;color:white;
+  border-radius:10px;outline:none;
+}
+input:focus{border-color:var(--blue)}
+label{font-size:11px;letter-spacing:1.5px;color:#a9dfff}
+.primary{
+  width:100%;padding:15px;border:0;border-radius:10px;
+  color:#06111d;background:linear-gradient(100deg,#8cdaff,#46aaff);
+  font-weight:800;letter-spacing:1px;
+}
+.secondary{
+  padding:12px;border:1px solid var(--line);border-radius:9px;
+  background:#142236;color:var(--blue);
+}
+#login{max-width:480px;margin:35px auto}
+.security{margin-top:20px;color:var(--muted);font-size:11px;line-height:1.7}
+#workspace{display:grid;grid-template-columns:1fr 310px;gap:28px;align-items:center}
+.caseinfo{padding:8px 0}
+.casebox{margin-top:24px;padding:18px;border:1px solid var(--line);border-radius:12px;background:#0d1928}
+.casebox h3{margin:10px 0}
+.phone{
+  width:100%;max-width:310px;margin:auto;
+  padding:8px;border-radius:39px;
+  background:linear-gradient(135deg,#69798b,#161e29 18%,#03070d 70%,#65768a);
+  border:1px solid #64768b;
+  box-shadow:0 24px 65px #0009;
+}
+.phone-inner{
+  height:610px;position:relative;overflow:hidden;border-radius:31px;
+  background:#111d2d;
+}
+.dynamic-island{
+  position:absolute;z-index:8;top:10px;left:50%;transform:translateX(-50%);
+  width:94px;height:25px;border-radius:20px;background:#03060b;
+}
+.statusbar{
+  position:absolute;z-index:7;top:0;left:0;right:0;height:40px;
+  padding:14px 19px 0;display:flex;justify-content:space-between;
+  font-size:11px;font-weight:700;pointer-events:none;
+}
+.wallpaper{
+  position:absolute;inset:0;
   background:
-    radial-gradient(ellipse at 50% 0%, #153957 0%, transparent 55%),
-    var(--bg);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+   radial-gradient(ellipse at 20% 25%,#3d739a70,transparent 35%),
+   radial-gradient(ellipse at 80% 70%,#764a8b70,transparent 40%),
+   linear-gradient(155deg,#172b43,#0c172b 55%,#201e38);
 }
-button, input { font: inherit; }
-button { cursor: pointer; }
-header {
-  padding: 24px 20px 18px;
-  border-bottom: 1px solid var(--line);
-  background: #06111edb;
+.wallpaper:before,.wallpaper:after{
+  content:"";position:absolute;border:1px solid #ffffff12;border-radius:50%;
+  width:270px;height:270px;left:-100px;top:120px;
 }
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  max-width: 1000px;
-  margin: auto;
+.wallpaper:after{width:200px;height:200px;left:140px;top:320px}
+.screen{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none}
+.screen::-webkit-scrollbar{display:none}
+.lock{
+  text-align:center;padding:85px 18px 20px;min-height:100%;
+  background:linear-gradient(#07101a38,#07101a30);
 }
-.crest {
-  width: 47px;
-  height: 47px;
-  border: 1px solid var(--blue);
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  color: var(--blue);
-  font-size: 24px;
+.lock-date{font-size:12px;color:#e0eafa}
+.lock-time{font-size:66px;font-weight:250;letter-spacing:-3px;margin:8px 0 27px}
+.notification{
+  text-align:left;margin:10px 0;padding:13px;
+  border:1px solid #ffffff23;border-radius:15px;
+  background:#172333c9;backdrop-filter:blur(20px);
+  font-size:11px;line-height:1.5;
 }
-.brand-name {
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: 2px;
+.notif-head{display:flex;justify-content:space-between;color:#c3d4e7;font-size:10px;margin-bottom:5px}
+.notif-title{font-weight:750;font-size:12px;margin-bottom:3px}
+.unlock{
+  width:100%;margin-top:18px;padding:13px;border-radius:30px;
+  border:1px solid #ffffff4c;background:#ffffff18;
+  backdrop-filter:blur(15px);font-size:12px;
 }
-.brand-sub {
-  margin-top: 5px;
-  color: var(--blue);
-  font-size: 9px;
-  letter-spacing: 2px;
+.home{
+  min-height:100%;padding:53px 14px 75px;
+  background:linear-gradient(#101b2a70,#101b2a55);
 }
-.status {
-  margin-left: auto;
-  color: var(--green);
-  font-size: 10px;
-  letter-spacing: 1px;
+.greeting{font-size:12px;color:#d2dfed;margin:10px 3px 3px}
+.phone-date{font-size:24px;font-weight:650;margin:3px 3px 18px}
+.widget{
+  padding:14px;margin-bottom:19px;border-radius:17px;
+  background:#ffffff14;border:1px solid #ffffff15;
 }
-main {
-  width: min(100% - 32px, 560px);
-  margin: 35px auto 55px;
+.widget-label{font-size:10px;color:#d5e5f5;letter-spacing:1px}
+.widget-main{font-size:15px;font-weight:700;margin-top:8px}
+.widget-sub{font-size:10px;color:#bdcad9;margin-top:4px}
+.app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:19px 8px}
+.app{border:0;background:none;text-align:center;padding:0;min-width:0}
+.app-icon{
+  width:52px;height:52px;margin:0 auto 7px;border-radius:15px;
+  display:grid;place-items:center;box-shadow:0 4px 12px #0003;
+  border:1px solid #ffffff25;
 }
-.panel {
-  padding: 26px 22px;
-  border: 1px solid var(--line);
-  border-radius: 15px;
-  background: linear-gradient(145deg, #0b2031f5, #061321f8);
-  box-shadow: 0 22px 70px #0005;
+.app-icon svg{width:26px;height:26px;stroke:white;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.app-name{font-size:10px;text-shadow:0 1px 4px #000}
+.messages{background:linear-gradient(145deg,#43dc99,#087b69)}
+.calls{background:linear-gradient(145deg,#5be4a2,#16845b)}
+.photos{background:linear-gradient(145deg,#e7a6ed,#4e9fff)}
+.notes{background:linear-gradient(145deg,#f8d98a,#d99b32)}
+.files{background:linear-gradient(145deg,#7ccfff,#2879cf)}
+.contacts{background:linear-gradient(145deg,#9caed4,#4c638e)}
+.camera{background:linear-gradient(145deg,#626f83,#252e3c)}
+.settings{background:linear-gradient(145deg,#aebaca,#4c586a)}
+.browser{background:linear-gradient(145deg,#55d7eb,#3874dc)}
+.dock{
+  position:absolute;bottom:9px;left:12px;right:12px;
+  padding:11px 8px;border:1px solid #ffffff20;border-radius:23px;
+  background:#ffffff17;backdrop-filter:blur(22px);
+  display:grid;grid-template-columns:repeat(4,1fr);gap:4px;
 }
-.eyebrow {
-  color: var(--blue);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-align: center;
+.dock .app-icon{width:43px;height:43px;border-radius:13px;margin:0 auto}
+.dock .app-name{display:none}
+.home-indicator{
+  position:absolute;z-index:9;bottom:4px;left:50%;transform:translateX(-50%);
+  width:90px;height:4px;border-radius:8px;background:#ffffffbd;
 }
-h1 {
-  margin: 13px 0 9px;
-  text-align: center;
-  font-size: clamp(25px, 6vw, 34px);
-  letter-spacing: 1px;
+.appview{
+  min-height:100%;padding:54px 14px 24px;
+  background:#101b2b;
 }
-.subtitle {
-  color: var(--muted);
-  font-size: 13px;
-  text-align: center;
-  line-height: 1.7;
+.app-top{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.back{
+  width:34px;height:34px;border-radius:50%;border:1px solid #ffffff22;
+  background:#ffffff10;font-size:20px;
 }
-.rule {
-  height: 1px;
-  background: var(--line);
-  margin: 24px 0;
+.app-heading{font-size:22px;font-weight:750}
+.app-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.list-item{
+  padding:14px 11px;border-bottom:1px solid #ffffff13;
+  font-size:12px;line-height:1.6;
 }
-.field { margin: 20px 0; }
-label {
-  display: block;
-  margin-bottom: 9px;
-  color: #9fd9ff;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
+.list-item strong{display:block;font-size:12px;margin-bottom:3px}
+.chat-bubble{
+  max-width:90%;padding:12px;margin:10px 0;border-radius:15px;
+  background:#24344a;font-size:12px;line-height:1.6;
 }
-input {
-  display: block;
-  width: 100%;
-  min-height: 53px;
-  padding: 14px;
-  color: var(--text);
-  background: #04101c;
-  border: 1px solid #31536c;
-  border-radius: 9px;
-  outline: none;
+.chat-bubble.mine{margin-left:auto;background:#087c72}
+.chat-time{text-align:right;font-size:9px;color:#b5c7d9;margin-top:5px}
+.file-note{padding:15px;border-radius:12px;background:#1c2b40;margin:10px 0}
+.photo-placeholder{
+  width:100%;aspect-ratio:4/3;border-radius:13px;
+  display:grid;place-items:center;text-align:center;
+  background:linear-gradient(145deg,#32495d,#131e32);
+  border:1px solid #ffffff20;color:#cfdfef;font-size:12px;
+  padding:15px;
 }
-input:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px #55baff19;
+.system-toast{
+  position:fixed;z-index:30;top:75px;left:50%;transform:translateX(-50%);
+  width:min(92%,400px);padding:14px;border:1px solid #ffffff2b;
+  border-radius:15px;background:#17263beF;box-shadow:0 10px 35px #0008;
+  font-size:12px;line-height:1.5;
 }
-input::placeholder { color: #637b91; }
-.primary {
-  width: 100%;
-  min-height: 54px;
-  margin-top: 12px;
-  padding: 15px;
-  color: #031423;
-  background: linear-gradient(100deg, #72cbff, #359de9);
-  border: 0;
-  border-radius: 9px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  transition: filter .2s, transform .2s;
-}
-.primary:active { transform: scale(.985); }
-.primary:hover { filter: brightness(1.08); }
-.secondary {
-  width: 100%;
-  padding: 13px;
-  margin-top: 10px;
-  color: var(--blue);
-  background: transparent;
-  border: 1px solid var(--line);
-  border-radius: 9px;
-}
-.notice {
-  display: flex;
-  gap: 11px;
-  align-items: flex-start;
-  margin-top: 24px;
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.7;
-}
-.notice span { color: var(--blue); }
-.hidden { display: none !important; }
-.success-icon {
-  width: 66px;
-  height: 66px;
-  display: grid;
-  place-items: center;
-  margin: 25px auto 18px;
-  border: 1px solid var(--green);
-  border-radius: 50%;
-  color: var(--green);
-  font-size: 32px;
-  box-shadow: 0 0 28px #5ce0ad18;
-}
-.identity {
-  padding: 16px;
-  margin: 22px 0;
-  background: #041321;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-}
-.identity-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid #1a3549;
-}
-.identity-row:last-child { border-bottom: 0; }
-.identity-label {
-  color: var(--muted);
-  font-size: 11px;
-}
-.identity-value {
-  text-align: right;
-  font-size: 13px;
-  font-weight: 700;
-  overflow-wrap: anywhere;
-}
-.authorized {
-  color: var(--green);
-  font-size: 11px;
-  letter-spacing: 1.5px;
-  text-align: center;
-}
-.section-title {
-  margin: 27px 0 12px;
-  color: var(--blue);
-  font-size: 11px;
-  letter-spacing: 2px;
-}
-.case-card {
-  padding: 20px;
-  background: linear-gradient(130deg, #102c42, #081726);
-  border: 1px solid #31536c;
-  border-radius: 12px;
-}
-.case-code {
-  color: var(--blue);
-  font-size: 10px;
-  letter-spacing: 2px;
-}
-.case-card h2 {
-  margin: 12px 0 8px;
-  font-size: 22px;
-}
-.case-card p {
-  color: #a6bbcd;
-  font-size: 13px;
-  line-height: 1.7;
-}
-.tag {
-  display: inline-block;
-  padding: 6px 9px;
-  margin: 7px 5px 0 0;
-  color: #f4c76b;
-  background: #4b38191c;
-  border: 1px solid #7c602d;
-  border-radius: 5px;
-  font-size: 10px;
-}
-.app-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 11px;
-  margin-top: 16px;
-}
-.app-tile {
-  min-height: 100px;
-  padding: 16px;
-  text-align: left;
-  color: var(--text);
-  background: var(--panel2);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-}
-.app-tile:active { background: #173852; }
-.app-icon {
-  display: block;
-  margin-bottom: 12px;
-  color: var(--blue);
-  font-size: 23px;
-}
-.app-tile strong { font-size: 13px; }
-.app-tile small {
-  display: block;
-  margin-top: 5px;
-  color: var(--muted);
-  font-size: 10px;
-}
-.back {
-  padding: 8px 0 18px;
-  color: var(--blue);
-  background: none;
-  border: 0;
-}
-.phone-message {
-  padding: 14px;
-  margin: 12px 0;
-  color: #d8e8f5;
-  background: #102b40;
-  border: 1px solid #234961;
-  border-radius: 10px;
-  font-size: 13px;
-  line-height: 1.7;
-}
-.small { color: var(--muted); font-size: 11px; line-height: 1.7; }
-footer {
-  padding: 20px;
-  color: #60798e;
-  text-align: center;
-  font-size: 10px;
-  line-height: 1.8;
-}
-#toast {
-  position: fixed;
-  left: 16px;
-  right: 16px;
-  bottom: 20px;
-  max-width: 480px;
-  margin: auto;
-  padding: 14px 17px;
-  color: var(--text);
-  background: #16344a;
-  border: 1px solid var(--blue);
-  border-radius: 10px;
-  box-shadow: 0 8px 30px #0008;
-  font-size: 13px;
-}
-@media (min-width: 600px) {
-  main { margin-top: 55px; }
-  .panel { padding: 34px; }
+.toast-title{font-weight:750;margin-bottom:4px}
+#soundButton{font-size:10px}
+.phone-caption{text-align:center;color:var(--muted);font-size:11px;margin-top:16px}
+@media(max-width:650px){
+  header{height:57px;padding:0 15px}
+  main{padding:20px 13px 35px}
+  #workspace{grid-template-columns:1fr;gap:26px}
+  .caseinfo{padding:5px}
+  .phone{max-width:310px}
+  .phone-inner{height:min(610px,70dvh);min-height:510px}
+  .casebox{margin-top:17px}
 }
 </style>
 </head>
-
 <body>
 <header>
-  <div class="brand">
-    <div class="crest" aria-hidden="true">✳</div>
-    <div>
-      <div class="brand-name">EXPEDIENTE CERO</div>
-      <div class="brand-sub">SISTEMA DE INVESTIGACIÓN</div>
-    </div>
-    <div class="status">● SISTEMA ACTIVO</div>
-  </div>
+  <div class="logo">EXPEDIENTE <span>CERO</span></div>
+  <div class="header-status">● SISTEMA ACTIVO</div>
 </header>
 
 <main>
-  <!-- PANTALLA 1: IDENTIFICACIÓN -->
-  <section id="login" class="panel">
-    <div class="eyebrow">TERMINAL DE ACCESO · 01</div>
-    <h1>ACCESO A DATOS</h1>
-    <p class="subtitle">
-      Centro de Investigación y Análisis Criminal<br>
-      Identifícate para iniciar tu servicio.
-    </p>
-
-    <div class="rule"></div>
-
+  <section id="login" class="card">
+    <div class="eyebrow">CENTRO DE INVESTIGACIÓN</div>
+    <h1>Acceso a datos</h1>
+    <p class="muted">Identificación del agente para iniciar el servicio.</p>
     <form id="loginForm">
-      <div class="field">
-        <label for="agentName">NOMBRE DEL AGENTE</label>
-        <input
-          id="agentName"
-          name="agentName"
-          type="text"
-          placeholder="Tu nombre completo"
-          maxlength="60"
-          autocomplete="name"
-          required
-        >
-      </div>
-
-      <div class="field">
-        <label for="badgeNumber">NÚMERO DE PLACA</label>
-        <input
-          id="badgeNumber"
-          name="badgeNumber"
-          type="text"
-          placeholder="Ejemplo: 2847"
-          maxlength="12"
-          autocomplete="off"
-          required
-        >
-      </div>
-
-      <button class="primary" type="submit">
-        ACCEDER &nbsp; →
-      </button>
+      <label for="agentName">NOMBRE DEL AGENTE</label>
+      <input id="agentName" maxlength="50" placeholder="Escribe tu nombre" required autocomplete="name">
+      <button class="primary">GENERAR CREDENCIAL Y ACCEDER →</button>
     </form>
-
-    <div class="notice">
-      <span>▣</span>
-      <div>
-        ENTORNO DE FICCIÓN INTERACTIVA.<br>
-        Introduce un nombre y una placa ficticios.
-        No se verifica ninguna identidad real.
-      </div>
-    </div>
+    <div class="security">ENTORNO DE FICCIÓN INTERACTIVA. Se generará una placa ficticia y se guardará en este navegador.</div>
   </section>
 
-  <!-- PANTALLA 2: ACCESO AUTORIZADO -->
-  <section id="welcome" class="panel hidden">
-    <div class="eyebrow">VERIFICACIÓN DE SESIÓN</div>
-    <div class="success-icon">✓</div>
-    <div class="authorized">● ACCESO AUTORIZADO</div>
-    <h1>Bienvenido, agente</h1>
-    <p class="subtitle">
-      Tu sesión de investigación está preparada.
-    </p>
-
-    <div class="identity">
-      <div class="identity-row">
-        <span class="identity-label">AGENTE</span>
-        <span class="identity-value" id="displayName"></span>
+  <section id="workspace" class="hidden">
+    <div class="caseinfo">
+      <div class="eyebrow">IDENTIFICACIÓN COMPLETADA</div>
+      <h1>Acceso autorizado</h1>
+      <p class="muted">Agente <strong id="agentDisplay"></strong>, tu sesión está preparada.</p>
+      <div class="casebox">
+        <div class="eyebrow">NUEVA ASIGNACIÓN</div>
+        <h3>Expediente EC-001</h3>
+        <div style="font-size:18px;font-weight:750">La última conexión</div>
+        <p class="muted">Se ha recuperado el teléfono de Elena Ruiz. Examina sus datos para reconstruir sus últimas horas.</p>
+        <p style="font-size:11px;color:#f1c878">PRIORIDAD ALTA · CASO FICTICIO</p>
+        <button class="primary" id="startPhone">EXAMINAR TELÉFONO NEXO →</button>
       </div>
-      <div class="identity-row">
-        <span class="identity-label">N.º DE PLACA</span>
-        <span class="identity-value" id="displayBadge"></span>
+      <p class="security">La placa se genera una vez y se conserva en este dispositivo.</p>
+      <button class="secondary" id="resetAgent">Cambiar agente</button>
+    </div>
+
+    <div>
+      <div class="phone">
+        <div class="phone-inner" id="phone">
+          <div class="wallpaper"></div>
+          <div class="dynamic-island"></div>
+          <div class="statusbar">
+            <span id="phoneStatusTime">9:41</span>
+            <span>▮▮▮　◉　▰</span>
+          </div>
+
+          <section id="lockScreen" class="screen">
+            <div class="lock">
+              <div class="lock-date" id="lockDate"></div>
+              <div class="lock-time" id="lockTime">09:41</div>
+              <div id="notifications">
+                <div class="notification">
+                  <div class="notif-head"><span>NEXO · SISTEMA</span><span>ahora</span></div>
+                  <div class="notif-title">Dispositivo recuperado</div>
+                  El terminal está listo para el examen policial.
+                </div>
+              </div>
+              <button class="unlock" id="unlock">↑　Desliza para desbloquear</button>
+            </div>
+          </section>
+
+          <section id="homeScreen" class="screen hidden">
+            <div class="home">
+              <div class="greeting" id="phoneGreeting">Dispositivo de Elena</div>
+              <div class="phone-date" id="homeDate"></div>
+              <div class="widget">
+                <div class="widget-label">NEXO · CENTRO DE NOTIFICACIONES</div>
+                <div class="widget-main">Todo lo que necesitas.</div>
+                <div class="widget-sub">Revisa las aplicaciones para encontrar pistas.</div>
+              </div>
+
+              <div class="app-grid" id="appGrid"></div>
+            </div>
+            <div class="dock" id="dock"></div>
+          </section>
+
+          <section id="appScreen" class="screen hidden">
+            <div class="appview">
+              <div class="app-top">
+                <button class="back" id="backHome" aria-label="Volver">‹</button>
+                <div>
+                  <div class="app-heading" id="appHeading"></div>
+                  <div class="app-sub" id="appSubtitle"></div>
+                </div>
+              </div>
+              <div id="appBody"></div>
+            </div>
+          </section>
+          <div class="home-indicator"></div>
+        </div>
       </div>
-      <div class="identity-row">
-        <span class="identity-label">ESTADO</span>
-        <span class="identity-value" style="color:var(--green)">
-          DISPONIBLE PARA SERVICIO
-        </span>
-      </div>
-    </div>
-
-    <div class="section-title">NUEVO AVISO DEL SISTEMA</div>
-    <div class="phone-message">
-      <strong>Centro de coordinación</strong><br>
-      Agente, tenemos un dispositivo móvil bajo custodia
-      relacionado con una investigación pendiente.
-      Acceda al expediente para comenzar.
-    </div>
-
-    <button class="primary" id="openDesktop">
-      ENTRAR AL ESCRITORIO →
-    </button>
-    <button class="secondary" id="changeAgent">
-      Cambiar de agente
-    </button>
-  </section>
-
-  <!-- PANTALLA 3: ESCRITORIO POLICIAL -->
-  <section id="desktop" class="panel hidden">
-    <div class="eyebrow">CENTRO DE OPERACIONES</div>
-    <h1>Escritorio policial</h1>
-    <p class="subtitle" id="deskGreeting"></p>
-
-    <div class="rule"></div>
-
-    <div class="section-title">EXPEDIENTES ASIGNADOS</div>
-    <div class="case-card">
-      <div class="case-code">EXPEDIENTE EC-001</div>
-      <h2>La última conexión</h2>
-      <p>
-        Se ha recuperado el teléfono de Elena Ruiz.
-        Los últimos registros del dispositivo podrían
-        ayudar a reconstruir sus últimas horas.
-      </p>
-      <span class="tag">PRIORIDAD: ALTA</span>
-      <span class="tag">CASO FICTICIO</span>
-      <button class="primary" id="openCase">
-        ABRIR EXPEDIENTE →
-      </button>
-    </div>
-
-    <div class="section-title">ACCESOS RÁPIDOS</div>
-    <div class="app-grid">
-      <button class="app-tile" id="quickCases">
-        <span class="app-icon">▤</span>
-        <strong>Expedientes</strong>
-        <small>Consultar caso activo</small>
-      </button>
-      <button class="app-tile" id="quickAgent">
-        <span class="app-icon">◎</span>
-        <strong>Ficha del agente</strong>
-        <small>Consultar identificación</small>
-      </button>
-    </div>
-
-    <p class="small" style="margin-top:22px">
-      Sistema de juego local. Los datos de esta sesión se
-      guardan en el navegador de este dispositivo.
-    </p>
-  </section>
-
-  <!-- PANTALLA 4: PRIMER EXPEDIENTE -->
-  <section id="case" class="panel hidden">
-    <button class="back" id="backDesktop">← Volver al escritorio</button>
-    <div class="eyebrow">EXPEDIENTE EC-001 · ABIERTO</div>
-    <h1>La última conexión</h1>
-    <p class="subtitle">
-      Investigación inicial · Dispositivo recuperado
-    </p>
-
-    <div class="rule"></div>
-
-    <div class="identity">
-      <div class="identity-row">
-        <span class="identity-label">PERSONA VINCULADA</span>
-        <span class="identity-value">Elena Ruiz</span>
-      </div>
-      <div class="identity-row">
-        <span class="identity-label">OBJETO</span>
-        <span class="identity-value">Teléfono NEXO</span>
-      </div>
-      <div class="identity-row">
-        <span class="identity-label">ESTADO DEL CASO</span>
-        <span class="identity-value" style="color:#f4c76b">
-          INVESTIGACIÓN INICIAL
-        </span>
-      </div>
-    </div>
-
-    <div class="phone-message">
-      <strong>Nota del coordinador</strong><br>
-      El dispositivo está disponible para su examen.
-      Revisa sus aplicaciones y busca información que
-      permita reconstruir lo ocurrido.
-    </div>
-
-    <div class="section-title">DISPOSITIVO NEXO</div>
-    <div class="app-grid">
-      <button class="app-tile" data-app="messages">
-        <span class="app-icon">▤</span>
-        <strong>Mensajes</strong>
-        <small>Conversaciones recuperadas</small>
-      </button>
-      <button class="app-tile" data-app="calls">
-        <span class="app-icon">◖</span>
-        <strong>Llamadas</strong>
-        <small>Registro de comunicaciones</small>
-      </button>
-      <button class="app-tile" data-app="photos">
-        <span class="app-icon">▧</span>
-        <strong>Fotos</strong>
-        <small>Imágenes del dispositivo</small>
-      </button>
-      <button class="app-tile" data-app="files">
-        <span class="app-icon">▱</span>
-        <strong>Archivos</strong>
-        <small>Documentos disponibles</small>
-      </button>
-    </div>
-
-    <div id="appContent" class="hidden">
-      <div class="rule"></div>
-      <div class="section-title" id="appTitle"></div>
-      <div id="appBody"></div>
+      <div class="phone-caption">NEXO · Dispositivo bajo custodia policial</div>
     </div>
   </section>
 </main>
 
-<footer>
-  EXPEDIENTE CERO · ENTORNO DE INVESTIGACIÓN FICTICIO<br>
-  Todos los nombres, placas y casos pertenecen al juego.
-</footer>
-
-<div id="toast" class="hidden" role="status" aria-live="polite"></div>
+<div id="toast" class="system-toast hidden" role="status" aria-live="polite"></div>
 
 <script>
 (() => {
-  "use strict";
+"use strict";
+const $ = id => document.getElementById(id);
+const KEY = "ec_nexo_agent_v2";
+let agent = null;
+let audio = null;
+let soundOn = true;
+let toastTimer;
+let discovered = new Set();
 
-  const $ = (id) => document.getElementById(id);
-  const screens = ["login", "welcome", "desktop", "case"];
-  const storageKey = "expedienteCeroAgentV1";
+const icons = {
+ messages:'<path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/>',
+ calls:'<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7l.5 3.1a2 2 0 0 1-.6 1.7L7.1 10.4a16 16 0 0 0 6 6l1.9-1.9a2 2 0 0 1 1.7-.6l3.1.5a2 2 0 0 1 2.2 2.5z"/>',
+ photos:'<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>',
+ notes:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/>',
+ files:'<path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+ contacts:'<circle cx="12" cy="8" r="4"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/>',
+ camera:'<path d="M14 4h-4L8 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-4z"/><circle cx="12" cy="13" r="4"/>',
+ settings:'<circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.6a8 8 0 0 1-1.6.9l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.6-.9l-1.7.6-1.4-2.4 1.4-1.1a8 8 0 0 1 0-1.9l-1.4-1.1 1.4-2.4 1.7.6a8 8 0 0 1 1.6-.9l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.6.9l1.7-.6 1.4 2.4-1.4 1.1a8 8 0 0 1 0 1.9z"/>',
+ browser:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>'
+};
 
-  let agent = null;
-  let toastTimer = null;
+const apps = [
+ {id:"messages",name:"Mensajes",cls:"messages"},
+ {id:"calls",name:"Llamadas",cls:"calls"},
+ {id:"photos",name:"Fotos",cls:"photos"},
+ {id:"notes",name:"Notas",cls:"notes"},
+ {id:"files",name:"Archivos",cls:"files"},
+ {id:"contacts",name:"Contactos",cls:"contacts"},
+ {id:"camera",name:"Cámara",cls:"camera"},
+ {id:"browser",name:"Navegador",cls:"browser"},
+ {id:"settings",name:"Ajustes",cls:"settings"}
+];
 
-  function showScreen(id) {
-    screens.forEach(screen => {
-      $(screen).classList.toggle("hidden", screen !== id);
-    });
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
+function svgIcon(id){
+ return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(icons[id]||icons.files)+'</svg>';
+}
+function makeApp(app){
+ const button=document.createElement("button");
+ button.className="app";
+ button.innerHTML='<span class="app-icon '+app.cls+'">'+svgIcon(app.id)+'</span><span class="app-name">'+app.name+'</span>';
+ button.addEventListener("click",()=>openApp(app.id));
+ return button;
+}
+function renderApps(){
+ $("appGrid").replaceChildren();
+ apps.forEach(app=>$("appGrid").appendChild(makeApp(app)));
+ $("dock").replaceChildren();
+ ["calls","messages","photos","camera"].forEach(id=>{
+   const app=apps.find(a=>a.id===id);
+   $("dock").appendChild(makeApp(app));
+ });
+}
+function playTone(kind="tap"){
+ if(!soundOn)return;
+ try{
+   const AC=window.AudioContext||window.webkitAudioContext;
+   if(!AC)return;
+   if(!audio)audio=new AC();
+   if(audio.state==="suspended")audio.resume();
+   const osc=audio.createOscillator();
+   const gain=audio.createGain();
+   const now=audio.currentTime;
+   osc.type="sine";
+   const freq=kind==="notify"?880:kind==="open"?620:420;
+   osc.frequency.setValueAtTime(freq,now);
+   osc.frequency.exponentialRampToValueAtTime(freq*0.72,now+0.12);
+   gain.gain.setValueAtTime(0.0001,now);
+   gain.gain.exponentialRampToValueAtTime(kind==="notify"?0.07:0.035,now+0.015);
+   gain.gain.exponentialRampToValueAtTime(0.0001,now+0.18);
+   osc.connect(gain);gain.connect(audio.destination);
+   osc.start(now);osc.stop(now+0.2);
+ }catch(e){}
+}
+function showToast(title,message){
+ const toast=$("toast");
+ toast.innerHTML="";
+ const t=document.createElement("div");t.className="toast-title";t.textContent=title;
+ const m=document.createElement("div");m.textContent=message;
+ toast.append(t,m);toast.classList.remove("hidden");
+ playTone("notify");
+ clearTimeout(toastTimer);
+ toastTimer=setTimeout(()=>toast.classList.add("hidden"),3800);
+}
+function escapeText(text){
+ const div=document.createElement("div");div.textContent=text;return div.innerHTML;
+}
+function newAgent(name){
+ let badge;
+ try{
+   const saved=JSON.parse(localStorage.getItem(KEY)||"null");
+   if(saved&&saved.name.toLowerCase()===name.toLowerCase())badge=saved.badge;
+ }catch(e){}
+ if(!badge)badge="EC-"+String(Math.floor(1000+Math.random()*9000));
+ agent={name,badge};
+ try{localStorage.setItem(KEY,JSON.stringify(agent));}catch(e){}
+}
+function showWorkspace(){
+ $("login").classList.add("hidden");
+ $("workspace").classList.remove("hidden");
+ $("agentDisplay").textContent=agent.name+" · "+agent.badge;
+ $("phoneGreeting").textContent="Dispositivo de Elena Ruiz";
+ updateClock();
+ renderApps();
+}
+function updateClock(){
+ const now=new Date();
+ const time=now.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit",hour12:false});
+ const date=now.toLocaleDateString("es-ES",{weekday:"long",day:"numeric",month:"long"});
+ $("phoneStatusTime").textContent=time;
+ $("lockTime").textContent=time;
+ $("lockDate").textContent=date.charAt(0).toUpperCase()+date.slice(1);
+ $("homeDate").textContent=now.toLocaleDateString("es-ES",{day:"numeric",month:"short"});
+}
+function switchPhoneScreen(id){
+ ["lockScreen","homeScreen","appScreen"].forEach(s=>$(s).classList.toggle("hidden",s!==id));
+ playTone("tap");
+}
+$("loginForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const name=$("agentName").value.trim();
+ if(name.length<2){showToast("Nombre no válido","Escribe al menos dos caracteres.");return;}
+ newAgent(name);
+ showWorkspace();
+ playTone("open");
+ showToast("Credencial creada","Agente "+agent.name+" · Placa "+agent.badge);
+});
+$("resetAgent").addEventListener("click",()=>{
+ try{localStorage.removeItem(KEY)}catch(e){}
+ agent=null;
+ $("workspace").classList.add("hidden");
+ $("login").classList.remove("hidden");
+ $("agentName").value="";
+ window.scrollTo({top:0,behavior:"smooth"});
+});
+$("startPhone").addEventListener("click",()=>{
+ $("lockScreen").classList.remove("hidden");
+ $("homeScreen").classList.add("hidden");
+ $("appScreen").classList.add("hidden");
+ $("phone").scrollIntoView({behavior:"smooth",block:"center"});
+ playTone("open");
+});
+$("unlock").addEventListener("click",()=>{
+ switchPhoneScreen("homeScreen");
+ showToast("NEXO desbloqueado","Explora las aplicaciones de Elena.");
+});
+$("backHome").addEventListener("click",()=>switchPhoneScreen("homeScreen"));
 
-  function notify(message) {
-    const toast = $("toast");
-    toast.textContent = message;
-    toast.classList.remove("hidden");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => {
-      toast.classList.add("hidden");
-    }, 3000);
-  }
+function item(title,text){
+ const el=document.createElement("div");el.className="list-item";
+ const strong=document.createElement("strong");strong.textContent=title;
+ const content=document.createElement("div");content.textContent=text;
+ el.append(strong,content);return el;
+}
+function bubble(text,mine,time){
+ const el=document.createElement("div");el.className="chat-bubble"+(mine?" mine":"");
+ el.appendChild(document.createTextNode(text));
+ const t=document.createElement("div");t.className="chat-time";t.textContent=time;
+ el.appendChild(t);return el;
+}
+function openApp(id){
+ playTone("open");
+ $("appHeading").textContent=apps.find(a=>a.id===id)?.name||"Aplicación";
+ $("appSubtitle").textContent="NEXO · Dispositivo de Elena Ruiz";
+ const body=$("appBody");body.replaceChildren();
 
-  function loadAgent() {
-    try {
-      const saved = localStorage.getItem(storageKey);
-      if (!saved) return null;
-      const data = JSON.parse(saved);
-      if (
-        typeof data.name === "string" &&
-        typeof data.badge === "string" &&
-        data.name.trim() &&
-        data.badge.trim()
-      ) return data;
-    } catch (error) {
-      console.warn("No se pudo recuperar la sesión guardada.");
-    }
-    return null;
-  }
-
-  function saveAgent(data) {
-    agent = data;
-    try {
-      localStorage.setItem(storageKey, JSON.stringify(data));
-    } catch (error) {
-      notify("Sesión activa, pero no se pudo guardar en el navegador.");
-    }
-    renderAgent();
-  }
-
-  function renderAgent() {
-    if (!agent) return;
-    $("displayName").textContent = agent.name;
-    $("displayBadge").textContent = agent.badge;
-    $("deskGreeting").textContent =
-      "Agente " + agent.name +
-      ", placa " + agent.badge +
-      ". Hay una investigación pendiente.";
-  }
-
-  $("loginForm").addEventListener("submit", event => {
-    event.preventDefault();
-
-    const name = $("agentName").value.trim();
-    const badge = $("badgeNumber").value.trim();
-
-    if (!name || !badge) {
-      notify("Introduce tu nombre y tu número de placa.");
-      return;
-    }
-
-    if (name.length < 2) {
-      notify("Escribe un nombre de al menos dos caracteres.");
-      return;
-    }
-
-    saveAgent({ name, badge });
-    showScreen("welcome");
+ if(id==="messages"){
+  body.append(item("Conversación · Número desconocido","Hoy"));
+  body.append(bubble("¿Sigues pensando venir esta noche?",false,"22:14"));
+  body.append(bubble("Sí. Pero no se lo digas a nadie.",true,"22:16"));
+  body.append(bubble("Entonces tenemos que hablar antes.",false,"22:19"));
+  body.append(item("Conversación · Marcos","Ayer"));
+  body.append(bubble("No olvides lo que te conté.",false,"18:42"));
+  body.append(bubble("No pienso olvidarlo.",true,"18:46"));
+  body.append(item("Pista","Los mensajes apuntan a una cita y a una conversación pendiente."));
+  discovered.add("messages");
+ }else if(id==="calls"){
+  body.append(item("22:31 · Llamada saliente","Sin respuesta · Número desconocido"));
+  body.append(item("22:07 · Llamada entrante","No contestada · 00:00"));
+  body.append(item("21:48 · Llamada saliente","Duración: 02 min 13 s"));
+  body.append(item("19:12 · Marcos","Duración: 06 min 04 s"));
+  body.append(item("Pista","La llamada de las 22:31 ocurre después de los últimos mensajes."));
+  discovered.add("calls");
+ }else if(id==="photos"){
+  const ph=document.createElement("div");ph.className="photo-placeholder";
+  ph.textContent="IMG_1042 · 21:52\n\nImagen pendiente de incorporar al caso";
+  body.append(ph);
+  body.append(item("IMG_1043 · 22:03","Archivo fotográfico recuperado. La imagen original se incorporará en una versión posterior."));
+  body.append(item("Pista","Compara la hora de las imágenes con el registro de llamadas."));
+  discovered.add("photos");
+ }else if(id==="notes"){
+  body.append(item("Nota personal · 21:40","No todo es lo que parece. Recuerda la hora."));
+  body.append(item("Borrador sin título","Hablar antes de medianoche. No usar el acceso principal."));
+  body.append(item("Pista","La nota menciona una hora y un acceso alternativo."));
+  discovered.add("notes");
+ }else if(id==="files"){
+  body.append(item("registro.txt","Última sincronización: 22:31."));
+  body.append(item("nota_personal.txt","No todo es lo que parece. Recuerda la hora."));
+  body.append(item("estado_dispositivo.log","Última actividad registrada: 22:34."));
+  body.append(item("Pista","La sincronización y la actividad final no tienen la misma hora."));
+  discovered.add("files");
+ }else if(id==="contacts"){
+  body.append(item("Marcos","Contacto frecuente · Última llamada: ayer, 19:12."));
+  body.append(item("Número desconocido","Conversación reciente · Llamada no contestada."));
+  body.append(item("Emergencias","Contacto del sistema."));
+  discovered.add("contacts");
+ }else if(id==="camera"){
+  body.append(item("Cámara no disponible","El acceso a la cámara real del jugador no es necesario para investigar este caso."));
+  body.append(item("Registro de imágenes","Consulta Fotos para revisar los archivos recuperados."));
+ }else if(id==="browser"){
+  body.append(item("Historial de navegación","22:02 · Búsqueda: rutas de salida nocturnas."));
+  body.append(item("Historial de navegación","21:36 · Búsqueda: horario de cierre."));
+  body.append(item("Aviso","Este es un historial ficticio del teléfono de la víctima."));
+  discovered.add("browser");
+ }else if(id==="settings"){
+  body.append(item("Dispositivo","NEXO · Modelo ficticio"));
+  body.append(item("Sonido de interfaz",soundOn?"Activado":"Desactivado"));
+  const sound=document.createElement("button");sound.className="secondary";sound.style.width="100%";
+  sound.textContent=soundOn?"Desactivar sonidos":"Activar sonidos";
+  sound.addEventListener("click",()=>{
+   soundOn=!soundOn;sound.textContent=soundOn?"Desactivar sonidos":"Activar sonidos";
+   playTone("tap");
   });
-
-  $("openDesktop").addEventListener("click", () => {
-    renderAgent();
-    showScreen("desktop");
-  });
-
-  $("openCase").addEventListener("click", () => {
-    $("appContent").classList.add("hidden");
-    showScreen("case");
-  });
-
-  $("backDesktop").addEventListener("click", () => {
-    showScreen("desktop");
-  });
-
-  $("quickCases").addEventListener("click", () => {
-    showScreen("case");
-  });
-
-  $("quickAgent").addEventListener("click", () => {
-    notify("Agente: " + agent.name + " · Placa: " + agent.badge);
-  });
-
-  $("changeAgent").addEventListener("click", () => {
-    try {
-      localStorage.removeItem(storageKey);
-    } catch (error) {}
-    agent = null;
-    $("loginForm").reset();
-    showScreen("login");
-  });
-
-  const appData = {
-    messages: {
-      title: "MENSAJES RECUPERADOS",
-      content: [
-        ["22:14 · Elena", "¿Sigues pensando venir esta noche?"],
-        ["22:16 · Contacto desconocido",
-         "Sí. Pero no se lo digas a nadie."],
-        ["22:19 · Elena", "Entonces tenemos que hablar antes."]
-      ]
-    },
-    calls: {
-      title: "REGISTRO DE LLAMADAS",
-      content: [
-        ["21:48", "Llamada saliente · 02 min 13 s"],
-        ["22:07", "Llamada entrante · No contestada"],
-        ["22:31", "Llamada saliente · Sin respuesta"]
-      ]
-    },
-    photos: {
-      title: "GALERÍA DEL DISPOSITIVO",
-      content: [
-        ["Imagen IMG_1042", "Fotografía registrada a las 21:52."],
-        ["Imagen IMG_1043", "Fotografía registrada a las 22:03."]
-      ]
-    },
-    files: {
-      title: "ARCHIVOS RECUPERADOS",
-      content: [
-        ["nota_personal.txt",
-         "No todo es lo que parece. Recuerda la hora."],
-        ["registro.txt",
-         "Última sincronización: 22:31."]
-      ]
-    }
-  };
-
-  function openApp(key) {
-    const app = appData[key];
-    if (!app) return;
-
-    $("appTitle").textContent = app.title;
-    const body = $("appBody");
-    body.replaceChildren();
-
-    app.content.forEach(([heading, message]) => {
-      const item = document.createElement("div");
-      item.className = "phone-message";
-
-      const strong = document.createElement("strong");
-      strong.textContent = heading;
-
-      const text = document.createElement("div");
-      text.textContent = message;
-      text.style.marginTop = "6px";
-
-      item.append(strong, text);
-      body.appendChild(item);
-    });
-
-    $("appContent").classList.remove("hidden");
-    $("appContent").scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-  }
-
-  document.querySelectorAll("[data-app]").forEach(button => {
-    button.addEventListener("click", () => {
-      openApp(button.dataset.app);
-    });
-  });
-
-  agent = loadAgent();
-
-  if (agent) {
-    renderAgent();
-    $("login").classList.remove("hidden");
-    $("agentName").value = agent.name;
-    $("badgeNumber").value = agent.badge;
-  }
+  body.append(sound);
+  body.append(item("Notificaciones","Las notificaciones de este prototipo aparecen mientras la página está abierta."));
+ }else{
+  body.append(item("Aplicación","No hay datos disponibles."));
+ }
+ body.append(document.createElement("div"));
+ $("appScreen").classList.remove("hidden");
+ $("lockScreen").classList.add("hidden");
+ $("homeScreen").classList.add("hidden");
+ $("phone").scrollTop=0;
+}
+let notificationCount=0;
+function simulateNotification(){
+ if(!$("workspace")||$("workspace").classList.contains("hidden"))return;
+ const pool=[
+  ["NEXO · Mensajes","Se ha detectado actividad en una conversación."],
+  ["NEXO · Sistema","Nuevo registro de actividad disponible."],
+  ["Centro de coordinación","Continúa revisando el dispositivo recuperado."]
+ ];
+ const n=pool[notificationCount%pool.length];notificationCount++;
+ const holder=$("notifications");
+ const el=document.createElement("div");el.className="notification";
+ const head=document.createElement("div");head.className="notif-head";
+ const source=document.createElement("span");source.textContent=n[0];
+ const time=document.createElement("span");time.textContent="ahora";
+ head.append(source,time);
+ const title=document.createElement("div");title.className="notif-title";title.textContent=n[1];
+ const desc=document.createElement("div");desc.textContent="Toca para continuar la investigación.";
+ el.append(head,title,desc);
+ el.addEventListener("click",()=>{switchPhoneScreen("homeScreen");showToast(n[0],n[1]);});
+ holder.prepend(el);
+ while(holder.children.length>3)holder.lastElementChild.remove();
+ showToast(n[0],n[1]);
+}
+let notificationTimer;
+function startNotifications(){
+ clearInterval(notificationTimer);
+ notificationTimer=setInterval(()=>{
+  if(Math.random()<0.42)simulateNotification();
+ },45000);
+}
+$("phone").addEventListener("click",e=>{
+ if(e.target.closest("button"))return;
+ if(!$("lockScreen").classList.contains("hidden"))return;
+});
+updateClock();
+setInterval(updateClock,15000);
+renderApps();
+try{
+ const saved=JSON.parse(localStorage.getItem(KEY)||"null");
+ if(saved&&saved.name&&saved.badge){
+  agent=saved;
+  $("agentName").value=saved.name;
+  showWorkspace();
+ }
+}catch(e){}
+startNotifications();
 })();
 </script>
 </body>
