@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0e1011">
+<title>Expediente Cero · El móvil de Álvaro</title>
+<style>
+:root{--bg:#0e1011;--p:#171a1c;--l:#2a2f32;--t:#ece6d8;--m:#8d8f88;--a:#d9a441;--r:#c9513f}
+*{box-sizing:border-box}html,body{margin:0;background:#070808;color:var(--t);font:15px/1.55 Georgia,"Times New Roman",serif}
+button,input{font:inherit;color:inherit}button{cursor:pointer}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--m)}
+#app{max-width:460px;min-height:100dvh;margin:auto;background:var(--bg);position:relative;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.scr{padding:22px 20px 40px;animation:in .25s ease}@keyframes in{from{opacity:0;transform:translateY(6px)}}
+@media(prefers-reduced-motion:reduce){.scr{animation:none}}
+h1{font-size:38px;line-height:1.05;margin:0 0 14px;font-weight:400;letter-spacing:-.5px}
+h2{font-size:24px;margin:0;font-weight:400}
+.btn{background:var(--a);color:#14100a;border:0;padding:14px 20px;border-radius:4px;font-weight:700;width:100%;font-family:ui-monospace,Menlo,monospace;font-size:13px}
+.btn.g{background:none;color:var(--t);border:1px solid var(--l);margin-top:10px}
+.btn:disabled{opacity:.35}
+.btn:focus-visible,.ic:focus-visible,.it:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.back{background:none;border:0;color:var(--a);padding:6px 0;font-family:ui-monospace,monospace;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px 12px;margin-top:26px}
+.ic{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;font-family:ui-monospace,monospace;color:var(--m)}
+.ic i{width:62px;height:62px;border-radius:15px;background:var(--p);border:1px solid var(--l);display:grid;place-items:center;font:normal 26px Georgia;color:var(--a)}
+.ic b{position:absolute;margin:-6px 0 0 44px;background:var(--r);color:#fff;border-radius:9px;font-size:10px;padding:0 6px}
+.it{border-bottom:1px solid var(--l);padding:13px 0;display:flex;gap:12px;align-items:flex-start}
+.it .tx{flex:1}.it strong{display:block;font-weight:600}
+.it p{margin:2px 0 0;color:#c8c2b4;font-size:14px}
+.st{background:none;border:0;font-size:20px;color:var(--l);padding:0 2px}.st.on{color:var(--a)}
+.srch{width:100%;background:var(--p);border:1px solid var(--l);border-radius:4px;padding:11px 13px;margin-bottom:6px;outline:none}
+.lock{background:var(--p);border:1px dashed var(--l);padding:14px;margin-top:6px;border-radius:4px}
+.lock input{background:var(--bg);border:1px solid var(--l);padding:10px;width:100px;letter-spacing:6px;text-align:center;border-radius:4px}
+.pulse{display:flex;align-items:flex-end;gap:3px;height:70px;margin:8px 0}.pulse span{flex:1;background:var(--a);opacity:.8}
+.opt{display:block;width:100%;text-align:left;background:var(--p);border:1px solid var(--l);padding:12px 14px;margin-bottom:8px;border-radius:4px}
+.opt.s{border-color:var(--a);background:#241d0e}
+.end{border-left:3px solid var(--a);padding:4px 0 4px 16px;margin:18px 0}
+</style></head><body><div id="app"></div>
+<script>
+// ---------- DATOS ----------
+// [app, hora, título, texto, pista, bloqueo]
+const D=[
+// Mensajes
+["m","Lun 21:02","Sofía Pons","Álvaro, tenemos que hablar de lo de Lucas antes del lunes. No hagas nada sin avisarme."],
+["m","Lun 21:40","Álvaro","No voy a mentir en el juzgado, Sofía. Ya lo he decidido."],
+["m","Lun 21:41","Sofía Pons","Después de diez años de consulta juntos. Piénsalo, por favor."],
+["m","Mar 08:15","Mamá","¿Vienes el domingo a comer? Hago el arroz que te gusta."],
+["m","Mar 08:20","Álvaro","Sí, mamá. Llevo yo el postre."],
+["m","Mar 19:30","Héctor","Necesito 3.000 hasta fin de mes. Es la última vez, hermano."],
+["m","Mar 19:52","Álvaro","Ya hablamos, Héctor. Esta semana está siendo difícil."],
+["m","Mié 10:05","Irene Vallés","Doctor, no he dormido nada. ¿Podemos adelantar la sesión de hoy?"],
+["m","Mié 10:30","Álvaro","Ven a las 18:00, Irene. Respira. Aquí estoy."],
+["m","Mié 22:14","Irene Vallés","Perdone la hora. Creo que alguien me sigue desde que salí de su consulta."],
+["m","Mié 23:31","Tomás (borrado)","Hueco en la conversación: faltan 2 mensajes entre las 23:29 y las 23:33. Quedan solo las notificaciones: «Sube, ya te abro».","Álvaro dejó entrar a alguien a las 23:31 y el hilo fue vaciado."],
+["m","Mié 23:58","Álvaro → Héctor","Perdóname por todo. Cuida de mamá.","Mensaje enviado a las 00:55 según el servidor, pero mostrado con hora 23:58."],
+["m","Jue 00:55","Sistema","Envío retrasado: entregado a las 00:55."],
+["m","Mar 12:10","Lucía (gimnasio)","Tu clase de las 19:00 está confirmada. Trae toalla."],
+["m","Dom 17:02","Marcos","¿Viste el partido? Qué robo de árbitro, de verdad."],
+["m","Dom 17:05","Álvaro","Aún no. Esta noche lo veo grabado."],
+["m","Sáb 11:20","Pedro (vecino)","Han dejado un paquete tuyo en portería."],
+["m","Vie 09:00","Farmacia Ruiz","Tu receta está lista para recoger."],
+// Llamadas
+["l","Mié 20:44","Sofía Pons · 6 min","Llamada entrante."],
+["l","Mié 21:50","Héctor · perdida","No devolvió la llamada."],
+["l","Mié 23:12","Tomás Ibarra · 3 min","Llamada entrante. Tomás es su abogado y amigo desde la universidad.","Tomás habló con Álvaro 20 minutos antes de que abriera la puerta."],
+["l","Mié 18:40","Mamá · 11 min","Llamada saliente."],
+["l","Mar 13:20","Taller Mecánico · 2 min","Llamada saliente: revisión del coche."],
+["l","Lun 09:05","Irene Vallés · 1 min","Llamada perdida."],
+["l","Jue 00:48","Desconocido · 0 s","Llamada a un número sin guardar, colgada al instante."],
+// Safari
+["s","Lun 22:03","Safari","«qué pasa si un perito declara y su informe fue manipulado»"],
+["s","Mar 07:50","Safari","«receta tortilla de patatas sin cebolla»"],
+["s","Mar 14:10","Safari","«síntomas de insomnio en pacientes con ansiedad»"],
+["s","Mié 17:12","Safari (privado)","«plazo para declarar como testigo en un juicio»"],
+["s","Mié 22:40","Safari","«cómo guardar una nota con contraseña en iPhone»"],
+["s","Jue 00:44","Safari","«cómo borrar mensajes enviados en iMessage»","Alguien buscó cómo borrar mensajes a las 00:44. Para entonces Álvaro llevaba más de media hora sin pulso."],
+["s","Sáb 10:00","Safari","«entradas teatro Sevilla sábado»"],
+["s","Sáb 10:12","Safari","«horario tren Madrid–Sevilla domingo»"],
+// Notas
+["n","Mar 20:10","Lista de la compra","Leche, café, pan, naranjas, jabón. Pastillero de la semana."],
+["n","Vie 16:00","Pacientes pendientes","Revisar a Irene (ansiedad). Llamar a la familia de Lucas."],
+["n","Jue 00:31","Nota","«Perdón a todos. No puedo más.»","La nota de despedida se editó a las 00:31, más de 20 minutos después del último pulso de Álvaro."],
+["n","Mié 19:00","Si me pasa algo","BLOQ","El informe falso de Lucas lo redactó Tomás con los datos que Sofía le pasó. Héctor cobró por callar. Voy a declarar el lunes.",1],
+["n","Dom 12:00","Ideas regalo mamá","Un pañuelo azul. O el libro de Delibes."],
+// Salud y reloj
+["h","Mié 23:00","Frecuencia cardiaca","72 ppm. Reposo normal."],
+["h","Mié 23:34","Frecuencia cardiaca","118 ppm. Pico de estrés al abrir la puerta."],
+["h","Jue 00:09","Frecuencia cardiaca","Último latido registrado.","El reloj registra el último latido a las 00:09. Álvaro murió entonces."],
+["h","Mié 23:30","Pasos","Sin pasos entre 23:00 y 23:30."],
+["h","Mié 18:00","Sueño","Esta semana: 4 h 12 min de media. Mucho menos de lo habitual."],
+["h","Jue 00:21","Reloj","El reloj sigue en la muñeca, quieto. Sin movimiento."],
+// Fotos
+["f","Mar 10:14","Foto · consulta","Escritorio ordenado, taza y libreta. Dos sillas."],
+["f","Mié 23:36","Foto · escritorio","Dos tazas de café sobre el escritorio, una sin tocar.","Álvaro fotografió dos tazas a las 23:36: tenía visita. Pero la policía solo encontró una."],
+["f","Mar 09:31","Captura de pantalla","Historia clínica de Lucas: dos versiones. En la segunda falta la dosis original.","Existen dos versiones de la historia clínica de Lucas."],
+["f","Dom 14:30","Foto · familia","Comida con mamá y Héctor. Todos sonríen."],
+["f","Sáb 20:11","Foto · atardecer","Cielo naranja sobre el río."],
+["f","Mié 12:00","Foto · papeles","Transferencia de 5.000 € de Sofía Pons a Héctor Reyes.","Sofía pagó a Héctor. Ambos negaban conocerse tanto."],
+["f","Vie 08:50","Foto · plato","Tostada con aguacate. Un clásico."],
+// Mapas
+["p","Mié 23:20","Ubicación","Álvaro está en la consulta (Calle Feria, 14)."],
+["p","Mié 23:34","Compartida con Tomás","Tomás llegó a Calle Feria 14 a las 23:34. Se fue a las 00:50.","Tomás estuvo en la consulta de 23:34 a 00:50, durante la muerte."],
+["p","Mié 18:30","Ubicación","Héctor en el bar «La Corrala», 2 h."],
+["p","Mar 19:00","Ubicación","Gimnasio Centro, 1 h 10 min."],
+// Calendario
+["c","Lun 09:00","Tribunal","Declaración como testigo. Cita del lunes, Juzgado nº 4."],
+["c","Mié 18:00","Irene Vallés","Sesión, 55 min."],
+["c","14 mar","Aniversario Lucas","Un año de su muerte. Recordatorio anual.","La fecha del aniversario es 14 de marzo: 1403."],
+["c","Jue 09:30","Reunión Sofía","Cancelada por ella a las 23:50 del miércoles."],
+["c","Vie 19:00","Cena con Marcos","Reservada."]
+];
+const APPS={m:["Mensajes","M"],l:["Llamadas","L"],s:["Safari","S"],n:["Notas","N"],h:["Salud","H"],f:["Fotos","F"],p:["Mapas","P"],c:["Calendario","C"]};
+const KEY=["Último latido a las 00:09","Nota editada a las 00:31","Búsqueda a las 00:44","Dos tazas","Hueco en mensajes","Llamada de Tomás","Tomás en la consulta","Nota bloqueada","Mensaje retrasado"];
+const keyIds=new Set(D.map((e,i)=>e[4]?i:-1).filter(i=>i>=0));
+const S={v:"home",app:null,star:new Set(),unl:false,q:"",pick:null,ev:new Set()};
+const $=document.getElementById("app");
+const h=(s)=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+function go(v,a){S.v=v;S.app=a||null;S.q="";R()}
+function tg(i){S.star.has(i)?S.star.delete(i):S.star.add(i);try{localStorage.setItem("ec_clues",JSON.stringify([...S.star].map(j=>({id:j,t:D[j][2]+" · "+D[j][1],x:D[j][5]?D[j][4]:D[j][3]}))))}catch(e){}R()}
+try{(JSON.parse(localStorage.getItem("ec_clues")||"[]")).forEach(c=>S.star.add(c.id))}catch(e){}
+function item(e,i){
+ if(e[5]){return`<div class="it"><div class="tx"><strong>${h(e[2])}</strong><span class="mono">${e[1]} · bloqueada</span>${S.unl?`<p>${h(e[4])}</p>`:`<div class="lock"><div class="mono">Código de 4 cifras</div><input id="pin" inputmode="numeric" maxlength="4" aria-label="Código"> <button class="btn g" style="width:auto;margin:0 0 0 8px;padding:9px 14px" onclick="pin()">Abrir</button><div id="pe" class="mono"></div></div>`}</div>${S.unl?`<button class="st ${S.star.has(i)?"on":""}" aria-label="Guardar" onclick="tg(${i})">★</button>`:""}</div>`}
+ return`<div class="it"><div class="tx"><strong>${h(e[2])}</strong><span class="mono">${e[1]}</span><p>${h(e[3])}</p></div><button class="st ${S.star.has(i)?"on":""}" aria-label="Guardar en el diario" onclick="tg(${i})">★</button></div>`}
+function pin(){const v=document.getElementById("pin").value;if(v==="1403"){S.unl=true;R()}else document.getElementById("pe").textContent="Código incorrecto. Busca una fecha en el móvil."}
+function pulse(){const v=[40,45,44,48,46,50,70,92,100,60,0,0,0,0,0];return`<div class="pulse" aria-label="Gráfica de pulso">${v.map(x=>`<span style="height:${Math.max(x,2)}%"></span>`).join("")}</div><div class="mono">23:00 → 00:30. Se corta a las 00:09.</div>`}
+function R(){
+ let o="";
+ if(S.v==="start")o=`<div class="scr" style="padding-top:12vh"><div class="mono">Caso 001 · Sevilla · jueves, 03:40</div><h1>El móvil de Álvaro</h1><p style="color:#c8c2b4">Álvaro Reyes, psicólogo, ha aparecido sin vida en su consulta. La policía habla de suicidio y da el caso por cerrado.</p><p style="color:#c8c2b4">Tú tienes su teléfono, desbloqueado. Revisa cada app, guarda lo que importe y decide si fue lo que parece.</p><button class="btn" onclick="go('home')">Abrir el teléfono</button></div>`;
+ else if(S.v==="home"){const n=S.star.size;o=`<div class="scr"><div class="bar"><a class="back" href="index.html#office">‹ Despacho</a><span class="mono">${n} guardadas</span></div><h2>Teléfono de Álvaro</h2><div class="grid">${Object.entries(APPS).map(([k,v])=>`<button class="ic" onclick="go('app','${k}')"><i>${v[1]}</i>${v[0]}</button>`).join("")}<button class="ic" onclick="go('diary')"><i>★</i>Diario</button></div><div style="margin-top:34px"><button class="btn" onclick="go('acc')">Resolver el caso</button></div></div>`}
+ else if(S.v==="app"){const k=S.app,q=S.q.toLowerCase();const L=D.map((e,i)=>[e,i]).filter(([e])=>e[0]===k&&(!q||(e[2]+e[3]+(e[4]||"")).toLowerCase().includes(q)));
+  o=`<div class="scr"><div class="bar"><button class="back" onclick="go('home')">‹ Inicio</button><span class="mono">${APPS[k][0]}</span></div>${k==="h"?pulse():""}<input class="srch" id="q" placeholder="Buscar en ${APPS[k][0]}" value="${h(S.q)}" oninput="S.q=this.value;R();const q=document.getElementById('q');q.focus();q.setSelectionRange(99,99)">${L.map(([e,i])=>item(e,i)).join("")||'<p class="mono">Sin resultados. Prueba con otro nombre o fecha.</p>'}</div>`}
+ else if(S.v==="diary"){const L=[...S.star];o=`<div class="scr"><div class="bar"><button class="back" onclick="go('home')">‹ Inicio</button><span class="mono">Diario</span></div>${L.length?L.map(i=>item(D[i],i)).join(""):"<p class=mono>Guarda pistas con ★ desde cualquier app.</p>"}</div>`}
+ else if(S.v==="acc"){const P=["Sofía Pons","Héctor Reyes","Irene Vallés","Tomás Ibarra","Fue suicidio"];
+  o=`<div class="scr"><div class="bar"><button class="back" onclick="go('home')">‹ Inicio</button><span class="mono">Resolver</span></div><h2>¿Qué le pasó a Álvaro?</h2><p class="mono">Elige tu conclusión. Se juzga con lo que guardaste en el diario.</p>${P.map(p=>`<button class="opt ${S.pick===p?"s":""}" onclick="S.pick='${p}';R()">${p}</button>`).join("")}<button class="btn" ${S.pick?"":"disabled"} onclick="go('end')">Presentar el caso</button></div>`}
+ else if(S.v==="end"){const k=[...S.star].filter(i=>keyIds.has(i)).length,p=S.pick;let t,b;
+  if(p==="Tomás Ibarra"&&k>=5){t="Caso resuelto";b="Álvaro no se quitó la vida. Tomás fue a la consulta, lo mató a las 00:09 y montó el suicidio: editó la nota, retrasó el mensaje a Héctor y borró su propia conversación. Sofía y Héctor, que ocultaron el fraude de Lucas, caen con él. Mamá cocina el domingo para dos sillas vacías."}
+  else if(p==="Tomás Ibarra"){t="Sospechoso correcto, pruebas insuficientes";b="Acertaste con Tomás, pero el juez no ve base. Hacen falta más pistas guardadas: el pulso, la nota, la ubicación y la llamada."}
+  else if(p==="Sofía Pons"){t="Condenada por lo que no hizo";b="Sofía sí manipuló la historia de Lucas, pero no mató a Álvaro. Pagas con una vida un delito ajeno mientras el verdadero culpable sigue libre."}
+  else if(p==="Fue suicidio"){t="Caso archivado";b="Tomás ha ganado. Nadie vuelve a abrir el móvil de Álvaro."}
+  else{t="Inocente señalado";b="Esa persona tenía secretos, pero no estaba en la consulta esa noche. El móvil lo decía: revisa dónde estaba cada uno."}
+  o=`<div class="scr"><div class="mono">Pruebas clave guardadas: ${k} de ${keyIds.size}</div><h1 style="margin-top:12px">${t}</h1><div class="end">${b}</div><button class="btn" onclick="go('acc')">Cambiar conclusión</button><button class="btn g" onclick="go('home')">Volver al teléfono</button></div>`}
+ $.innerHTML=o}
+S.v=location.hash==="#go"?"home":"start";R();
+</script></body></html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0e1011">
+<title>Expediente Cero</title>
+<style>
+:root{--bg:#0e1011;--p:#171a1c;--l:#2a2f32;--t:#ece6d8;--m:#8d8f88;--a:#d9a441;--r:#c9513f}
+*{box-sizing:border-box}html,body{margin:0;background:#070808;color:var(--t);font:15px/1.55 Georgia,serif}
+button,input{font:inherit;color:inherit}button{cursor:pointer}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--m)}
+#app{max-width:520px;min-height:100dvh;margin:auto;background:var(--bg);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.scr{padding:22px 20px 40px;animation:in .25s ease}@keyframes in{from{opacity:0;transform:translateY(6px)}}
+@media(prefers-reduced-motion:reduce){.scr{animation:none}}
+h1{font-size:36px;line-height:1.05;margin:0 0 12px;font-weight:400;letter-spacing:-.5px}h2{font-size:22px;margin:0 0 6px;font-weight:400}
+.btn{background:var(--a);color:#14100a;border:0;padding:13px 18px;border-radius:4px;font:700 13px ui-monospace,Menlo,monospace;width:100%;display:block;text-align:center;text-decoration:none}
+.btn.g{background:none;color:var(--t);border:1px solid var(--l);margin-top:10px}.btn:disabled{opacity:.35}
+:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+.back{background:none;border:0;color:var(--a);padding:6px 0 14px;font:13px ui-monospace,monospace}
+.fold{display:block;width:100%;text-align:left;background:var(--p);border:1px solid var(--l);border-top:6px solid var(--a);padding:14px 16px;margin-bottom:12px;border-radius:2px 2px 4px 4px}
+.fold.c{border-top-color:var(--l);opacity:.55;cursor:default}
+.inp{width:100%;background:var(--p);border:1px solid var(--l);padding:13px;border-radius:4px;margin:8px 0 16px;outline:none}
+.badge{background:linear-gradient(160deg,#2a2518,#15130d);border:1px solid var(--a);border-radius:10px;padding:18px;margin:12px 0 20px;display:flex;gap:16px;align-items:center}
+.badge .ph{width:64px;height:78px;background:var(--l);border-radius:4px;display:grid;place-items:center;font-size:30px;color:var(--a)}
+.badge strong{display:block;font-size:19px}
+.tile{display:block;width:100%;text-align:left;background:var(--p);border:1px solid var(--l);padding:16px;margin-bottom:10px;border-radius:4px;text-decoration:none;color:inherit}
+.tile b{font-weight:600;font-size:17px;display:block}
+.say{background:var(--p);border-left:3px solid var(--l);padding:10px 12px;margin:10px 0;border-radius:0 4px 4px 0}
+.say.lie{border-left-color:var(--r)}
+.sm{background:none;border:1px solid var(--a);color:var(--a);padding:6px 10px;border-radius:3px;font:12px ui-monospace,monospace;margin-top:6px}
+.cork{position:relative;height:64vh;min-height:420px;background:radial-gradient(#9a7649 1px,transparent 1.5px) 0 0/6px 6px,#85633b;border:6px solid #3b2a17;border-radius:3px;overflow:hidden;touch-action:none}
+.card{position:absolute;width:140px;padding:14px 9px 9px;background:#f1ead6;color:#2b2418;font:12px/1.35 ui-monospace,Menlo,monospace;box-shadow:2px 4px 8px #0006;cursor:grab;user-select:none;transform:rotate(var(--r))}
+.card::before{content:"";position:absolute;top:-4px;left:calc(50% - 6px);width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff8878,#a1281b)}
+.card.lie{background:#f3c9c0;border:1px solid var(--r)}.card.sel{outline:3px solid var(--a)}
+.card b{display:block;font-size:10px;color:#7a6a4a;margin-bottom:3px}
+svg.th{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}svg.th line{stroke:#b3261a;stroke-width:2}
+</style></head><body><div id="app"></div>
+<script>
+const $=document.getElementById("app"),L=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},W=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const h=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const CASES=[["Caso 001","El móvil de Álvaro","Un psicólogo aparece muerto en su consulta. Parece suicidio. Nadie lo cree."],["Caso 002"],["Caso 003"],["Caso 004"]];
+const SUS=[
+ {n:"Sofía Pons",r:"Socia de la consulta",s:[["No tengo relación con Héctor. Apenas lo conozco.","Transferencia"],["No sé nada de que alteraran la historia de Lucas.","Historia clínica"]]},
+ {n:"Héctor Reyes",r:"Hermano de Álvaro",s:[["Nunca he cobrado dinero de Sofía.","Transferencia"],["Esa noche no hablé con mi hermano.","Mensaje"]]},
+ {n:"Irene Vallés",r:"Paciente",s:[["Nadie me siguió. Estaba nerviosa, nada más.",""],["Álvaro no me contestó esa noche.",""]]},
+ {n:"Tomás Ibarra",r:"Abogado y amigo",s:[["No fui a la consulta. Solo hablamos por teléfono.","Tomás llegó"],["Álvaro estaba bien cuando colgamos, pasadas las 23:15.","Último latido"]]}];
+let U=L("ec_user"),V=location.hash==="#office"&&U?"office":(U?"arch":"home"),SUSP=null,PICK=null,MSG="",LIES=L("ec_lies")||[],B=L("ec_board")||{pos:{},links:[]},SEL=null;
+const go=v=>{V=v;MSG="";R()};
+function badge(n){let c=0;for(const ch of n)c=(c*31+ch.charCodeAt(0))%9000;return"INSP-"+String(1000+(c+Math.floor(Math.random()*900))%9000)}
+function reg(){const n=document.getElementById("nm").value.trim();if(n.length<2)return;U={name:n,badge:badge(n)};W("ec_user",U);go("arch")}
+function lie(w,i){const k=w+i;if(!LIES.includes(k)){LIES.push(k);W("ec_lies",LIES)}}
+function press(si,i,cid){const cl=(L("ec_clues")||[]).find(c=>c.id===cid),st=SUS[si].s[i];
+ if(st[1]&&(cl.t+cl.x).includes(st[1])){lie(si,i);MSG="Contradicción registrada. Se ha añadido al tablero."}else MSG="Esa prueba no contradice lo que dice. Revisa tu diario.";PICK=null;R()}
+function cards(){const o=[];(L("ec_clues")||[]).forEach(c=>o.push({id:"c"+c.id,t:"Prueba",x:c.t+". "+c.x}));
+ LIES.forEach(k=>{const si=+k[0],i=+k.slice(1);o.push({id:"l"+k,lie:1,t:"Miente: "+SUS[si].n,x:SUS[si].s[i][0]})});return o}
+function board(){const cs=cards(),pos=B.pos;
+ cs.forEach((c,i)=>{if(!pos[c.id])pos[c.id]=[10+(i%2)*160,12+Math.floor(i/2)*128]});
+ const line=B.links.map(([a,b])=>pos[a]&&pos[b]?`<line x1="${pos[a][0]+70}" y1="${pos[a][1]+6}" x2="${pos[b][0]+70}" y2="${pos[b][1]+6}"/>`:"").join("");
+ return`<div class="cork" id="cork"><svg class="th" id="th">${line}</svg>${cs.map((c,i)=>`<div class="card ${c.lie?"lie":""} ${SEL===c.id?"sel":""}" data-id="${c.id}" style="left:${pos[c.id][0]}px;top:${pos[c.id][1]}px;--r:${(i%5-2)*1.2}deg"><b>${h(c.t)}</b>${h(c.x.slice(0,110))}</div>`).join("")}</div>`}
+function drag(){const cork=document.getElementById("cork");if(!cork)return;
+ cork.querySelectorAll(".card").forEach(el=>{el.onpointerdown=e=>{const id=el.dataset.id,p=B.pos[id],sx=e.clientX,sy=e.clientY,ox=p[0],oy=p[1];let mv=0;el.setPointerCapture(e.pointerId);
+  el.onpointermove=m=>{const dx=m.clientX-sx,dy=m.clientY-sy;if(Math.abs(dx)+Math.abs(dy)>5)mv=1;if(!mv)return;p[0]=Math.max(0,Math.min(cork.clientWidth-140,ox+dx));p[1]=Math.max(0,Math.min(cork.clientHeight-70,oy+dy));el.style.left=p[0]+"px";el.style.top=p[1]+"px";th()};
+  el.onpointerup=()=>{el.onpointermove=el.onpointerup=null;if(!mv){if(!SEL)SEL=id;else if(SEL===id)SEL=null;else{if(!B.links.some(l=>l.includes(id)&&l.includes(SEL)))B.links.push([SEL,id]);SEL=null}}W("ec_board",B);R()}}})}
+function th(){document.getElementById("th").innerHTML=B.links.map(([a,b])=>`<line x1="${B.pos[a][0]+70}" y1="${B.pos[a][1]+6}" x2="${B.pos[b][0]+70}" y2="${B.pos[b][1]+6}"/>`).join("")}
+function R(){let o="";
+ if(V==="home")o=`<div class="scr" style="padding-top:11vh"><div class="mono">Comisaría Central · Sevilla</div><h1>Expediente Cero</h1><p style="color:#c8c2b4">Casos reales sin resolver. Un móvil, un ordenador y un tablero de corcho. Tú decides quién miente.</p><div class="mono">Identifícate para recibir tu placa.</div><input class="inp" id="nm" placeholder="Nombre y apellidos" autocomplete="name"><button class="btn" onclick="reg()">Obtener mi placa</button></div>`;
+ else if(V==="arch")o=`<div class="scr"><div class="badge"><div class="ph">★</div><div><strong>${h(U.name)}</strong><span class="mono">Inspectora · ${U.badge}</span></div></div><h2>Archivo de casos</h2><p class="mono">Elige un expediente.</p>${CASES.map((c,i)=>i?`<div class="fold c"><b>${c[0]}</b><div class="mono">Expediente reservado</div></div>`:`<button class="fold" onclick="go('office')"><span class="mono">${c[0]}</span><b style="display:block;font-size:19px;font-weight:400">${c[1]}</b><span style="color:#c8c2b4;font-size:14px">${c[2]}</span></button>`).join("")}</div>`;
+ else if(V==="office")o=`<div class="scr"><button class="back" onclick="go('arch')">‹ Archivo</button><div class="mono">Caso 001 · ${U.badge}</div><h1>Despacho de la inspectora ${h(U.name.split(" ").slice(-1)[0])}</h1><a class="tile" href="caso1-movil.html#go"><b>Móvil de Álvaro</b><span class="mono">Mensajes, fotos, salud, notas y más</span></a><button class="tile" onclick="go('pc')"><b>Ordenador de la policía</b><span class="mono">Interrogatorios y sospechosos</span></button><button class="tile" onclick="go('board')"><b>Tablero de corcho</b><span class="mono">${cards().length} fichas · ${B.links.length} hilos</span></button></div>`;
+ else if(V==="pc")o=`<div class="scr"><button class="back" onclick="go('office')">‹ Despacho</button><h2>Interrogatorios</h2><p class="mono">Elige a quién escuchar.</p>${SUS.map((s,i)=>`<button class="tile" onclick="SUSP=${i};go('int')"><b>${s.n}</b><span class="mono">${s.r}</span></button>`).join("")}</div>`;
+ else if(V==="int"){const s=SUS[SUSP],cl=L("ec_clues")||[];o=`<div class="scr"><button class="back" onclick="go('pc')">‹ Sospechosos</button><h2>${s.n}</h2><p class="mono">${s.r}</p>${MSG?`<div class="say" style="border-left-color:var(--a)">${MSG}</div>`:""}${s.s.map((t,i)=>{const lied=LIES.includes(SUSP+""+i);return`<div class="say ${lied?"lie":""}">«${h(t[0])}»${lied?'<div class="mono" style="color:var(--r)">Mentira demostrada</div>':`<div><button class="sm" onclick="PICK=${i};R()">Contradecir con una prueba</button></div>`}${PICK===i?`<div style="margin-top:8px">${cl.length?cl.map(c=>`<button class="tile" style="padding:10px;margin:6px 0" onclick="press(${SUSP},${i},${c.id})"><span class="mono">${h(c.t)}</span></button>`).join(""):'<div class="mono">Tu diario está vacío. Guarda pruebas (★) en el móvil.</div>'}</div>`:""}</div>`}).join("")}</div>`}
+ else if(V==="board")o=`<div class="scr"><button class="back" onclick="go('office')">‹ Despacho</button><h2>Tablero</h2><p class="mono">Arrastra las fichas. Toca dos para unirlas con hilo.</p>${board()}<button class="btn g" onclick="B.links=[];W('ec_board',B);R()">Quitar hilos</button></div>`;
+ $.innerHTML=o;drag()}
+R();
+</script></body></html>
