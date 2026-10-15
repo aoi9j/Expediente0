@@ -2,190 +2,228 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#101c2d">
-<title>Expediente Cero — NEXO</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07111e">
+<title>NEXO — Expediente Cero</title>
 <style>
-:root{--ink:#152438;--muted:#718197;--paper:#f4f6fa;--blue:#557ce8;--glass:#ffffff25}
+:root{
+ --bg:#07111e;--panel:#101e2e;--panel2:#172a40;--line:#294158;
+ --text:#edf5ff;--muted:#91a7be;--blue:#3997ff;--cyan:#65d9ec;
+ --green:#63ddb0;--gold:#eac779;--red:#ff7488;
+}
 *{box-sizing:border-box}
-body{margin:0;background:#080f1b;color:#edf4ff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-button,input{font:inherit}button{cursor:pointer}button:focus-visible{outline:2px solid #81e8ff}
-.hidden{display:none!important}
-#briefing{max-width:980px;margin:auto;padding:22px}
-.top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #29384b;padding:14px 0 20px}
-.logo{font-weight:900;letter-spacing:3px}.sub{font-size:10px;color:#8fa5bf;letter-spacing:2px;margin-top:5px}
-.case{margin-top:24px;border:1px solid #29394e;border-radius:18px;padding:23px;background:#101a29}
-.tag{font-size:10px;letter-spacing:2px;color:#7fe5f4;font-weight:800}
-.case h1{font-size:32px;margin:12px 0}.case p{line-height:1.7;color:#a8b8cc}
-.fact{background:#0a1320;border:1px solid #26364b;border-radius:10px;padding:12px;margin:8px 0;font-size:12px}
-.action{background:#153746;color:#c8f8ff;border:1px solid #427887;padding:14px;border-radius:10px;width:100%;font-weight:800;margin-top:15px}
-#briefing .hint{font-size:12px;color:#8fa5bf}
-#immersive{display:none}
-#immersive.active{display:block;position:fixed;inset:0;z-index:100;background:#080d15}
-.device{position:relative;width:100%;max-width:480px;height:100%;height:100dvh;margin:auto;overflow:hidden;background:#111c2e;isolation:isolate}
-.wallpaper{position:absolute;inset:0;overflow:hidden;background:linear-gradient(145deg,#253e52 0%,#627d85 28%,#24394d 48%,#111d31 75%,#080e1c)}
-.wallpaper:before{content:"";position:absolute;width:130%;height:58%;left:-15%;top:22%;border-radius:50%;transform:rotate(-24deg);background:linear-gradient(160deg,#91aeb0,#365667 45%,#15273a 80%);filter:blur(2px)}
-.wallpaper:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#09132130,#07111b15 35%,#06101b9c 100%)}
-.status{position:absolute;z-index:30;top:0;left:0;right:0;padding:13px 23px 0;display:flex;justify-content:space-between;font-size:12px;font-weight:700;pointer-events:none}
-.island{position:absolute;z-index:35;top:8px;left:50%;transform:translateX(-50%);width:92px;height:25px;border-radius:18px;background:#020305}
-#exit{position:absolute;display:none;z-index:60;right:13px;top:calc(env(safe-area-inset-top) + 43px);width:34px;height:34px;border-radius:50%;border:1px solid #ffffff50;background:#142236d9;color:white;font-size:23px}
-#immersive.active #exit{display:block}
-.screen{position:absolute;z-index:5;inset:0;overflow:hidden}
-#lock{padding:calc(env(safe-area-inset-top) + 65px) 19px 25px;text-align:center;color:white}
-.lockdate{font-size:12px;letter-spacing:.3px;text-shadow:0 2px 12px #0007}
-.lockclock{font-size:clamp(76px,21vw,100px);font-weight:200;letter-spacing:-6px;line-height:1.1;margin-top:3px;text-shadow:0 2px 20px #0004}
-.lockcaption{font-size:11px;color:#f1f5f7;margin-top:9px}
-.lockbottom{position:absolute;left:15px;right:15px;bottom:calc(env(safe-area-inset-bottom) + 29px)}
-.notification{border:1px solid #ffffff4a;background:#e9f0f0e8;color:#182a37;border-radius:15px;padding:12px 13px;margin:8px 0;text-align:left;backdrop-filter:blur(18px);box-shadow:0 6px 20px #0002}
-.notifhead{font-size:9px;color:#63717d;display:flex;justify-content:space-between;letter-spacing:.6px}
-.notification strong{font-size:12px;display:block;margin:5px 0}
-.notification p{font-size:11px;line-height:1.4;margin:0;color:#354654}
-.lockcontrols{display:flex;justify-content:space-between;align-items:center;margin:20px 5px 25px}
-.round{height:43px;width:43px;border:1px solid #ffffff50;border-radius:50%;background:#1724388c;color:white;font-size:19px}
-.swipe{font-size:9px;letter-spacing:2px;text-shadow:0 2px 5px #000}
-#home{padding:calc(env(safe-area-inset-top) + 52px) 17px calc(env(safe-area-inset-bottom) + 102px);overflow:auto;background:linear-gradient(180deg,#0e20338a,#0b1425b0)}
-.greeting{font-size:11px;color:#e0eaf0;margin:5px 2px 12px}
-.widgetrow{display:grid;grid-template-columns:1.1fr .9fr;gap:10px}
-.widget{padding:14px;border:1px solid #ffffff35;border-radius:18px;background:#d9e5ed20;backdrop-filter:blur(18px);min-width:0}
-.widgetlabel{font-size:9px;letter-spacing:1px;color:#d5e2eb}
-.wtime{font-size:30px;font-weight:300;margin:9px 0 4px}
-.wsmall{font-size:10px;color:#e0e8ef;line-height:1.5}
-.weathericon{font-size:26px;margin:8px 0}
-.dayrow{display:flex;justify-content:space-between;font-size:9px;margin-top:13px;color:#d7e4ed}
-.sectiontitle{font-size:10px;letter-spacing:1.5px;color:#e2eaf0;margin:20px 3px 13px}
-.appgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px 5px}
-.appbutton{border:0;background:transparent;color:white;padding:0;display:flex;flex-direction:column;align-items:center;gap:7px;min-width:0}
-.appicon{width:51px;height:51px;border-radius:15px;display:grid;place-items:center;font-size:24px;color:white;box-shadow:0 5px 12px #0003;border:1px solid #ffffff25}
-.appname{font-size:10px;text-shadow:0 1px 4px #000;white-space:nowrap}
-.dock{position:absolute;z-index:12;bottom:calc(env(safe-area-inset-bottom) + 19px);left:14px;right:14px;display:flex;justify-content:space-around;align-items:center;padding:11px 5px;border:1px solid #ffffff30;border-radius:23px;background:#ffffff26;backdrop-filter:blur(24px)}
-.dock .appicon{width:45px;height:45px}
-.homebar{position:absolute;z-index:50;bottom:calc(env(safe-area-inset-bottom) + 7px);left:50%;transform:translateX(-50%);width:100px;height:4px;border-radius:5px;background:#fff}
-#app{background:#f1f4f8;color:#17283a;padding:calc(env(safe-area-inset-top) + 45px) 17px calc(env(safe-area-inset-bottom) + 35px);overflow:auto}
-.apphead{display:flex;align-items:center;gap:11px;margin:7px 0 20px}
-.back{background:#e0e8ef;border:0;border-radius:10px;padding:9px 12px;color:#203448;font-size:12px}
-.apphead h2{margin:0;font-size:22px;letter-spacing:-.5px}
-.apphead small{font-size:9px;color:#748496;display:block;margin-top:4px;letter-spacing:1px}
-.appbody{font-size:13px;line-height:1.55}
-.appcard{background:white;border:1px solid #e0e6ec;border-radius:14px;padding:14px;margin:10px 0;box-shadow:0 4px 12px #142b3d08}
-.appcard h3{font-size:13px;margin:0 0 7px}
-.appcard p{margin:5px 0;color:#4c5f70}
-.bubble{padding:11px 12px;border-radius:13px;margin:9px 0;max-width:90%;background:#e0e7ee;font-size:12px}
-.bubble.out{margin-left:auto;background:#bcebd6}
-.bubble small{display:block;color:#657889;font-size:9px;margin-bottom:4px}
-.appbutton2{border:1px solid #c5d1dc;background:#eaf0f5;color:#203348;padding:10px 12px;border-radius:9px;font-size:11px;margin:5px 4px 0 0}
-.textfield{width:100%;padding:12px;background:white;color:#17283a;border:1px solid #bdcbd8;border-radius:9px;margin:8px 0}
-.mapmock{height:180px;border-radius:12px;position:relative;overflow:hidden;background:repeating-linear-gradient(30deg,transparent 0 31px,#fff 32px 37px,transparent 38px 67px),repeating-linear-gradient(120deg,#d5e3d8 0 35px,#c4d9cc 36px 39px,#dce8de 40px 68px)}
-.mapmock:after{content:"17";position:absolute;left:55%;top:42%;background:#3e7f73;color:white;border-radius:50% 50% 50% 0;transform:rotate(-45deg);padding:8px;font-size:12px}
-.toast{position:absolute;z-index:70;bottom:calc(env(safe-area-inset-bottom) + 90px);left:10%;width:80%;padding:12px;border-radius:12px;background:#18293b;color:white;text-align:center;font-size:12px;border:1px solid #52667b}
-@media(min-width:700px){#immersive.active .device{border-left:1px solid #28384c;border-right:1px solid #28384c}}
+body{margin:0;background:#050a12;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input{font:inherit}button{cursor:pointer;color:inherit}
+#shell{max-width:500px;margin:auto;padding:10px;min-height:100dvh}
+.top{height:35px;display:flex;justify-content:space-between;align-items:center;padding:0 12px;font-size:10px;letter-spacing:2px;color:#c8d9ea}
+.phone{height:calc(100dvh - 55px);min-height:650px;position:relative;overflow:hidden;border-radius:32px;border:1px solid #304c65;background:#081421;box-shadow:0 25px 80px #0009}
+.phone:before{content:"";position:absolute;z-index:20;top:9px;left:50%;transform:translateX(-50%);width:92px;height:24px;border-radius:20px;background:#02060a;border:1px solid #1b2a39}
+.screen{position:absolute;inset:0;overflow-y:auto;padding:47px 16px 24px;scrollbar-width:none}
+.screen::-webkit-scrollbar{display:none}
+.wallpaper{position:absolute;inset:0;background:linear-gradient(#06101a35,#06101ae8),url('https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1000&q=85') center/cover}
+.brandline{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;font-size:10px;color:#b9cde1;letter-spacing:2px}
+.brand{font-weight:900;letter-spacing:5px;color:white}
+h1{font-size:27px;letter-spacing:-1px;margin:0 0 5px}
+h2{font-size:17px;margin:0 0 10px}
+h3{font-size:13px;margin:0 0 5px}
+p{line-height:1.5}
+.muted{color:var(--muted)}.small{font-size:11px}
+.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--cyan);font-weight:700}
+.card{background:linear-gradient(145deg,#14263aeF,#0b1725f5);border:1px solid var(--line);border-radius:19px;padding:14px;margin-bottom:11px}
+.row{display:flex;align-items:center;gap:11px}.between{display:flex;align-items:center;justify-content:space-between;gap:8px}.grow{flex:1;min-width:0}
+.avatar{width:43px;height:43px;flex-shrink:0;border-radius:50%;overflow:hidden;display:grid;place-items:center;font-weight:800;background:linear-gradient(135deg,#4e81a9,#172b40);border:1px solid #ffffff28}
+.avatar img{width:100%;height:100%;object-fit:cover}.avatar.sm{width:35px;height:35px}
+.badge{font-size:10px;background:#143957;color:#d1eaff;border:1px solid #285879;padding:4px 8px;border-radius:20px;white-space:nowrap}
+.badge.gold{background:#382f20;color:#f3d998;border-color:#66532c}
+.btn{background:#12283c;border:1px solid #304c64;border-radius:12px;padding:9px 12px;font-size:12px}
+.btn.primary{background:#1679d5;border-color:#4199f2}.btn.danger{color:#ff9cab}
+.backrow{display:flex;align-items:center;gap:10px;margin-bottom:17px}
+.search{width:100%;padding:12px;border-radius:13px;border:1px solid #2b4358;background:#091624;color:white;outline:none;margin:6px 0 12px}
+.listitem{display:flex;align-items:center;gap:11px;padding:12px 1px;border-bottom:1px solid #24374a;cursor:pointer}
+.listitem:last-child{border-bottom:0}
+.listtitle{font-size:13px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.subline{font-size:11px;color:var(--muted);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.time{font-size:10px;color:#8fa7c0;white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:19px 6px;margin:20px 0}
+.appicon{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:7px;font-size:10px;color:#e4effc;padding:0;min-width:0}
+.glyph{width:51px;height:51px;border-radius:16px;display:grid;place-items:center;font-size:23px;border:1px solid #ffffff28;box-shadow:0 7px 18px #0005;background:linear-gradient(145deg,#398fff,#163b71)}
+.green{background:linear-gradient(145deg,#2bd3a0,#08745e)}
+.gold{background:linear-gradient(145deg,#efc976,#926123)}
+.pink{background:linear-gradient(145deg,#f779a0,#843254)}
+.violet{background:linear-gradient(145deg,#a08cff,#51439a)}
+.gray{background:linear-gradient(145deg,#71859a,#27394a)}
+.widgetrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.widget{border:1px solid #2b455c;background:#12253ad9;border-radius:17px;padding:13px;min-height:95px}
+.big{font-size:26px;letter-spacing:-1px;margin:6px 0}
+.dock{position:sticky;bottom:0;margin-top:14px;padding:12px 6px;background:#14283bdc;border:1px solid #ffffff24;border-radius:22px;display:flex;justify-content:space-around;backdrop-filter:blur(18px)}
+.dock button{border:0;background:none;font-size:22px}
+.lockcontent{position:relative;text-align:center;padding-top:55px}
+.locktime{font-size:72px;font-weight:250;letter-spacing:-5px;line-height:1.1}
+.lockdate{font-size:13px;margin-top:8px;color:#d0dfef}
+.notif{display:flex;align-items:center;gap:10px;text-align:left;padding:12px;background:#081522d9;border:1px solid #ffffff27;border-radius:17px;margin-bottom:9px;backdrop-filter:blur(12px)}
+.notificon{width:35px;height:35px;display:grid;place-items:center;border-radius:11px;background:#174d70}
+.locknotifs{margin-top:65px}
+.unlock{margin-top:18px;padding:12px 20px;border-radius:22px;background:#ffffff13;border:1px solid #8abbe3}
+.chatbubble{max-width:87%;padding:11px 13px;border-radius:17px;margin:9px 0;background:#16293c;border:1px solid #2d455a;font-size:13px;line-height:1.45}
+.chatbubble.in{border-bottom-left-radius:5px}
+.chatbubble.out{margin-left:auto;background:linear-gradient(135deg,#126ac5,#174b92);border-color:#3985d1;border-bottom-right-radius:5px}
+.chatmeta{font-size:9px;text-align:right;color:#b2c9df;margin-top:5px}
+.chatphoto{width:100%;max-height:180px;object-fit:cover;border-radius:12px;margin-top:8px}
+.composer{display:flex;gap:8px;position:sticky;bottom:-24px;background:#091522;padding:10px 0 3px}
+.composer input{min-width:0;flex:1;border:1px solid #2b4157;background:#102034;border-radius:20px;padding:11px;color:white}
+.send{width:42px;height:42px;border:0;border-radius:50%;background:#247fdf;font-size:18px}
+.photoGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.photoTile{border:1px solid #29445a;border-radius:13px;overflow:hidden;background:#0b1622;cursor:pointer}
+.photoTile img{display:block;width:100%;height:145px;object-fit:cover}
+.caption{padding:8px;font-size:11px}.photoBadge{position:absolute;background:#081421d9;padding:4px 6px;border-radius:7px;font-size:9px;margin:7px}
+.detailimg{width:100%;max-height:320px;object-fit:cover;border-radius:16px;border:1px solid #304b62}
+.clue{border-left:3px solid var(--gold);padding:10px 11px;background:#332d1d66;border-radius:0 12px 12px 0;color:#f0dda9;font-size:12px;margin-top:12px}
+.note{border:1px solid #2a4054;background:#101f30;border-radius:15px;padding:13px;margin-bottom:9px;cursor:pointer}
+.note p{font-size:12px;color:#b6c9dc;margin:7px 0 0}
+.fileicon{width:42px;height:45px;display:grid;place-items:center;background:#142d46;border-radius:10px;font-size:20px;border:1px solid #2b4d6b;flex-shrink:0}
+.event{display:flex;gap:11px;padding:12px 0;border-bottom:1px solid #24384b}
+.datebox{width:45px;flex-shrink:0;text-align:center;background:#172b40;border-radius:12px;padding:8px 0}
+.datebox strong{font-size:18px;display:block}.datebox span{font-size:9px;color:var(--cyan)}
+.monthgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center;font-size:11px;margin:12px 0}
+.day{padding:8px 0;border-radius:9px;color:#b5c9dd;cursor:pointer}.day.active{background:#247bd4;color:white;font-weight:800}.day.marked{border:1px solid #d8b65e;color:#f1d88f}
+.callrow{display:flex;gap:11px;align-items:center;padding:12px 0;border-bottom:1px solid #24384b}
+.mapfake{height:230px;position:relative;border-radius:17px;overflow:hidden;border:1px solid #29445a;background:repeating-linear-gradient(30deg,transparent 0 32px,#1c354a 33px 36px),repeating-linear-gradient(120deg,#0b1b2a 0 48px,#172d40 49px 52px)}
+.pin{position:absolute;background:#ff6e79;width:13px;height:13px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);left:62%;top:36%;box-shadow:0 0 18px #ff6e79}
+.maplabel{position:absolute;left:66%;top:32%;font-size:10px;background:#152c40;padding:5px 7px;border-radius:7px}
+.toast{position:fixed;z-index:50;left:50%;bottom:25px;transform:translateX(-50%);background:#e8f4ff;color:#081321;border-radius:14px;padding:11px 16px;font-size:12px;font-weight:700;display:none;max-width:90%;text-align:center}
+@media(max-height:720px){.phone{height:calc(100dvh - 55px);min-height:590px}.locknotifs{margin-top:35px}.lockcontent{padding-top:35px}.locktime{font-size:62px}}
 </style>
 </head>
 <body>
-<section id="briefing">
- <div class="top"><div><div class="logo">EXPEDIENTE CERO</div><div class="sub">UNIDAD DE ANÁLISIS DIGITAL</div></div><div class="tag">EC / 001</div></div>
- <section class="case">
-  <div class="tag">EXPEDIENTE ACTIVO · PRIORIDAD ALTA</div>
-  <h1>La última conexión</h1>
-  <p>Un teléfono NEXO fue encontrado cerca de la estación vieja. Su propietario desapareció durante la noche. Las comunicaciones recuperadas no encajan con la versión de sus conocidos.</p>
-  <div class="fact">DISPOSITIVO: NEXO NX-11</div><div class="fact">ÚLTIMA SEÑAL: 23:48 · SECTOR NORTE</div><div class="fact">INTEGRIDAD DEL SISTEMA: 82%</div>
-  <p class="hint">Examina el dispositivo. Explora sus aplicaciones, compara las horas y busca información que alguien intentó ocultar.</p>
-  <button class="action" id="openPhone">⌕ &nbsp; EXAMINAR TELÉFONO NEXO</button>
-  <div class="tag" style="margin-top:25px">REGISTRO DE PISTAS</div>
-  <div class="fact" id="clue1">PISTA 01 · Pendiente: conversación fijada.</div>
-  <div class="fact" id="clue2">PISTA 02 · Pendiente: registro de llamadas.</div>
-  <div class="fact" id="clue3">PISTA 03 · Pendiente: nota y fotografía del número 17.</div>
- </section>
-</section>
-<section id="immersive">
- <div class="device">
-  <div class="wallpaper"></div>
-  <div class="status"><span id="statusTime">09:41</span><span>● ▮▮▮ ▰</span></div>
-  <div class="island"></div><button id="exit">×</button>
-  <section class="screen" id="lock">
-   <div class="lockdate" id="lockdate">DISPOSITIVO RECUPERADO</div>
-   <div class="lockclock" id="clock">09:41</div>
-   <div class="lockcaption">MIENTRAS HAYA DATOS, HAY RESPUESTAS.</div>
-   <div class="lockbottom">
-    <div class="notification"><div class="notifhead"><span>MENSAJES · NEXO</span><span>AHORA</span></div><strong>Mensaje sin leer</strong><p>«No vayas por la entrada principal. Te explico cuando llegues.»</p></div>
-    <div class="notification"><div class="notifhead"><span>NEXO CLOUD</span><span>AYER</span></div><strong>Sincronización incompleta</strong><p>Se han recuperado elementos de la copia local.</p></div>
-    <div class="lockcontrols"><button class="round" id="flash">◉</button><span class="swipe">TOCA PARA DESBLOQUEAR</span><button class="round" id="quickCamera">▣</button></div>
-   </div>
-  </section>
-  <section class="screen hidden" id="home">
-   <div class="greeting" id="greeting">MIÉRCOLES · BUENAS NOCHES</div>
-   <div class="widgetrow">
-    <div class="widget"><div class="widgetlabel">NEXO · AGENDA</div><div class="wtime" id="homeclock">09:41</div><div class="wsmall">3 avisos por revisar</div></div>
-    <div class="widget"><div class="widgetlabel">CLIMA LOCAL</div><div class="weathericon">☁</div><div class="wsmall">Nublado<br>Sector norte</div></div>
-   </div>
-   <div class="widget" style="margin-top:10px"><div class="widgetlabel">ACTIVIDAD RECIENTE</div><p style="font-size:11px;margin:8px 0 0">Última conexión conocida <b>23:48</b></p><div class="dayrow"><span>MENSAJES 2</span><span>ARCHIVOS 3</span><span>AVISOS 1</span></div></div>
-   <div class="sectiontitle">TUS APLICACIONES</div>
-   <div class="appgrid" id="appgrid"></div>
-   <div class="dock" id="dock"></div>
-  </section>
-  <section class="screen hidden" id="app">
-   <div class="apphead"><button class="back" id="back">‹ Inicio</button><div><h2 id="apptitle">Mensajes</h2><small id="appsubtitle">NEXO OS · DATOS LOCALES</small></div></div>
-   <div class="appbody" id="appbody"></div>
-  </section>
-  <div class="homebar" id="homebar"></div>
-  <div class="toast hidden" id="toast"></div>
- </div>
-</section>
+<div id="shell">
+ <div class="top"><span class="brand">N E X O</span><span>● DISPOSITIVO CIFRADO　▮▮▮ ◉</span></div>
+ <main class="phone" id="phone">
+  <div id="wallpaper" class="wallpaper"></div>
+  <div class="screen" id="screen"></div>
+ </main>
+</div>
+<div class="toast" id="toast"></div>
 <script>
-(()=>{
-const $=id=>document.getElementById(id);
-let seen=JSON.parse(localStorage.getItem('nexo_seen')||'[]');
-const apps=[
-['messages','Mensajes','▤','#38b978'],['calls','Llamadas','☎','#239b87'],['photos','Fotos','✿','#c47ac7'],['notes','Notas','▧','#e6b54e'],
-['files','Archivos','▰','#4f9fdf'],['contacts','Contactos','♙','#7e91a7'],['maps','Mapas','⌖','#57a987'],['browser','Navegador','◎','#548ed8'],
-['health','Salud','♡','#e86c83'],['settings','Ajustes','⚙','#8292a6'],['voice','Notas voz','♫','#9774d9'],['deleted','Eliminados','⌫','#66778b']
+const $=s=>document.querySelector(s);
+const image=id=>`https://images.unsplash.com/${id}?auto=format&fit=crop&w=1000&q=85`;
+const photos=[
+{id:'p1',title:'IMG_2048.jpg',date:'16 abr · 23:44',src:image('photo-1519608487953-e999c86e7455'),desc:'Calle junto a la estación vieja. Una señal azul muestra el número 17.',clue:'El número 17 también aparece en un recibo guardado en Archivos.'},
+{id:'p2',title:'entrada_lateral.jpg',date:'16 abr · 23:39',src:image('photo-1519501025264-65ba15a82390'),desc:'Acceso lateral del edificio. La entrada principal está al otro lado.',clue:'Coincide con la instrucción que Mara envió por Mensajes.'},
+{id:'p3',title:'recibo_17.jpg',date:'16 abr · 23:51',src:image('photo-1554224155-6726b3ff858f'),desc:'Recibo fotografiado deprisa. Se distingue el código 17 y una hora tardía.',clue:'Compara la hora con el evento Estación vieja del Calendario.'},
+{id:'p4',title:'andén_vacío.jpg',date:'16 abr · 23:32',src:image('photo-1473448912268-2022ce9509d8'),desc:'Un lugar oscuro y apartado. Una figura queda parcialmente oculta al fondo.',clue:'La silueta coincide con una descripción anotada en Notas.'}
 ];
-const data={
-messages:{title:'Mensajes',items:[
-['Mara V. · 23:16','¿Sigues en el mismo sitio?','in'],['Tú · 23:18','Sí. Espero cinco minutos más.','out'],['Mara V. · 23:21','No vayas por la entrada principal. Te explico cuando llegues.','in'],['Número desconocido · 23:47','Ya te he visto. No estás solo.','in']],note:'El último mensaje figura como entregado, pero no leído. La conversación se archivó manualmente.'},
-calls:{title:'Llamadas',items:[['23:42 · Mara V.','Saliente · Duración: 00:18'],['23:46 · Número oculto','Entrante · Llamada perdida'],['23:49 · Mara V.','Saliente · Sin conexión']],note:'La última conexión de datos se registró a las 23:48, justo entre las llamadas.'},
-photos:{title:'Fotos',items:[['IMG_2048 · 22:58','Fotografía nocturna. En el reflejo de un letrero azul se distingue el número 17.'],['IMG_2049 · 23:03','Calle lateral junto a la estación vieja.'],['IMG_2050 · 23:44','Archivo dañado. Tamaño inusual para una fotografía.']],note:'La imagen de las 23:03 se guardó cinco minutos después de ser tomada.'},
-notes:{title:'Notas',items:[['No olvidar','17. La puerta azul no es la entrada. Si el reloj del andén está parado, voy tarde.'],['Borrador sin título','Mara dice que no confíe en el registro compartido. Comprobar la copia local antes de salir.'],['Nota eliminada parcialmente','No era una cita. Era una entrega.']],note:'El número 17 también aparece en la galería.'},
-files:{title:'Archivos',items:[['backup_local_2310.zip','Copia local parcial · 18,4 MB'],['recibo_17.pdf','Documento sin vista previa'],['audio_cache.tmp','Audio incompleto · 00:07']],note:'La sincronización en la nube falló a las 23:45. La copia local conserva datos más recientes.'},
-contacts:{title:'Contactos',items:[['Mara V.','Favorito · Último contacto: 23:42'],['Iván R.','Compañero de trabajo'],['Servicio técnico','Contacto añadido ayer a las 18:07']],note:'La conversación de Mara fue archivada antes de la última conexión.'},
-maps:{title:'Mapas',map:true,items:[['Estación vieja · Sector norte','Última ubicación guardada: 23:03. Referencia cercana: acceso lateral 17.']],note:'El historial muestra una ruta incompleta que termina a dos calles de la estación.'},
-browser:{title:'Navegador',items:[['Búsqueda reciente','«entrada lateral estación vieja horario»'],['Página guardada','Plano de accesos de la estación · 22:51'],['Historial eliminado','Borrado a las 23:51']],note:'El historial desapareció tres minutos después de perderse la señal.'},
-health:{title:'Salud',items:[['Actividad diaria','Pasos registrados hasta las 23:39. Después no hay actividad sincronizada.'],['Última lectura','Pulso registrado a las 23:41.'],['Dispositivo asociado','Dejó de recibir datos a las 23:44']],note:'La desconexión del reloj precede a la pérdida de señal del teléfono.'},
-settings:{title:'Ajustes',items:[['Cuenta NEXO','Última sincronización completa: 22:58'],['Privacidad','Historial compartido desactivado a las 23:45'],['Red y conexión','Pérdida de señal registrada a las 23:48']],note:'No se ha registrado un reinicio del dispositivo.'},
-voice:{title:'Notas de voz',items:[['Audio 01 · 23:39','Duración 00:07. Transcripción: «…la puerta azul, no la principal…»'],['Audio 02 · 23:44','Contenido dañado; la entrada de grabación sí se conserva.']],note:'El primer audio se guardó localmente, pero nunca se subió a la nube.'},
-deleted:{title:'Eliminados',pin:true,items:[['Carpeta protegida','Introduce el PIN de cuatro cifras que dejó el propietario.']],note:'Pista: el número aparece tanto en una nota como en una fotografía.'}
+
+const contacts=[
+{id:'mara',name:'Mara V.',initial:'MV',avatar:image('photo-1534528741775-53994a69daeb'),status:'en línea',unread:3,last:'No vayas por la entrada principal.',time:'23:21'},
+{id:'ivan',name:'Iván R.',initial:'IR',avatar:image('photo-1500648767791-00dcc994a43e'),status:'visto hoy',unread:0,last:'Luego nos vemos mañana.',time:'20:17'},
+{id:'unknown',name:'Número desconocido',initial:'?',avatar:'',status:'número no guardado',unread:1,last:'Ya te he visto. No estás solo.',time:'23:47'},
+{id:'lucia',name:'Lucía',initial:'L',avatar:image('photo-1544005313-94ddf0286df2'),status:'última conexión ayer',unread:0,last:'Perfecto, gracias.',time:'Ayer'},
+{id:'group',name:'Grupo · Viernes',initial:'G',avatar:'',status:'4 participantes',unread:0,last:'Mara abandonó el grupo.',time:'Ayer'}
+];
+const chats={
+mara:[
+{from:'in',text:'¿Sigues en el mismo sitio?',time:'23:16'},
+{from:'out',text:'Sí. Espero cinco minutos más.',time:'23:18'},
+{from:'in',text:'No vayas por la entrada principal. Te explico cuando llegues.',time:'23:21'},
+{from:'in',photo:'p2',text:'Es por aquí. No hagas fotos si ves a alguien.',time:'23:22'},
+{from:'out',text:'¿Qué pasa con el número 17?',time:'23:24'},
+{from:'in',text:'No lo escribas aquí. Borra esta conversación cuando termines.',time:'23:25'}
+],
+ivan:[
+{from:'in',text:'¿Al final fuiste a la estación?',time:'20:02'},
+{from:'out',text:'No. ¿Por qué?',time:'20:08'},
+{from:'in',text:'Alguien preguntó por ti. No te fíes de lo que ponga en el registro.',time:'20:17'}
+],
+unknown:[
+{from:'in',text:'Ya te he visto. No estás solo.',time:'23:47'},
+{from:'in',text:'Mira la foto IMG_2048. Amplía la esquina derecha.',time:'23:48'}
+],
+lucia:[
+{from:'out',text:'¿Guardaste el recibo?',time:'18:03'},
+{from:'in',text:'Sí, pero la hora no coincide. Te lo dejé en la carpeta compartida.',time:'18:05'}
+],
+group:[
+{from:'in',text:'Reunión cancelada. Nadie debe ir a la estación.',time:'19:10'},
+{from:'in',text:'Mara abandonó el grupo.',time:'19:12'}
+]
 };
-function toast(s){$('toast').textContent=s;$('toast').classList.remove('hidden');setTimeout(()=>$('toast').classList.add('hidden'),2600)}
-function showHome(){$('lock').classList.add('hidden');$('app').classList.add('hidden');$('home').classList.remove('hidden');$('homebar').style.background='white'}
-function unlock(){showHome()}
-function openApp(id){
- const d=data[id];if(!d)return;
- $('home').classList.add('hidden');$('lock').classList.add('hidden');$('app').classList.remove('hidden');$('apptitle').textContent=d.title;$('appbody').innerHTML='';
- if(d.map){const m=document.createElement('div');m.className='mapmock';$('appbody').appendChild(m)}
- d.items.forEach((it,i)=>{const c=document.createElement('div');c.className='appcard';c.innerHTML='<h3></h3><p></p>' ;c.querySelector('h3').textContent=it[0];c.querySelector('p').textContent=it[1];$('appbody').appendChild(c)});
- if(d.note){const n=document.createElement('div');n.className='appcard';n.innerHTML='<h3>Información recuperada</h3><p></p>';n.querySelector('p').textContent=d.note;$('appbody').appendChild(n)}
- if(d.pin){
- const input=document.createElement('input');input.className='textfield';input.placeholder='PIN de cuatro cifras';input.inputMode='numeric';input.maxLength=4;
- const b=document.createElement('button');b.className='appbutton2';b.textContent='Desbloquear';
- const result=document.createElement('div');result.className='appcard';
- b.onclick=()=>{result.textContent=input.value==='2317'?'Código aceptado. «La entrega era a las 23:50. Busca el recibo 17».':'Código incorrecto. Comprueba el número de la nota y la fotografía.';if(input.value==='2317')toast('Nueva pista recuperada')};
- $('appbody').append(input,b,result)}
- if(!seen.includes(id)){seen.push(id);localStorage.setItem('nexo_seen',JSON.stringify(seen))}
- const clues={messages:'clue1',calls:'clue2',notes:'clue3',photos:'clue3',files:'clue3'};
- if(clues[id])$(clues[id]).textContent=$(clues[id]).textContent.replace('Pendiente','Revisada');
-}
-apps.forEach(([id,name,glyph,color])=>{
- const b=document.createElement('button');b.className='appbutton';const icon=document.createElement('span');icon.className='appicon';icon.style.background='linear-gradient(145deg,'+color+',#24364f)';icon.textContent=glyph;const label=document.createElement('span');label.className='appname';label.textContent=name;b.append(icon,label);b.onclick=()=>openApp(id);$('appgrid').appendChild(b)
-});
-['messages','calls','photos','settings'].forEach(id=>{const a=apps.find(x=>x[0]===id);const b=document.createElement('button');b.className='appbutton';const icon=document.createElement('span');icon.className='appicon';icon.style.background='linear-gradient(145deg,'+a[3]+',#24364f)';icon.textContent=a[2];b.appendChild(icon);b.onclick=()=>openApp(id);$('dock').appendChild(b)});
-$('openPhone').onclick=()=>{$('immersive').classList.add('active');$('lock').classList.remove('hidden');$('home').classList.add('hidden');$('app').classList.add('hidden');window.scrollTo(0,0)};
-$('exit').onclick=()=>{$('immersive').classList.remove('active');window.scrollTo(0,0)};
-$('lock').onclick=e=>{if(!e.target.closest('button'))unlock()};
-$('back').onclick=showHome;
-$('flash').onclick=e=>{e.stopPropagation();toast('Linterna activada')};
-$('quickCamera').onclick=e=>{e.stopPropagation();openApp('photos')};
-function tick(){const d=new Date(),t=d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit',hour12:false});$('clock').textContent=t;$('homeclock').textContent=t;$('statusTime').textContent=t;$('lockdate').textContent=d.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'}).toUpperCase();$('greeting').textContent=d.toLocaleDateString('es-ES',{weekday:'long'}).toUpperCase()+' · DISPOSITIVO NEXO'}
-tick();setInterval(tick,15000);
-})();
+const notes=[
+{title:'No confiar',date:'16 abr',body:'La puerta azul no es la entrada. Si el reloj del vestíbulo sigue parado, alguien lo ha dejado así a propósito.',clue:'Conecta la puerta de Fotos con la hora del Calendario.'},
+{title:'Borrador sin título',date:'15 abr',body:'Mara dice que no confíe en el registro compartido. Iván sabe algo, pero no quiere dejarlo por escrito.',clue:'Contrasta el mensaje de Iván con el evento del día 16.'},
+{title:'Nota eliminada parcialmente',date:'14 abr',body:'No era una cita. Era una entrega. El recibo tiene el número 17.',clue:'Busca recibo_17.pdf en Archivos.'},
+{title:'Lista de tareas',date:'12 abr',body:'□ Revisar cámara de la estación\n□ Buscar recibo 17\n□ Llamar a Iván',clue:'Las tareas apuntan a Fotos, Archivos y Llamadas.'}
+];
+const files=[
+{name:'recibo_17.pdf',type:'PDF',size:'2,1 MB',date:'16 abr',desc:'Recibo digitalizado. Código de operación: 17. Hora registrada: 23:51.',clue:'La hora es posterior al mensaje de Mara y al evento del calendario.'},
+{name:'audio_cache.tmp',type:'AUDIO',size:'450 KB',date:'14 abr',desc:'Fragmento recuperado: “...la puerta lateral... a las once y media...”',clue:'El audio menciona la puerta lateral, igual que el chat de Mara.'},
+{name:'backup_local_2310.zip',type:'ZIP',size:'18,4 MB',date:'16 abr',desc:'Copia local incompleta. Contiene referencias a IMG_2048 y a la estación vieja.',clue:'2310 puede ser una hora, no una contraseña.'},
+{name:'fotos_backup',type:'CARPETA',size:'12 elementos',date:'12 abr',desc:'Copia de fotografías con metadatos conservados.',clue:'Compara las fechas de las imágenes con las llamadas.'},
+{name:'registro_compartido.pdf',type:'PDF',size:'980 KB',date:'13 abr',desc:'Registro de accesos. Una entrada fue modificada a las 23:10.',clue:'Iván advirtió que no confiaras en el registro.'}
+];
+const calls=[
+{name:'Número desconocido',id:'unknown',kind:'Entrante · perdida',time:'23:46',duration:'00:00'},
+{name:'Mara V.',id:'mara',kind:'Saliente',time:'23:42',duration:'00:18'},
+{name:'Mara V.',id:'mara',kind:'Saliente',time:'22:17',duration:'00:32'},
+{name:'Iván R.',id:'ivan',kind:'Entrante',time:'20:03',duration:'01:12'},
+{name:'Lucía',id:'lucia',kind:'Saliente',time:'18:32',duration:'00:45'},
+{name:'Número desconocido',id:'unknown',kind:'Entrante',time:'16:08',duration:'00:07'}
+];
+const state={page:'lock',chat:'mara',photo:'p1',note:0,file:0,calday:16,reviewed:JSON.parse(localStorage.getItem('nexo_reviewed')||'[]'),sent:{}};
+function toast(s){const t=$('#toast');t.textContent=s;t.style.display='block';clearTimeout(window._toast);window._toast=setTimeout(()=>t.style.display='none',2300)}
+function mark(id){if(!state.reviewed.includes(id)){state.reviewed.push(id);localStorage.setItem('nexo_reviewed',JSON.stringify(state.reviewed))}}
+function avatar(c,small=false){return `<div class="avatar ${small?'sm':''}">${c.avatar?`<img src="${c.avatar}" alt="">`:c.initial}</div>`}
+function head(title,sub='',back='home'){return `<div class="backrow"><button class="btn" onclick="go('${back}')">‹</button><div class="grow"><h1 style="font-size:24px">${title}</h1><div class="muted small">${sub}</div></div><button class="btn" onclick="toast('NEXO · Dispositivo cifrado')">⋯</button></div>`}
+function apphead(title,action=''){return `<div class="apphead between" style="margin-bottom:15px"><div><div class="eyebrow">NEXO / PERSONAL</div><h1>${title}</h1></div>${action}</div>`}
+function icon(label,glyph,color,page){return `<button class="appicon" onclick="go('${page}')"><span class="glyph ${color}">${glyph}</span><span>${label}</span></button>`}
+function lock(){return `<div class="lockcontent"><div class="brandline"><span class="brand">N E X O</span><span>▮▮▮ ◉ ▰</span></div><div style="font-size:32px;margin-top:18px">♙</div><div class="locktime" id="clock">23:48</div><div class="lockdate">Miércoles, 16 de abril</div><div class="locknotifs">
+<div class="notif" onclick="openChat('mara')"><div class="notificon">✉</div><div class="grow"><div class="between"><b style="font-size:12px">Mara V.</b><span class="small muted">ahora</span></div><div class="small">3 mensajes nuevos</div><div class="small muted">No vayas por la entrada principal.</div></div></div>
+<div class="notif" onclick="go('calls')"><div class="notificon">☎</div><div class="grow"><b style="font-size:12px">Llamada perdida</b><div class="small muted">Número desconocido · hace 2 min</div></div></div>
+<div class="notif" onclick="go('calendar')"><div class="notificon">▦</div><div class="grow"><b style="font-size:12px">Calendario</b><div class="small muted">Estación vieja · 23:00</div></div></div>
+</div><button class="unlock" onclick="go('home')">⌃　Desliza para desbloquear</button></div>`}
+function home(){return `<div class="brandline"><span class="brand">NEXO</span><span>MIÉRCOLES, 16 ABRIL</span><button class="btn" onclick="go('settings')">⚙</button></div>
+<div class="widgetrow"><div class="widget"><div class="eyebrow">Madrid · ahora</div><div class="big">12° ☁</div><div class="small muted">Nublado · viento suave</div></div><div class="widget" onclick="go('calendar')"><div class="eyebrow">Siguiente evento</div><div class="big">23:00</div><div class="small">Estación vieja <span style="color:var(--gold)">◆</span></div></div></div>
+<div class="card" style="margin-top:12px;padding:12px"><div class="between"><div><div class="eyebrow">Resumen del dispositivo</div><div style="font-size:12px;margin-top:5px">3 mensajes sin leer · 1 llamada perdida</div></div><span class="badge">1 alerta</span></div></div>
+<div class="grid">
+${icon('Mensajes','✉','green','messages')}${icon('Llamadas','☎','green','calls')}${icon('Fotos','▧','gold','photos')}${icon('Notas','▤','gold','notes')}
+${icon('Archivos','▰','','files')}${icon('Contactos','♙','gray','contacts')}${icon('Mapas','⌖','green','maps')}${icon('Navegador','◉','','browser')}
+${icon('Calendario','▦','pink','calendar')}${icon('Notas de voz','♫','violet','voice')}${icon('Salud','♡','pink','health')}${icon('Ajustes','⚙','gray','settings')}
+</div><div class="card"><div class="between"><h3>Actividad reciente</h3><span class="badge gold">4 pistas</span></div>
+<div class="listitem" onclick="openChat('unknown')">${avatar(contacts[2],true)}<div class="grow"><div class="listtitle">Número desconocido</div><div class="subline">Ya te he visto. No estás solo.</div></div><span class="time">23:47</span></div>
+<div class="listitem" onclick="openPhoto('p1')"><div class="fileicon">▧</div><div class="grow"><div class="listtitle">Nueva foto · IMG_2048</div><div class="subline">La estación vieja · número 17</div></div><span class="time">23:44</span></div>
+<div class="listitem" onclick="go('calendar')"><div class="fileicon">▦</div><div class="grow"><div class="listtitle">Evento sospechoso</div><div class="subline">Estación vieja · 23:00</div></div><span class="time">Hoy</span></div></div>
+<div class="dock"><button onclick="go('messages')">✉</button><button onclick="go('calls')">☎</button><button onclick="go('photos')">▧</button><button onclick="go('notes')">▤</button></div>`}
+function messages(){return `${apphead('Mensajes',`<button class="btn" onclick="toast('Selecciona una conversación para responder')">＋</button>`)}<input class="search" placeholder="⌕ Buscar conversaciones…" oninput="filterList(this.value,'chatlist')"><div id="chatlist">${contacts.map(c=>`<div class="listitem" data-search="${c.name.toLowerCase()}" onclick="openChat('${c.id}')">${avatar(c)}<div class="grow"><div class="between"><span class="listtitle">${c.name}</span><span class="time">${c.time}</span></div><div class="subline">${c.last}</div></div>${c.unread?`<span class="badge">${c.unread}</span>`:''}</div>`).join('')}</div><div class="clue">El número 17 aparece en una conversación, una foto y un archivo.</div>`}
+function openChat(id){state.chat=id;go('chat')}
+function chat(){let c=contacts.find(x=>x.id===state.chat)||contacts[0];let msgs=[...(chats[c.id]||[]),...(state.sent[c.id]||[])];return `<div class="backrow"><button class="btn" onclick="go('messages')">‹</button>${avatar(c,true)}<div class="grow"><b>${c.name}</b><div class="muted small">${c.status}</div></div><button class="btn" onclick="toast('Llamando a ${c.name}…')">☎</button><button class="btn" onclick="toast('Videollamada no disponible')">▣</button></div><div style="text-align:center;margin:15px"><span class="badge">HOY · MENSAJES CIFRADOS</span></div><div>${msgs.map(m=>`<div class="chatbubble ${m.from}">${m.text||''}${m.photo?`<img class="chatphoto" src="${photos.find(p=>p.id===m.photo).src}" onclick="openPhoto('${m.photo}')">`:''}<div class="chatmeta">${m.time} ${m.from==='out'?'✓✓':''}</div></div>`).join('')}</div><div class="composer"><input id="msginput" placeholder="Mensaje…" onkeydown="if(event.key==='Enter')sendMsg()"><button class="send" onclick="sendMsg()">↑</button></div>`}
+function sendMsg(){let input=$('#msginput');if(!input||!input.value.trim())return;state.sent[state.chat]=state.sent[state.chat]||[];state.sent[state.chat].push({from:'out',text:input.value.trim(),time:new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})});render()}
+function callsPage(){return `${apphead('Llamadas')}<div class="widgetrow"><div class="widget"><div class="eyebrow">Perdidas</div><div class="big">01</div><div class="small muted">Número desconocido</div></div><div class="widget"><div class="eyebrow">Última llamada</div><div class="big">00:18</div><div class="small muted">Mara V. · 23:42</div></div></div><div style="margin-top:12px">${calls.map(c=>{let p=contacts.find(x=>x.id===c.id);return `<div class="callrow">${avatar(p,true)}<div class="grow"><div class="listtitle">${c.name}</div><div class="subline" style="${c.kind.includes('perdida')?'color:var(--red)':''}">${c.kind} · ${c.duration}</div></div><div style="text-align:right"><div class="time">${c.time}</div><button class="btn" style="margin-top:5px" onclick="toast('Llamando a ${c.name}…')">☎</button></div></div>`}).join('')}</div><div class="clue">La llamada perdida del número desconocido ocurrió dos minutos después del mensaje de Mara.</div>`}
+
+function photosPage(){return `${apphead('Fotos')}<div class="between" style="margin-bottom:12px"><span class="badge">Todas las fotos · 4</span><span class="muted small">Ordenadas por fecha</span></div><div class="photoGrid">${photos.map(p=>`<div class="photoTile" onclick="openPhoto('${p.id}')"><span class="photoBadge">PISTA</span><img loading="lazy" src="${p.src}" alt="${p.title}"><div class="caption"><b>${p.title}</b><div class="muted small">${p.date}</div></div></div>`).join('')}</div><div class="clue">Hay coincidencias entre las imágenes, el chat de Mara y el recibo 17.</div>`}
+function openPhoto(id){state.photo=id;go('photo')}
+function photoPage(){let p=photos.find(x=>x.id===state.photo)||photos[0];mark(p.id);return `${head('Vista de foto',p.date,'photos')}<img class="detailimg" src="${p.src}" alt="${p.title}"><div class="card" style="margin-top:12px"><div class="between"><h2>${p.title}</h2><span class="badge gold">EVIDENCIA</span></div><p style="font-size:13px;color:#c0d1e2">${p.desc}</p><div class="between"><span class="muted small">Metadatos</span><span class="small">GPS parcial · 23:44</span></div><div class="clue">${p.clue}</div><div class="row" style="margin-top:13px"><button class="btn" onclick="go('notes')">▤ Notas</button><button class="btn" onclick="go('files')">▰ Archivos</button></div></div>`}
+function notesPage(){return `${apphead('Notas')}<input class="search" placeholder="⌕ Buscar en notas…" oninput="filterList(this.value,'noteslist')"><div id="noteslist">${notes.map((n,i)=>`<div class="note" data-search="${(n.title+n.body).toLowerCase()}" onclick="openNote(${i})"><div class="between"><h3>${n.title}</h3><span class="time">${n.date}</span></div><p>${n.body.replaceAll('\n',' · ')}</p></div>`).join('')}</div>`}
+function openNote(i){state.note=i;go('note')}
+function notePage(){let n=notes[state.note];mark('note'+state.note);return `${head('Nota',n.date,'notes')}<div class="card"><div class="eyebrow">Nota personal · sincronizada</div><h1 style="font-size:24px;margin-top:12px">${n.title}</h1><p style="white-space:pre-line;font-size:14px;color:#d2e0ef">${n.body}</p><div class="clue">${n.clue}</div><div class="row" style="margin-top:15px"><button class="btn" onclick="go('photos')">▧ Fotos</button><button class="btn" onclick="go('files')">▰ Archivos</button></div></div>`}
+function filesPage(){return `${apphead('Archivos')}<input class="search" placeholder="⌕ Buscar archivos…" oninput="filterList(this.value,'filelist')"><div id="filelist">${files.map((f,i)=>`<div class="listitem" data-search="${f.name.toLowerCase()}" onclick="openFile(${i})"><div class="fileicon">${f.type==='PDF'?'▧':f.type==='AUDIO'?'♫':f.type==='ZIP'?'▣':'▰'}</div><div class="grow"><div class="listtitle">${f.name}</div><div class="subline">${f.size} · ${f.date}</div></div><span class="muted">›</span></div>`).join('')}</div><div class="clue">El archivo recibo_17.pdf contradice el horario anotado en el calendario.</div>`}
+function openFile(i){state.file=i;go('file')}
+function filePage(){let f=files[state.file];mark('file'+state.file);return `${head('Detalles del archivo',f.type,'files')}<div class="card"><div style="text-align:center;padding:20px 0"><div class="fileicon" style="margin:auto;width:64px;height:70px;font-size:29px">${f.type==='PDF'?'▧':f.type==='AUDIO'?'♫':'▰'}</div><h2 style="margin-top:14px">${f.name}</h2><div class="muted small">${f.size} · Modificado ${f.date}</div></div><div class="eyebrow">Contenido recuperado</div><p style="font-size:13px;color:#c5d6e7">${f.desc}</p><div class="clue">${f.clue}</div><div class="row" style="margin-top:14px"><button class="btn" onclick="go('calendar')">▦ Calendario</button><button class="btn" onclick="go('calls')">☎ Llamadas</button></div></div>`}
+function contactsPage(){return `${apphead('Contactos')}<input class="search" placeholder="⌕ Buscar contactos…" oninput="filterList(this.value,'contactlist')"><div id="contactlist">${contacts.filter(c=>c.id!=='group').map(c=>`<div class="listitem" data-search="${c.name.toLowerCase()}" onclick="openContact('${c.id}')">${avatar(c)}<div class="grow"><div class="listtitle">${c.name}</div><div class="subline">${c.status}</div></div><button class="btn" onclick="event.stopPropagation();toast('Llamando a ${c.name}…')">☎</button></div>`).join('')}</div>`}
+function openContact(id){state.chat=id;go('contact')}
+function contactPage(){let c=contacts.find(x=>x.id===state.chat);return `${head('Contacto','Ficha personal','contacts')}<div class="card" style="text-align:center;padding:24px">${avatar(c)}<h1 style="margin-top:12px">${c.name}</h1><div class="muted small">${c.status}</div><div class="row" style="justify-content:center;margin-top:16px"><button class="btn primary" onclick="openChat('${c.id}')">✉ Mensaje</button><button class="btn" onclick="toast('Llamando a ${c.name}…')">☎ Llamar</button></div></div><div class="card"><h3>Actividad relacionada</h3><div class="listitem" onclick="openChat('${c.id}')"><span>✉</span><div class="grow"><div class="listtitle">Conversación</div><div class="subline">${c.last}</div></div></div><div class="listitem" onclick="go('calls')"><span>☎</span><div class="grow"><div class="listtitle">Historial de llamadas</div><div class="subline">Ver registros asociados</div></div></div></div>`}
+function calendarPage(){let days=Array.from({length:30},(_,i)=>i+1);return `${apphead('Calendario')}<div class="card"><div class="between"><h2>Abril 2026</h2><span class="muted small">Madrid</span></div><div class="monthgrid">${['L','M','X','J','V','S','D'].map(x=>`<div class="muted">${x}</div>`).join('')}${days.map(d=>`<div class="day ${d===state.calday?'active':''} ${[14,16,17].includes(d)?'marked':''}" onclick="state.calday=${d};render()">${d}</div>`).join('')}</div><div class="small muted">Los días con borde dorado contienen eventos de interés.</div></div><div class="card"><div class="eyebrow">Miércoles · ${state.calday} abril</div>${(state.calday===16?[['23:00','Visita a la estación vieja','Ubicación: andén norte',true],['23:30','Llamar a Mara','Sin detalles',false],['23:51','Recibo registrado','Código de operación 17',true]]:state.calday===14?[['22:30','Nota añadida','La puerta lateral',true]]:[['10:00','Reunión','Oficina · planta 2',false],['14:00','Almuerzo con Mara','Centro',false]]).map(e=>`<div class="event"><div class="datebox"><strong>${e[0].split(':')[0]}</strong><span>${e[0].split(':')[1]}</span></div><div class="grow"><h3>${e[1]} ${e[3]?'◆':''}</h3><div class="muted small">${e[2]}</div>${e[3]?'<div class="clue">El recibo aparece a las 23:51, después de la visita programada.</div>':''}</div></div>`).join('')}</div>`}
+function mapsPage(){return `${apphead('Mapas')}<div class="mapfake"><span class="pin"></span><span class="maplabel">Estación vieja</span><span style="position:absolute;left:12%;top:70%;font-size:10px;color:#78c7ff">Ubicación anterior</span></div><div class="card" style="margin-top:12px"><div class="eyebrow">Lugar marcado</div><h2 style="margin-top:7px">Estación vieja</h2><div class="muted small">Sector norte · 1,2 km</div><div class="divider"></div><p class="small">Última ubicación guardada: 23:03. La foto IMG_2048 se tomó cerca de las 23:44.</p><button class="btn primary" onclick="go('photos')">Ver fotos del lugar</button></div>`}
+function browserPage(){return `${apphead('Navegador')}<div class="card"><div class="search">🔒 historial.local/nexo</div><h2>Historial reciente</h2>${[['23:08','estación vieja entrada lateral'],['22:41','cómo recuperar metadatos EXIF'],['20:12','registro de accesos compartido'],['15:03','horarios estación norte']].map(x=>`<div class="listitem" onclick="toast('Página guardada sin conexión')"><span>◉</span><div class="grow"><div class="listtitle">${x[1]}</div><div class="subline">${x[0]} · Página guardada</div></div></div>`).join('')}<div class="clue">El historial muestra una búsqueda sobre entradas laterales a las 23:08.</div></div>`}
+function voicePage(){return `${apphead('Notas de voz')}<div class="card"><div class="eyebrow">Grabaciones recuperadas</div>${[['Audio 01 · 23:39','“...la puerta no, la otra entrada...”','00:07'],['Audio 02 · 23:44','“...el diecisiete. No lo pongas en el registro...”','00:12'],['Audio 03 · 20:19','“Iván dijo que no confiara en el horario...”','00:09']].map(a=>`<div class="listitem"><div class="fileicon">♫</div><div class="grow"><div class="listtitle">${a[0]}</div><div class="subline">${a[1]}</div><div style="margin-top:9px"><button class="btn" onclick="toast('Transcripción: ${a[1]}')">▶ Escuchar · ${a[2]}</button></div></div></div>`).join('')}<div class="clue">Las transcripciones mencionan el número 17 y la entrada alternativa.</div></div>`}
+function healthPage(){return `${apphead('Salud')}<div class="widgetrow"><div class="widget"><div class="eyebrow">Pasos hoy</div><div class="big">4.320</div><div class="small muted">Objetivo: 8.000</div></div><div class="widget"><div class="eyebrow">Última actividad</div><div class="big">23:04</div><div class="small muted">Caminata · 1,2 km</div></div></div><div class="card" style="margin-top:12px"><h2>Actividad reciente</h2><div class="event"><div class="fileicon">⌖</div><div class="grow"><h3>Caminata detectada</h3><div class="muted small">Sector norte · 23:04–23:21</div></div></div><div class="clue">La actividad coincide con el trayecto hacia la estación.</div></div>`}
+function settingsPage(){return `${apphead('Ajustes')}<div class="card"><div class="row">${avatar({initial:'N',avatar:'',name:'NEXO'})}<div class="grow"><h2>NEXO</h2><div class="muted small">ID: 7A3F-902K · Versión 4.2.1</div></div><span class="badge">Seguro</span></div></div><div class="card">${[['◉','Cuenta NEXO','Última sincronización: 22:58'],['♙','Privacidad','Historial compartido desactivado'],['⌁','Red y conexión','Pérdida de señal: 23:48'],['▣','Notificaciones','3 mensajes · 1 llamada perdida'],['⚙','General','Idioma: Español'],['ⓘ','Acerca del dispositivo','Expediente Cero · Unidad 04']].map(a=>`<div class="listitem" onclick="toast('${a[1]} · ${a[2]}')"><span style="font-size:20px">${a[0]}</span><div class="grow"><div class="listtitle">${a[1]}</div><div class="subline">${a[2]}</div></div><span class="muted">›</span></div>`).join('')}</div><button class="btn danger" style="width:100%" onclick="go('lock')">Bloquear dispositivo</button><button class="btn" style="width:100%;margin-top:9px" onclick="go('eliminated')">Recuperar eliminados</button>`}
+function eliminatedPage(){return `${head('Eliminados','Recuperación protegida','settings')}<div class="card"><div style="text-align:center;font-size:35px">🔒</div><h2 style="text-align:center">Contenido eliminado</h2><p class="muted small" style="text-align:center">Introduce el PIN de recuperación de 4 cifras.</p><input id="pin" class="search" inputmode="numeric" maxlength="4" placeholder="••••" style="text-align:center;letter-spacing:8px;font-size:22px"><button class="btn primary" style="width:100%" onclick="if($('#pin').value==='2317'){go('recovered')}else toast('PIN incorrecto')">Desbloquear</button></div>`}
+function recoveredPage(){return `${head('Recuperación','Datos restaurados','settings')}<div class="card"><span class="badge gold">RECUPERADO</span><h2 style="margin-top:12px">Borrador de Mara</h2><p>“Si preguntan por el recibo, yo no estuve allí a las 23:51. La cámara de la entrada lateral estaba apagada.”</p><div class="clue">La cámara apagada podría explicar por qué el registro no coincide con las fotografías.</div><button class="btn" style="margin-top:12px" onclick="go('photos')">Revisar fotografías</button></div>`}
+function render(){const s=$('#screen');$('#wallpaper').style.display=state.page==='lock'?'block':'none';const pages={lock,home,messages,chat,calls:callsPage,photos:photosPage,photo:photoPage,notes:notesPage,note:notePage,files:filesPage,file:filePage,contacts:contactsPage,contact:contactPage,calendar:calendarPage,maps:mapsPage,browser:browserPage,voice:voicePage,health:healthPage,settings:settingsPage,eliminated:eliminatedPage,recovered:recoveredPage};s.innerHTML=(pages[state.page]||home)();s.scrollTop=0;if(state.page==='lock')updateClock()}
+function go(page){state.page=page;render()}
+function filterList(value,id){const q=value.toLowerCase();document.querySelectorAll(`#${id} [data-search]`).forEach(el=>el.style.display=el.dataset.search.includes(q)?'flex':'none')}
+function updateClock(){const el=$('#clock');if(el){const d=new Date();el.textContent=d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})}}
+setInterval(updateClock,15000);
+render();
 </script>
 </body>
 </html>
