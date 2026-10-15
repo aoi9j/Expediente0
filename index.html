@@ -2,228 +2,500 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#07111e">
-<title>NEXO — Expediente Cero</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#070b12">
+<title>Expediente Cero · NEXO</title>
 <style>
-:root{
- --bg:#07111e;--panel:#101e2e;--panel2:#172a40;--line:#294158;
- --text:#edf5ff;--muted:#91a7be;--blue:#3997ff;--cyan:#65d9ec;
- --green:#63ddb0;--gold:#eac779;--red:#ff7488;
-}
+:root{--bg:#070b12;--panel:#101824;--panel2:#151f2e;--line:#26384b;--blue:#55b8ff;--cyan:#83e5ff;--muted:#8b9aab;--white:#f4f7fb;--green:#72e0b0;--red:#ff697c;--gold:#efc879}
 *{box-sizing:border-box}
-body{margin:0;background:#050a12;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-button,input{font:inherit}button{cursor:pointer;color:inherit}
-#shell{max-width:500px;margin:auto;padding:10px;min-height:100dvh}
-.top{height:35px;display:flex;justify-content:space-between;align-items:center;padding:0 12px;font-size:10px;letter-spacing:2px;color:#c8d9ea}
-.phone{height:calc(100dvh - 55px);min-height:650px;position:relative;overflow:hidden;border-radius:32px;border:1px solid #304c65;background:#081421;box-shadow:0 25px 80px #0009}
-.phone:before{content:"";position:absolute;z-index:20;top:9px;left:50%;transform:translateX(-50%);width:92px;height:24px;border-radius:20px;background:#02060a;border:1px solid #1b2a39}
-.screen{position:absolute;inset:0;overflow-y:auto;padding:47px 16px 24px;scrollbar-width:none}
-.screen::-webkit-scrollbar{display:none}
-.wallpaper{position:absolute;inset:0;background:linear-gradient(#06101a35,#06101ae8),url('https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1000&q=85') center/cover}
-.brandline{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;font-size:10px;color:#b9cde1;letter-spacing:2px}
-.brand{font-weight:900;letter-spacing:5px;color:white}
-h1{font-size:27px;letter-spacing:-1px;margin:0 0 5px}
-h2{font-size:17px;margin:0 0 10px}
-h3{font-size:13px;margin:0 0 5px}
-p{line-height:1.5}
-.muted{color:var(--muted)}.small{font-size:11px}
-.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--cyan);font-weight:700}
-.card{background:linear-gradient(145deg,#14263aeF,#0b1725f5);border:1px solid var(--line);border-radius:19px;padding:14px;margin-bottom:11px}
-.row{display:flex;align-items:center;gap:11px}.between{display:flex;align-items:center;justify-content:space-between;gap:8px}.grow{flex:1;min-width:0}
-.avatar{width:43px;height:43px;flex-shrink:0;border-radius:50%;overflow:hidden;display:grid;place-items:center;font-weight:800;background:linear-gradient(135deg,#4e81a9,#172b40);border:1px solid #ffffff28}
-.avatar img{width:100%;height:100%;object-fit:cover}.avatar.sm{width:35px;height:35px}
-.badge{font-size:10px;background:#143957;color:#d1eaff;border:1px solid #285879;padding:4px 8px;border-radius:20px;white-space:nowrap}
-.badge.gold{background:#382f20;color:#f3d998;border-color:#66532c}
-.btn{background:#12283c;border:1px solid #304c64;border-radius:12px;padding:9px 12px;font-size:12px}
-.btn.primary{background:#1679d5;border-color:#4199f2}.btn.danger{color:#ff9cab}
-.backrow{display:flex;align-items:center;gap:10px;margin-bottom:17px}
-.search{width:100%;padding:12px;border-radius:13px;border:1px solid #2b4358;background:#091624;color:white;outline:none;margin:6px 0 12px}
-.listitem{display:flex;align-items:center;gap:11px;padding:12px 1px;border-bottom:1px solid #24374a;cursor:pointer}
+body{margin:0;background:#05080d;color:var(--white);font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100dvh}
+button,input,textarea{font:inherit}
+button{cursor:pointer;color:inherit}
+button:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+button:disabled{opacity:.35;cursor:not-allowed}
+#app{min-height:100dvh}
+.topbar{height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-size:11px;letter-spacing:.4px;background:#080c13;position:relative;z-index:3}
+.status-right{display:flex;gap:7px;align-items:center}
+.signal{letter-spacing:-2px}
+.shell{width:min(100%,480px);min-height:calc(100dvh - 32px);margin:auto;position:relative;background:linear-gradient(160deg,#101a28,#060b12 70%);overflow:hidden}
+body.desktop-mode{background:radial-gradient(ellipse at 50% 0%,#20364a,#05080d 65%)}
+body.desktop-mode .shell{margin:22px auto;border:1px solid #31465b;border-radius:36px;min-height:min(900px,calc(100dvh - 44px));height:min(900px,calc(100dvh - 44px));box-shadow:0 25px 100px #000a}
+body.desktop-mode .view{height:calc(100% - 32px)}
+.view{display:none;min-height:calc(100dvh - 32px);position:relative;padding-bottom:24px;animation:appear .2s ease}
+.view.active{display:block}
+@keyframes appear{from{opacity:.35;transform:translateY(4px)}to{opacity:1;transform:none}}
+.wallpaper{background:linear-gradient(180deg,#07121a00 15%,#06101ce8 95%),url('https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1200&q=85') center/cover}
+.lock{min-height:calc(100dvh - 32px);padding:24px 20px;display:flex;flex-direction:column;justify-content:space-between}
+.locktop{text-align:center;color:#d5e5f3;font-size:12px;letter-spacing:2px}
+.lockclock{text-align:center;margin-top:55px}
+.lockclock .time{font-size:clamp(64px,18vw,88px);font-weight:200;letter-spacing:-4px;line-height:1}
+.lockclock .date{font-size:15px;margin-top:10px}
+.lockcard{background:#101a2bba;border:1px solid #ffffff2a;backdrop-filter:blur(20px);border-radius:17px;padding:14px;margin-top:12px;display:flex;gap:12px;align-items:flex-start}
+.lockcard .emoji{font-size:22px}
+.lockcard small{display:block;color:#b7c5d6;margin-top:5px;line-height:1.4}
+.lockbottom{text-align:center;color:#e4edf7;font-size:12px;padding-bottom:20px}
+.primary,.secondary,.danger{border:1px solid #365b79;background:linear-gradient(135deg,#153c5c,#12649a);padding:12px 16px;border-radius:13px;font-weight:650;transition:.15s}
+.primary:active,.secondary:active,.appicon:active{transform:scale(.97)}
+.secondary{background:#14202d;border-color:#314358}
+.danger{background:#421b27;border-color:#77313e}
+.full{width:100%}
+.header{padding:19px 19px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.header h1{font-size:29px;font-weight:750;letter-spacing:-1px;margin:0}
+.header p{margin:5px 0 0;color:var(--muted);font-size:12px}
+.iconbtn{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--line);background:#111c29;border-radius:50%;font-size:18px}
+.home{padding:14px 18px 26px;min-height:calc(100dvh - 32px);background:linear-gradient(180deg,#0b1522,#070b12)}
+.widgetrow{display:grid;grid-template-columns:1.1fr .9fr;gap:10px;margin-bottom:22px}
+.widget{border:1px solid #ffffff15;border-radius:20px;padding:15px;background:linear-gradient(145deg,#1c344a,#111b2a);min-height:115px}
+.widget .city{font-size:12px;color:#bed2e4}
+.widget .temp{font-size:34px;font-weight:250;margin:5px 0}
+.widget .sub{font-size:11px;color:#b6c7d7;line-height:1.5}
+.widget.events{background:linear-gradient(145deg,#2b2638,#141b29)}
+.eventline{font-size:11px;margin-top:8px;color:#d6dbea}
+.apps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px 8px}
+.appicon{border:0;background:transparent;display:flex;align-items:center;flex-direction:column;gap:7px;padding:0;min-width:0}
+.appglyph{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;font-size:27px;box-shadow:0 7px 18px #0005;border:1px solid #ffffff20}
+.appname{font-size:11px;color:#e5ebf3;white-space:nowrap}
+.g-green{background:linear-gradient(145deg,#44db9a,#087a65)}
+.g-blue{background:linear-gradient(145deg,#54baff,#1853c5)}
+.g-orange{background:linear-gradient(145deg,#ffc66d,#d75a22)}
+.g-purple{background:linear-gradient(145deg,#c3a0ff,#653cc3)}
+.g-red{background:linear-gradient(145deg,#ff8291,#b71d3e)}
+.g-slate{background:linear-gradient(145deg,#7189a0,#24364b)}
+.g-yellow{background:linear-gradient(145deg,#ffe08c,#c58c20)}
+.g-teal{background:linear-gradient(145deg,#71eee0,#127d90)}
+.dock{margin-top:27px;padding:13px 12px;background:#ffffff17;border:1px solid #ffffff1b;backdrop-filter:blur(18px);border-radius:25px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.dock .appglyph{width:51px;height:51px}
+.bottomhint{text-align:center;font-size:10px;color:#6f8296;margin-top:18px}
+.content{padding:0 17px 24px}
+.card{background:linear-gradient(145deg,#131e2b,#0e1621);border:1px solid var(--line);border-radius:17px;padding:15px;margin-bottom:11px}
+.card h3{margin:0 0 8px;font-size:15px}
+.muted{color:var(--muted)}
+.small{font-size:12px;line-height:1.55}
+.tag{display:inline-flex;padding:5px 8px;border-radius:7px;background:#172a3a;color:#a8dfff;border:1px solid #284961;font-size:10px;letter-spacing:.3px}
+.tag.green{color:#93efc4;background:#112b24;border-color:#235541}
+.tag.red{color:#ff9dab;background:#321821;border-color:#63303c}
+.row{display:flex;gap:11px;align-items:center}
+.between{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.avatar{width:45px;height:45px;flex:none;border-radius:50%;background:linear-gradient(135deg,#365a73,#172536);display:grid;place-items:center;font-size:20px;border:1px solid #ffffff26}
+.avatar.photo{background-size:cover;background-position:center}
+.listitem{width:100%;text-align:left;background:transparent;border:0;border-bottom:1px solid #253445;padding:13px 0;display:flex;align-items:center;gap:12px}
 .listitem:last-child{border-bottom:0}
-.listtitle{font-size:13px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.subline{font-size:11px;color:var(--muted);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.time{font-size:10px;color:#8fa7c0;white-space:nowrap}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:19px 6px;margin:20px 0}
-.appicon{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:7px;font-size:10px;color:#e4effc;padding:0;min-width:0}
-.glyph{width:51px;height:51px;border-radius:16px;display:grid;place-items:center;font-size:23px;border:1px solid #ffffff28;box-shadow:0 7px 18px #0005;background:linear-gradient(145deg,#398fff,#163b71)}
-.green{background:linear-gradient(145deg,#2bd3a0,#08745e)}
-.gold{background:linear-gradient(145deg,#efc976,#926123)}
-.pink{background:linear-gradient(145deg,#f779a0,#843254)}
-.violet{background:linear-gradient(145deg,#a08cff,#51439a)}
-.gray{background:linear-gradient(145deg,#71859a,#27394a)}
-.widgetrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.widget{border:1px solid #2b455c;background:#12253ad9;border-radius:17px;padding:13px;min-height:95px}
-.big{font-size:26px;letter-spacing:-1px;margin:6px 0}
-.dock{position:sticky;bottom:0;margin-top:14px;padding:12px 6px;background:#14283bdc;border:1px solid #ffffff24;border-radius:22px;display:flex;justify-content:space-around;backdrop-filter:blur(18px)}
-.dock button{border:0;background:none;font-size:22px}
-.lockcontent{position:relative;text-align:center;padding-top:55px}
-.locktime{font-size:72px;font-weight:250;letter-spacing:-5px;line-height:1.1}
-.lockdate{font-size:13px;margin-top:8px;color:#d0dfef}
-.notif{display:flex;align-items:center;gap:10px;text-align:left;padding:12px;background:#081522d9;border:1px solid #ffffff27;border-radius:17px;margin-bottom:9px;backdrop-filter:blur(12px)}
-.notificon{width:35px;height:35px;display:grid;place-items:center;border-radius:11px;background:#174d70}
-.locknotifs{margin-top:65px}
-.unlock{margin-top:18px;padding:12px 20px;border-radius:22px;background:#ffffff13;border:1px solid #8abbe3}
-.chatbubble{max-width:87%;padding:11px 13px;border-radius:17px;margin:9px 0;background:#16293c;border:1px solid #2d455a;font-size:13px;line-height:1.45}
-.chatbubble.in{border-bottom-left-radius:5px}
-.chatbubble.out{margin-left:auto;background:linear-gradient(135deg,#126ac5,#174b92);border-color:#3985d1;border-bottom-right-radius:5px}
-.chatmeta{font-size:9px;text-align:right;color:#b2c9df;margin-top:5px}
-.chatphoto{width:100%;max-height:180px;object-fit:cover;border-radius:12px;margin-top:8px}
-.composer{display:flex;gap:8px;position:sticky;bottom:-24px;background:#091522;padding:10px 0 3px}
-.composer input{min-width:0;flex:1;border:1px solid #2b4157;background:#102034;border-radius:20px;padding:11px;color:white}
-.send{width:42px;height:42px;border:0;border-radius:50%;background:#247fdf;font-size:18px}
-.photoGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.photoTile{border:1px solid #29445a;border-radius:13px;overflow:hidden;background:#0b1622;cursor:pointer}
-.photoTile img{display:block;width:100%;height:145px;object-fit:cover}
-.caption{padding:8px;font-size:11px}.photoBadge{position:absolute;background:#081421d9;padding:4px 6px;border-radius:7px;font-size:9px;margin:7px}
-.detailimg{width:100%;max-height:320px;object-fit:cover;border-radius:16px;border:1px solid #304b62}
-.clue{border-left:3px solid var(--gold);padding:10px 11px;background:#332d1d66;border-radius:0 12px 12px 0;color:#f0dda9;font-size:12px;margin-top:12px}
-.note{border:1px solid #2a4054;background:#101f30;border-radius:15px;padding:13px;margin-bottom:9px;cursor:pointer}
-.note p{font-size:12px;color:#b6c9dc;margin:7px 0 0}
-.fileicon{width:42px;height:45px;display:grid;place-items:center;background:#142d46;border-radius:10px;font-size:20px;border:1px solid #2b4d6b;flex-shrink:0}
-.event{display:flex;gap:11px;padding:12px 0;border-bottom:1px solid #24384b}
-.datebox{width:45px;flex-shrink:0;text-align:center;background:#172b40;border-radius:12px;padding:8px 0}
-.datebox strong{font-size:18px;display:block}.datebox span{font-size:9px;color:var(--cyan)}
-.monthgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center;font-size:11px;margin:12px 0}
-.day{padding:8px 0;border-radius:9px;color:#b5c9dd;cursor:pointer}.day.active{background:#247bd4;color:white;font-weight:800}.day.marked{border:1px solid #d8b65e;color:#f1d88f}
-.callrow{display:flex;gap:11px;align-items:center;padding:12px 0;border-bottom:1px solid #24384b}
-.mapfake{height:230px;position:relative;border-radius:17px;overflow:hidden;border:1px solid #29445a;background:repeating-linear-gradient(30deg,transparent 0 32px,#1c354a 33px 36px),repeating-linear-gradient(120deg,#0b1b2a 0 48px,#172d40 49px 52px)}
-.pin{position:absolute;background:#ff6e79;width:13px;height:13px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);left:62%;top:36%;box-shadow:0 0 18px #ff6e79}
-.maplabel{position:absolute;left:66%;top:32%;font-size:10px;background:#152c40;padding:5px 7px;border-radius:7px}
-.toast{position:fixed;z-index:50;left:50%;bottom:25px;transform:translateX(-50%);background:#e8f4ff;color:#081321;border-radius:14px;padding:11px 16px;font-size:12px;font-weight:700;display:none;max-width:90%;text-align:center}
-@media(max-height:720px){.phone{height:calc(100dvh - 55px);min-height:590px}.locknotifs{margin-top:35px}.lockcontent{padding-top:35px}.locktime{font-size:62px}}
+.listitem strong{display:block;font-size:13px;font-weight:650}
+.listitem small{display:block;color:var(--muted);font-size:11px;margin-top:4px;line-height:1.4}
+.listitem .right{margin-left:auto;text-align:right;flex:none;font-size:10px;color:var(--muted)}
+.back{background:none;border:0;color:var(--blue);font-size:14px;padding:0 0 12px}
+.search{width:100%;border:1px solid #2b3d50;background:#0c1420;border-radius:12px;padding:12px 13px;color:white;margin-bottom:12px;outline:none}
+.search:focus{border-color:var(--blue)}
+.tabs{display:flex;gap:6px;margin:0 0 13px;background:#0b131e;padding:4px;border-radius:12px}
+.tabs button{flex:1;border:0;border-radius:9px;background:transparent;padding:9px 5px;color:var(--muted);font-size:11px}
+.tabs button.selected{background:#204668;color:#e7f6ff}
+.chathead{display:flex;align-items:center;gap:11px;padding:7px 0 15px;border-bottom:1px solid var(--line)}
+.chatmessages{display:flex;flex-direction:column;gap:10px;padding:18px 0;min-height:260px}
+.bubble{max-width:84%;padding:11px 13px;border-radius:17px;background:#172434;border:1px solid #2a4054;line-height:1.5;font-size:13px}
+.bubble.mine{align-self:flex-end;background:linear-gradient(145deg,#15569a,#123d70);border-color:#3177b9}
+.bubble .stamp{display:block;font-size:9px;color:#a8bacb;text-align:right;margin-top:5px}
+.photo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.photo-tile{padding:0;position:relative;overflow:hidden;border-radius:13px;border:1px solid #314356;background:#101923;text-align:left;min-width:0}
+.photo-tile img{display:block;width:100%;height:150px;object-fit:cover}
+.photo-tile .photocap{padding:10px;font-size:11px;line-height:1.4}
+.photo-tile .evidence-dot{position:absolute;top:8px;right:8px;background:#0a111bd9;border:1px solid #6bcfff;padding:5px 7px;border-radius:7px;font-size:10px}
+.photo-viewer{position:fixed;inset:0;background:#020407f5;z-index:30;display:none;align-items:center;justify-content:center;padding:20px}
+.photo-viewer.open{display:flex}
+.photo-viewer img{max-width:100%;max-height:65vh;object-fit:contain;border-radius:10px}
+.photo-viewer .close{position:absolute;top:30px;right:22px;background:#1b2938;border:1px solid #4b6277;border-radius:50%;width:42px;height:42px;font-size:20px}
+.photo-viewer .caption{position:absolute;bottom:30px;left:22px;right:22px;max-width:480px;margin:auto}
+.note{border-left:3px solid var(--blue);padding:10px 12px;background:#101a27;margin:8px 0;border-radius:0 9px 9px 0;font-size:12px;line-height:1.55}
+.progress{height:5px;background:#1b2937;border-radius:9px;overflow:hidden}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,#288de3,#83e5ff);transition:width .25s}
+.sectiontitle{font-size:11px;letter-spacing:1.5px;color:#8ea4b9;margin:18px 0 10px}
+.clue{display:flex;gap:11px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #243345}
+.clue:last-child{border:0}
+.clue .num{width:29px;height:29px;border-radius:9px;display:grid;place-items:center;background:#17364b;color:#8cdbff;flex:none;font-size:12px}
+.clue strong{font-size:12px}
+.clue p{margin:5px 0 0;color:var(--muted);font-size:11px;line-height:1.5}
+.choice{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;border:1px solid #2a3b4e;border-radius:12px;background:#101a27;padding:12px;margin:8px 0;font-size:12px;line-height:1.5}
+.choice:active{border-color:var(--blue)}
+.choice .letter{width:25px;height:25px;display:grid;place-items:center;background:#20364b;border-radius:8px;flex:none}
+.choice.correct{border-color:#398765;background:#10251e}
+.choice.wrong{border-color:#8b4652;background:#2a151d}
+.choice.selected{border-color:var(--blue)}
+.policebg{background:linear-gradient(#080f1bdb,#080f1bf2),url('https://images.unsplash.com/photo-1453873531674-2151bcd01707?auto=format&fit=crop&w=1200&q=85') center/cover fixed}
+.casehero{border:1px solid #334b60;border-radius:18px;overflow:hidden;margin-bottom:13px;background:#0d1722}
+.casehero img{width:100%;height:155px;object-fit:cover;display:block;opacity:.82}
+.casehero .herotext{padding:14px}
+.casehero h2{margin:0 0 6px;font-size:20px}
+.metricgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.metric{border:1px solid #293d50;background:#101b28;border-radius:12px;padding:12px 7px;text-align:center}
+.metric b{font-size:20px;display:block}
+.metric small{font-size:9px;color:var(--muted)}
+.formlabel{display:block;font-size:12px;color:#b7c7d8;margin:14px 0 7px}
+textarea{width:100%;min-height:82px;resize:vertical;background:#0a131e;border:1px solid #304357;border-radius:12px;padding:12px;color:white}
+.resultmark{font-size:44px;text-align:center;margin:12px 0}
+.resulttitle{text-align:center;font-size:25px;margin:0 0 8px}
+.footer{padding:18px 0 4px;text-align:center;font-size:10px;color:#65798d}
+.toast{position:fixed;bottom:25px;left:50%;transform:translate(-50%,15px);opacity:0;pointer-events:none;background:#182838;border:1px solid #43637c;border-radius:13px;padding:12px 16px;z-index:50;box-shadow:0 10px 40px #0009;transition:.2s;max-width:90%;text-align:center;font-size:12px}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.homeindicator{width:110px;height:4px;background:#f2f6fb;border-radius:5px;position:fixed;bottom:5px;left:50%;transform:translateX(-50%);z-index:8;opacity:.7}
+.hidden{display:none!important}
+@media(min-width:650px){.shell{min-height:850px}.view{min-height:850px}.home,.lock{min-height:850px}.lockclock{margin-top:75px}.photo-tile img{height:180px}}
+@media(max-width:360px){.appglyph{width:48px;height:48px}.apps{gap:19px 4px}.appname{font-size:10px}.header h1{font-size:26px}}
 </style>
 </head>
 <body>
-<div id="shell">
- <div class="top"><span class="brand">N E X O</span><span>● DISPOSITIVO CIFRADO　▮▮▮ ◉</span></div>
- <main class="phone" id="phone">
-  <div id="wallpaper" class="wallpaper"></div>
-  <div class="screen" id="screen"></div>
- </main>
+<div id="app">
+<div class="shell">
+<div class="topbar"><span id="statusTime">23:48</span><span class="status-right"><span class="signal">▂▄▆</span> ◉ ▰</span></div>
+
+<section class="view active wallpaper" id="lockView">
+<div class="lock">
+<div>
+<div class="locktop">NEXO <span style="float:right">● ● ●</span></div>
+<div class="lockclock"><div style="font-size:22px;margin-bottom:12px">♙</div><div class="time" id="lockTime">23:48</div><div class="date">Miércoles, 16 de abril</div></div>
+<div style="margin-top:38px">
+<button class="lockcard" style="width:100%;text-align:left;color:white" onclick="openApp('messages')"><span class="emoji">💬</span><span><b>Mara V.</b><small>No vayas por la entrada principal.<br>Te explico cuando llegues.</small></span><span class="muted" style="margin-left:auto;font-size:10px">23:21</span></button>
+<button class="lockcard" style="width:100%;text-align:left;color:white" onclick="openApp('calls')"><span class="emoji">📞</span><span><b>Llamada perdida</b><small>Número desconocido</small></span><span class="muted" style="margin-left:auto;font-size:10px">23:46</span></button>
+</div>
+</div>
+<div class="lockbottom"><button class="primary full" onclick="unlock()">Desbloquear NEXO　↑</button><p style="margin-top:15px;color:#a5b6c7">Expediente personal · Unidad 04</p></div>
+</div>
+</section>
+
+<section class="view" id="homeView">
+<div class="home">
+<div class="between" style="margin:3px 2px 20px"><div><div class="muted small">MIÉRCOLES, 16 DE ABRIL</div><div style="font-size:25px;font-weight:750;margin-top:4px">Buenas noches.</div></div><button class="iconbtn" onclick="openApp('settings')">⚙</button></div>
+<div class="widgetrow">
+<div class="widget"><div class="city">📍 Madrid · Centro</div><div class="temp">12°</div><div class="sub">Lluvia ligera<br>Visibilidad reducida</div></div>
+<div class="widget events"><div class="city">MI AGENDA</div><div style="font-size:24px;margin-top:5px">16 <span style="font-size:12px">ABR</span></div><div class="eventline">22:00 · Estación vieja</div><div class="eventline">23:30 · Llamada pendiente</div></div>
+</div>
+<div class="apps">
+<button class="appicon" onclick="openApp('messages')"><span class="appglyph g-green">✉</span><span class="appname">Mensajes</span></button>
+<button class="appicon" onclick="openApp('calls')"><span class="appglyph g-green">☎</span><span class="appname">Teléfono</span></button>
+<button class="appicon" onclick="openApp('photos')"><span class="appglyph g-orange">🌈</span><span class="appname">Fotos</span></button>
+<button class="appicon" onclick="openApp('camera')"><span class="appglyph g-slate">◉</span><span class="appname">Cámara</span></button>
+<button class="appicon" onclick="openApp('notes')"><span class="appglyph g-yellow">▤</span><span class="appname">Notas</span></button>
+<button class="appicon" onclick="openApp('files')"><span class="appglyph g-blue">📁</span><span class="appname">Archivos</span></button>
+<button class="appicon" onclick="openApp('calendar')"><span class="appglyph g-red">▦</span><span class="appname">Calendario</span></button>
+<button class="appicon" onclick="openApp('maps')"><span class="appglyph g-green">⌖</span><span class="appname">Mapas</span></button>
+<button class="appicon" onclick="openApp('voice')"><span class="appglyph g-purple">◖</span><span class="appname">Notas de voz</span></button>
+<button class="appicon" onclick="openApp('contacts')"><span class="appglyph g-slate">♙</span><span class="appname">Contactos</span></button>
+<button class="appicon" onclick="openApp('health')"><span class="appglyph g-red">♡</span><span class="appname">Salud</span></button>
+<button class="appicon" onclick="openApp('settings')"><span class="appglyph g-slate">⚙</span><span class="appname">Ajustes</span></button>
+</div>
+<div class="dock">
+<button class="appicon" onclick="openApp('messages')"><span class="appglyph g-green">✉</span></button>
+<button class="appicon" onclick="openApp('calls')"><span class="appglyph g-green">☎</span></button>
+<button class="appicon" onclick="openApp('photos')"><span class="appglyph g-orange">🌈</span></button>
+<button class="appicon" onclick="openApp('files')"><span class="appglyph g-blue">📁</span></button>
+</div>
+<div class="bottomhint">NEXO OS 4.1 · Dispositivo recuperado</div>
+<div class="card" style="margin-top:17px"><div class="between"><div><span class="tag">ACCESO EXTERNO</span><h3 style="margin-top:9px">Unidad de investigación</h3><div class="small muted">Sal del teléfono para consultar el expediente policial.</div></div><div style="font-size:30px">🏢</div></div><button class="primary full" style="margin-top:13px" onclick="openPolice()">Entrar en comisaría →</button></div>
+</div>
+</section>
+
+<section class="view" id="appView">
+<div class="header"><div><button class="back" onclick="goHome()">‹ Inicio</button><h1 id="appTitle">Mensajes</h1><p id="appSubtitle">Conversaciones recuperadas</p></div><button class="iconbtn" onclick="openPolice()">🏢</button></div>
+<div class="content" id="appContent"></div>
+</section>
+
+<section class="view policebg" id="policeView">
+<div class="header"><div><button class="back" onclick="goHome()">‹ Salir de comisaría</button><h1>Comisaría</h1><p>Unidad de delitos especiales · Acceso autorizado</p></div><span class="tag">EC / 001</span></div>
+<div class="content" id="policeContent"></div>
+</section>
+
+<section class="view" id="interviewView">
+<div class="header"><div><button class="back" onclick="openPolice()">‹ Expediente</button><h1>Interrogatorio</h1><p>Declaración y contraste de pruebas</p></div><span class="tag red">RESERVADO</span></div>
+<div class="content" id="interviewContent"></div>
+</section>
+
+<section class="view" id="verdictView">
+<div class="header"><div><button class="back" onclick="openPolice()">‹ Expediente</button><h1>Conclusión del caso</h1><p>Resolución de la investigación</p></div></div>
+<div class="content" id="verdictContent"></div>
+</section>
+</div>
+</div>
+
+<div class="photo-viewer" id="photoViewer">
+<button class="close" onclick="closePhoto()">×</button>
+<div style="width:min(100%,520px)">
+<img id="viewerImage" src="" alt="Fotografía del expediente">
+<div class="caption"><h3 id="viewerTitle"></h3><p class="small muted" id="viewerDescription"></p><button class="primary full" id="viewerClueButton" onclick="collectViewerClue()">Analizar y registrar pista</button></div>
+</div>
 </div>
 <div class="toast" id="toast"></div>
-<script>
-const $=s=>document.querySelector(s);
-const image=id=>`https://images.unsplash.com/${id}?auto=format&fit=crop&w=1000&q=85`;
-const photos=[
-{id:'p1',title:'IMG_2048.jpg',date:'16 abr · 23:44',src:image('photo-1519608487953-e999c86e7455'),desc:'Calle junto a la estación vieja. Una señal azul muestra el número 17.',clue:'El número 17 también aparece en un recibo guardado en Archivos.'},
-{id:'p2',title:'entrada_lateral.jpg',date:'16 abr · 23:39',src:image('photo-1519501025264-65ba15a82390'),desc:'Acceso lateral del edificio. La entrada principal está al otro lado.',clue:'Coincide con la instrucción que Mara envió por Mensajes.'},
-{id:'p3',title:'recibo_17.jpg',date:'16 abr · 23:51',src:image('photo-1554224155-6726b3ff858f'),desc:'Recibo fotografiado deprisa. Se distingue el código 17 y una hora tardía.',clue:'Compara la hora con el evento Estación vieja del Calendario.'},
-{id:'p4',title:'andén_vacío.jpg',date:'16 abr · 23:32',src:image('photo-1473448912268-2022ce9509d8'),desc:'Un lugar oscuro y apartado. Una figura queda parcialmente oculta al fondo.',clue:'La silueta coincide con una descripción anotada en Notas.'}
-];
+<div class="homeindicator"></div>
 
-const contacts=[
-{id:'mara',name:'Mara V.',initial:'MV',avatar:image('photo-1534528741775-53994a69daeb'),status:'en línea',unread:3,last:'No vayas por la entrada principal.',time:'23:21'},
-{id:'ivan',name:'Iván R.',initial:'IR',avatar:image('photo-1500648767791-00dcc994a43e'),status:'visto hoy',unread:0,last:'Luego nos vemos mañana.',time:'20:17'},
-{id:'unknown',name:'Número desconocido',initial:'?',avatar:'',status:'número no guardado',unread:1,last:'Ya te he visto. No estás solo.',time:'23:47'},
-{id:'lucia',name:'Lucía',initial:'L',avatar:image('photo-1544005313-94ddf0286df2'),status:'última conexión ayer',unread:0,last:'Perfecto, gracias.',time:'Ayer'},
-{id:'group',name:'Grupo · Viernes',initial:'G',avatar:'',status:'4 participantes',unread:0,last:'Mara abandonó el grupo.',time:'Ayer'}
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const photos=[
+{id:"p1",title:"Andén 3 · 23:18",desc:"La última fotografía enviada desde el teléfono de Mara. El panel del andén marca las 23:18. En el cristal se aprecia la silueta de alguien situado detrás de la cámara.",url:"https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=1100&q=85",clue:"photo",clueTitle:"Fotografía del andén",clueText:"La imagen sitúa a Mara en la estación a las 23:18. El reflejo muestra una segunda figura. La fotografía no permite identificarla por sí sola."},
+{id:"p2",title:"Recibo · 22:41",desc:"Un recibo arrugado encontrado entre las imágenes recientes. La hora es anterior a la llegada que Iván asegura haber hecho.",url:"https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1100&q=85",clue:"receipt",clueTitle:"Recibo de la cafetería",clueText:"El recibo marca las 22:41. Confirma que alguien realizó una compra antes de la llamada de las 23:21, pero no identifica al comprador."},
+{id:"p3",title:"Entrada lateral",desc:"Una puerta metálica junto a las vías. El acceso principal queda fuera del encuadre.",url:"https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1100&q=85",clue:"door",clueTitle:"Acceso lateral",clueText:"La entrada lateral coincide con el mensaje de Mara: «No vayas por la entrada principal». El detalle sugiere que esperaba evitar ser vista."},
+{id:"p4",title:"Último mensaje · 23:21",desc:"Captura archivada en la galería. El texto está relacionado con el lugar de la cita.",url:"https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1100&q=85",clue:"message",clueTitle:"Mensaje de las 23:21",clueText:"Mara advirtió que no se usara la entrada principal. El mensaje fue enviado poco antes de que se perdiera su rastro."},
+{id:"p5",title:"Pasillo de servicio",desc:"Una zona sin cámaras visibles. El suelo mojado y las luces encendidas indican actividad reciente.",url:"https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1100&q=85",clue:"corridor",clueTitle:"Pasillo de servicio",clueText:"El pasillo ofrece una ruta alternativa desde el acceso lateral. Es una hipótesis de recorrido, no una prueba de quién lo utilizó."},
+{id:"p6",title:"Nota manuscrita",desc:"Una nota fotografiada rápidamente. Hay una referencia al número 17 y una cita sin confirmar.",url:"https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1100&q=85",clue:"note",clueTitle:"Nota del número 17",clueText:"La anotación «17» aparece también en el borrador de Notas. La coincidencia sugiere que ambos registros están relacionados."}
 ];
-const chats={
-mara:[
-{from:'in',text:'¿Sigues en el mismo sitio?',time:'23:16'},
-{from:'out',text:'Sí. Espero cinco minutos más.',time:'23:18'},
-{from:'in',text:'No vayas por la entrada principal. Te explico cuando llegues.',time:'23:21'},
-{from:'in',photo:'p2',text:'Es por aquí. No hagas fotos si ves a alguien.',time:'23:22'},
-{from:'out',text:'¿Qué pasa con el número 17?',time:'23:24'},
-{from:'in',text:'No lo escribas aquí. Borra esta conversación cuando termines.',time:'23:25'}
-],
-ivan:[
-{from:'in',text:'¿Al final fuiste a la estación?',time:'20:02'},
-{from:'out',text:'No. ¿Por qué?',time:'20:08'},
-{from:'in',text:'Alguien preguntó por ti. No te fíes de lo que ponga en el registro.',time:'20:17'}
-],
-unknown:[
-{from:'in',text:'Ya te he visto. No estás solo.',time:'23:47'},
-{from:'in',text:'Mira la foto IMG_2048. Amplía la esquina derecha.',time:'23:48'}
-],
-lucia:[
-{from:'out',text:'¿Guardaste el recibo?',time:'18:03'},
-{from:'in',text:'Sí, pero la hora no coincide. Te lo dejé en la carpeta compartida.',time:'18:05'}
-],
-group:[
-{from:'in',text:'Reunión cancelada. Nadie debe ir a la estación.',time:'19:10'},
-{from:'in',text:'Mara abandonó el grupo.',time:'19:12'}
-]
-};
-const notes=[
-{title:'No confiar',date:'16 abr',body:'La puerta azul no es la entrada. Si el reloj del vestíbulo sigue parado, alguien lo ha dejado así a propósito.',clue:'Conecta la puerta de Fotos con la hora del Calendario.'},
-{title:'Borrador sin título',date:'15 abr',body:'Mara dice que no confíe en el registro compartido. Iván sabe algo, pero no quiere dejarlo por escrito.',clue:'Contrasta el mensaje de Iván con el evento del día 16.'},
-{title:'Nota eliminada parcialmente',date:'14 abr',body:'No era una cita. Era una entrega. El recibo tiene el número 17.',clue:'Busca recibo_17.pdf en Archivos.'},
-{title:'Lista de tareas',date:'12 abr',body:'□ Revisar cámara de la estación\n□ Buscar recibo 17\n□ Llamar a Iván',clue:'Las tareas apuntan a Fotos, Archivos y Llamadas.'}
+const chats=[
+{id:"mara",name:"Mara V.",emoji:"👩🏻",time:"23:21",preview:"No vayas por la entrada principal.",messages:[
+{from:"them",text:"¿Sigues en el mismo sitio?",time:"23:16"},
+{from:"me",text:"Sí. Espero cinco minutos más.",time:"23:18"},
+{from:"them",text:"No vayas por la entrada principal. Te explico cuando llegues.",time:"23:21",clue:"message"},
+{from:"me",text:"¿Qué ha pasado? ¿Estás bien?",time:"23:23"},
+{from:"them",text:"Confía en mí. Si alguien pregunta, no hemos hablado.",time:"23:24",clue:"mara"},
+{from:"them",text:"En 10 min. Estoy cerca.",time:"23:34"}
+]},
+{id:"ivan",name:"Iván R.",emoji:"👨🏻",time:"20:17",preview:"Mañana hablamos.",messages:[
+{from:"them",text:"Mara está exagerando. No es lo que parece.",time:"20:02"},
+{from:"me",text:"¿De qué estás hablando?",time:"20:05"},
+{from:"them",text:"Mañana hablamos. No vengas a la estación.",time:"20:17"},
+{from:"me",text:"¿Dónde estabas esta noche?",time:"20:18"},
+{from:"them",text:"En casa desde las diez. Pregunta a quien quieras.",time:"20:20",clue:"ivan"}
+]},
+{id:"unknown",name:"Número desconocido",emoji:"☎",time:"23:46",preview:"Ya te he visto. No estás solo.",messages:[
+{from:"them",text:"No deberías estar mirando ese teléfono.",time:"23:43"},
+{from:"me",text:"¿Quién eres?",time:"23:44"},
+{from:"them",text:"Ya te he visto. No estás solo.",time:"23:46",clue:"unknown"},
+{from:"them",text:"Deja el expediente donde estaba.",time:"23:47"}
+]},
+{id:"lucia",name:"Lucía P.",emoji:"👩🏼",time:"ayer",preview:"Mara no confiaba en él.",messages:[
+{from:"them",text:"Mara me dijo que había encontrado algo en el registro.",time:"Ayer 18:30"},
+{from:"me",text:"¿Qué tipo de registro?",time:"Ayer 18:32"},
+{from:"them",text:"No me lo explicó. Solo dijo que el número 17 no cuadraba.",time:"Ayer 18:34",clue:"lucia"},
+{from:"them",text:"Si has encontrado su teléfono, revisa las notas.",time:"Ayer 18:36"}
+]},
+{id:"group",name:"Grupo · Viernes",emoji:"👥",time:"lunes",preview:"Mara abandonó el grupo.",messages:[
+{from:"them",text:"Iván: La cita sigue en pie. A las once.",time:"Lunes 12:01"},
+{from:"them",text:"Mara: No voy a firmar nada hasta saber la verdad.",time:"Lunes 12:05",clue:"group"},
+{from:"them",text:"Iván: Entonces no nos dejas otra opción.",time:"Lunes 12:06"},
+{from:"them",text:"Mara abandonó el grupo.",time:"Lunes 12:07"}
+]}
 ];
 const files=[
-{name:'recibo_17.pdf',type:'PDF',size:'2,1 MB',date:'16 abr',desc:'Recibo digitalizado. Código de operación: 17. Hora registrada: 23:51.',clue:'La hora es posterior al mensaje de Mara y al evento del calendario.'},
-{name:'audio_cache.tmp',type:'AUDIO',size:'450 KB',date:'14 abr',desc:'Fragmento recuperado: “...la puerta lateral... a las once y media...”',clue:'El audio menciona la puerta lateral, igual que el chat de Mara.'},
-{name:'backup_local_2310.zip',type:'ZIP',size:'18,4 MB',date:'16 abr',desc:'Copia local incompleta. Contiene referencias a IMG_2048 y a la estación vieja.',clue:'2310 puede ser una hora, no una contraseña.'},
-{name:'fotos_backup',type:'CARPETA',size:'12 elementos',date:'12 abr',desc:'Copia de fotografías con metadatos conservados.',clue:'Compara las fechas de las imágenes con las llamadas.'},
-{name:'registro_compartido.pdf',type:'PDF',size:'980 KB',date:'13 abr',desc:'Registro de accesos. Una entrada fue modificada a las 23:10.',clue:'Iván advirtió que no confiaras en el registro.'}
+{name:"backup_local_2310.zip",meta:"18,4 MB · 16 abr",icon:"🗜",desc:"Copia local del dispositivo. Contiene referencias a notas y conversaciones."},
+{name:"recibo_17.pdf",meta:"2,1 MB · 15 abr",icon:"📕",desc:"Documento relacionado con el número 17 y una hora anterior a la cita."},
+{name:"audio_cache.tmp",meta:"450 KB · 14 abr",icon:"🎙",desc:"Archivo de audio parcialmente recuperado. Consulta Notas de voz."},
+{name:"fotos_backup",meta:"Carpeta · 12 abr",icon:"📁",desc:"Seis imágenes recuperadas de la galería."},
+{name:"documentos",meta:"Carpeta · 10 abr",icon:"📁",desc:"Notas, borradores y documentos personales."}
 ];
-const calls=[
-{name:'Número desconocido',id:'unknown',kind:'Entrante · perdida',time:'23:46',duration:'00:00'},
-{name:'Mara V.',id:'mara',kind:'Saliente',time:'23:42',duration:'00:18'},
-{name:'Mara V.',id:'mara',kind:'Saliente',time:'22:17',duration:'00:32'},
-{name:'Iván R.',id:'ivan',kind:'Entrante',time:'20:03',duration:'01:12'},
-{name:'Lucía',id:'lucia',kind:'Saliente',time:'18:32',duration:'00:45'},
-{name:'Número desconocido',id:'unknown',kind:'Entrante',time:'16:08',duration:'00:07'}
-];
-const state={page:'lock',chat:'mara',photo:'p1',note:0,file:0,calday:16,reviewed:JSON.parse(localStorage.getItem('nexo_reviewed')||'[]'),sent:{}};
-function toast(s){const t=$('#toast');t.textContent=s;t.style.display='block';clearTimeout(window._toast);window._toast=setTimeout(()=>t.style.display='none',2300)}
-function mark(id){if(!state.reviewed.includes(id)){state.reviewed.push(id);localStorage.setItem('nexo_reviewed',JSON.stringify(state.reviewed))}}
-function avatar(c,small=false){return `<div class="avatar ${small?'sm':''}">${c.avatar?`<img src="${c.avatar}" alt="">`:c.initial}</div>`}
-function head(title,sub='',back='home'){return `<div class="backrow"><button class="btn" onclick="go('${back}')">‹</button><div class="grow"><h1 style="font-size:24px">${title}</h1><div class="muted small">${sub}</div></div><button class="btn" onclick="toast('NEXO · Dispositivo cifrado')">⋯</button></div>`}
-function apphead(title,action=''){return `<div class="apphead between" style="margin-bottom:15px"><div><div class="eyebrow">NEXO / PERSONAL</div><h1>${title}</h1></div>${action}</div>`}
-function icon(label,glyph,color,page){return `<button class="appicon" onclick="go('${page}')"><span class="glyph ${color}">${glyph}</span><span>${label}</span></button>`}
-function lock(){return `<div class="lockcontent"><div class="brandline"><span class="brand">N E X O</span><span>▮▮▮ ◉ ▰</span></div><div style="font-size:32px;margin-top:18px">♙</div><div class="locktime" id="clock">23:48</div><div class="lockdate">Miércoles, 16 de abril</div><div class="locknotifs">
-<div class="notif" onclick="openChat('mara')"><div class="notificon">✉</div><div class="grow"><div class="between"><b style="font-size:12px">Mara V.</b><span class="small muted">ahora</span></div><div class="small">3 mensajes nuevos</div><div class="small muted">No vayas por la entrada principal.</div></div></div>
-<div class="notif" onclick="go('calls')"><div class="notificon">☎</div><div class="grow"><b style="font-size:12px">Llamada perdida</b><div class="small muted">Número desconocido · hace 2 min</div></div></div>
-<div class="notif" onclick="go('calendar')"><div class="notificon">▦</div><div class="grow"><b style="font-size:12px">Calendario</b><div class="small muted">Estación vieja · 23:00</div></div></div>
-</div><button class="unlock" onclick="go('home')">⌃　Desliza para desbloquear</button></div>`}
-function home(){return `<div class="brandline"><span class="brand">NEXO</span><span>MIÉRCOLES, 16 ABRIL</span><button class="btn" onclick="go('settings')">⚙</button></div>
-<div class="widgetrow"><div class="widget"><div class="eyebrow">Madrid · ahora</div><div class="big">12° ☁</div><div class="small muted">Nublado · viento suave</div></div><div class="widget" onclick="go('calendar')"><div class="eyebrow">Siguiente evento</div><div class="big">23:00</div><div class="small">Estación vieja <span style="color:var(--gold)">◆</span></div></div></div>
-<div class="card" style="margin-top:12px;padding:12px"><div class="between"><div><div class="eyebrow">Resumen del dispositivo</div><div style="font-size:12px;margin-top:5px">3 mensajes sin leer · 1 llamada perdida</div></div><span class="badge">1 alerta</span></div></div>
-<div class="grid">
-${icon('Mensajes','✉','green','messages')}${icon('Llamadas','☎','green','calls')}${icon('Fotos','▧','gold','photos')}${icon('Notas','▤','gold','notes')}
-${icon('Archivos','▰','','files')}${icon('Contactos','♙','gray','contacts')}${icon('Mapas','⌖','green','maps')}${icon('Navegador','◉','','browser')}
-${icon('Calendario','▦','pink','calendar')}${icon('Notas de voz','♫','violet','voice')}${icon('Salud','♡','pink','health')}${icon('Ajustes','⚙','gray','settings')}
-</div><div class="card"><div class="between"><h3>Actividad reciente</h3><span class="badge gold">4 pistas</span></div>
-<div class="listitem" onclick="openChat('unknown')">${avatar(contacts[2],true)}<div class="grow"><div class="listtitle">Número desconocido</div><div class="subline">Ya te he visto. No estás solo.</div></div><span class="time">23:47</span></div>
-<div class="listitem" onclick="openPhoto('p1')"><div class="fileicon">▧</div><div class="grow"><div class="listtitle">Nueva foto · IMG_2048</div><div class="subline">La estación vieja · número 17</div></div><span class="time">23:44</span></div>
-<div class="listitem" onclick="go('calendar')"><div class="fileicon">▦</div><div class="grow"><div class="listtitle">Evento sospechoso</div><div class="subline">Estación vieja · 23:00</div></div><span class="time">Hoy</span></div></div>
-<div class="dock"><button onclick="go('messages')">✉</button><button onclick="go('calls')">☎</button><button onclick="go('photos')">▧</button><button onclick="go('notes')">▤</button></div>`}
-function messages(){return `${apphead('Mensajes',`<button class="btn" onclick="toast('Selecciona una conversación para responder')">＋</button>`)}<input class="search" placeholder="⌕ Buscar conversaciones…" oninput="filterList(this.value,'chatlist')"><div id="chatlist">${contacts.map(c=>`<div class="listitem" data-search="${c.name.toLowerCase()}" onclick="openChat('${c.id}')">${avatar(c)}<div class="grow"><div class="between"><span class="listtitle">${c.name}</span><span class="time">${c.time}</span></div><div class="subline">${c.last}</div></div>${c.unread?`<span class="badge">${c.unread}</span>`:''}</div>`).join('')}</div><div class="clue">El número 17 aparece en una conversación, una foto y un archivo.</div>`}
-function openChat(id){state.chat=id;go('chat')}
-function chat(){let c=contacts.find(x=>x.id===state.chat)||contacts[0];let msgs=[...(chats[c.id]||[]),...(state.sent[c.id]||[])];return `<div class="backrow"><button class="btn" onclick="go('messages')">‹</button>${avatar(c,true)}<div class="grow"><b>${c.name}</b><div class="muted small">${c.status}</div></div><button class="btn" onclick="toast('Llamando a ${c.name}…')">☎</button><button class="btn" onclick="toast('Videollamada no disponible')">▣</button></div><div style="text-align:center;margin:15px"><span class="badge">HOY · MENSAJES CIFRADOS</span></div><div>${msgs.map(m=>`<div class="chatbubble ${m.from}">${m.text||''}${m.photo?`<img class="chatphoto" src="${photos.find(p=>p.id===m.photo).src}" onclick="openPhoto('${m.photo}')">`:''}<div class="chatmeta">${m.time} ${m.from==='out'?'✓✓':''}</div></div>`).join('')}</div><div class="composer"><input id="msginput" placeholder="Mensaje…" onkeydown="if(event.key==='Enter')sendMsg()"><button class="send" onclick="sendMsg()">↑</button></div>`}
-function sendMsg(){let input=$('#msginput');if(!input||!input.value.trim())return;state.sent[state.chat]=state.sent[state.chat]||[];state.sent[state.chat].push({from:'out',text:input.value.trim(),time:new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})});render()}
-function callsPage(){return `${apphead('Llamadas')}<div class="widgetrow"><div class="widget"><div class="eyebrow">Perdidas</div><div class="big">01</div><div class="small muted">Número desconocido</div></div><div class="widget"><div class="eyebrow">Última llamada</div><div class="big">00:18</div><div class="small muted">Mara V. · 23:42</div></div></div><div style="margin-top:12px">${calls.map(c=>{let p=contacts.find(x=>x.id===c.id);return `<div class="callrow">${avatar(p,true)}<div class="grow"><div class="listtitle">${c.name}</div><div class="subline" style="${c.kind.includes('perdida')?'color:var(--red)':''}">${c.kind} · ${c.duration}</div></div><div style="text-align:right"><div class="time">${c.time}</div><button class="btn" style="margin-top:5px" onclick="toast('Llamando a ${c.name}…')">☎</button></div></div>`}).join('')}</div><div class="clue">La llamada perdida del número desconocido ocurrió dos minutos después del mensaje de Mara.</div>`}
-
-function photosPage(){return `${apphead('Fotos')}<div class="between" style="margin-bottom:12px"><span class="badge">Todas las fotos · 4</span><span class="muted small">Ordenadas por fecha</span></div><div class="photoGrid">${photos.map(p=>`<div class="photoTile" onclick="openPhoto('${p.id}')"><span class="photoBadge">PISTA</span><img loading="lazy" src="${p.src}" alt="${p.title}"><div class="caption"><b>${p.title}</b><div class="muted small">${p.date}</div></div></div>`).join('')}</div><div class="clue">Hay coincidencias entre las imágenes, el chat de Mara y el recibo 17.</div>`}
-function openPhoto(id){state.photo=id;go('photo')}
-function photoPage(){let p=photos.find(x=>x.id===state.photo)||photos[0];mark(p.id);return `${head('Vista de foto',p.date,'photos')}<img class="detailimg" src="${p.src}" alt="${p.title}"><div class="card" style="margin-top:12px"><div class="between"><h2>${p.title}</h2><span class="badge gold">EVIDENCIA</span></div><p style="font-size:13px;color:#c0d1e2">${p.desc}</p><div class="between"><span class="muted small">Metadatos</span><span class="small">GPS parcial · 23:44</span></div><div class="clue">${p.clue}</div><div class="row" style="margin-top:13px"><button class="btn" onclick="go('notes')">▤ Notas</button><button class="btn" onclick="go('files')">▰ Archivos</button></div></div>`}
-function notesPage(){return `${apphead('Notas')}<input class="search" placeholder="⌕ Buscar en notas…" oninput="filterList(this.value,'noteslist')"><div id="noteslist">${notes.map((n,i)=>`<div class="note" data-search="${(n.title+n.body).toLowerCase()}" onclick="openNote(${i})"><div class="between"><h3>${n.title}</h3><span class="time">${n.date}</span></div><p>${n.body.replaceAll('\n',' · ')}</p></div>`).join('')}</div>`}
-function openNote(i){state.note=i;go('note')}
-function notePage(){let n=notes[state.note];mark('note'+state.note);return `${head('Nota',n.date,'notes')}<div class="card"><div class="eyebrow">Nota personal · sincronizada</div><h1 style="font-size:24px;margin-top:12px">${n.title}</h1><p style="white-space:pre-line;font-size:14px;color:#d2e0ef">${n.body}</p><div class="clue">${n.clue}</div><div class="row" style="margin-top:15px"><button class="btn" onclick="go('photos')">▧ Fotos</button><button class="btn" onclick="go('files')">▰ Archivos</button></div></div>`}
-function filesPage(){return `${apphead('Archivos')}<input class="search" placeholder="⌕ Buscar archivos…" oninput="filterList(this.value,'filelist')"><div id="filelist">${files.map((f,i)=>`<div class="listitem" data-search="${f.name.toLowerCase()}" onclick="openFile(${i})"><div class="fileicon">${f.type==='PDF'?'▧':f.type==='AUDIO'?'♫':f.type==='ZIP'?'▣':'▰'}</div><div class="grow"><div class="listtitle">${f.name}</div><div class="subline">${f.size} · ${f.date}</div></div><span class="muted">›</span></div>`).join('')}</div><div class="clue">El archivo recibo_17.pdf contradice el horario anotado en el calendario.</div>`}
-function openFile(i){state.file=i;go('file')}
-function filePage(){let f=files[state.file];mark('file'+state.file);return `${head('Detalles del archivo',f.type,'files')}<div class="card"><div style="text-align:center;padding:20px 0"><div class="fileicon" style="margin:auto;width:64px;height:70px;font-size:29px">${f.type==='PDF'?'▧':f.type==='AUDIO'?'♫':'▰'}</div><h2 style="margin-top:14px">${f.name}</h2><div class="muted small">${f.size} · Modificado ${f.date}</div></div><div class="eyebrow">Contenido recuperado</div><p style="font-size:13px;color:#c5d6e7">${f.desc}</p><div class="clue">${f.clue}</div><div class="row" style="margin-top:14px"><button class="btn" onclick="go('calendar')">▦ Calendario</button><button class="btn" onclick="go('calls')">☎ Llamadas</button></div></div>`}
-function contactsPage(){return `${apphead('Contactos')}<input class="search" placeholder="⌕ Buscar contactos…" oninput="filterList(this.value,'contactlist')"><div id="contactlist">${contacts.filter(c=>c.id!=='group').map(c=>`<div class="listitem" data-search="${c.name.toLowerCase()}" onclick="openContact('${c.id}')">${avatar(c)}<div class="grow"><div class="listtitle">${c.name}</div><div class="subline">${c.status}</div></div><button class="btn" onclick="event.stopPropagation();toast('Llamando a ${c.name}…')">☎</button></div>`).join('')}</div>`}
-function openContact(id){state.chat=id;go('contact')}
-function contactPage(){let c=contacts.find(x=>x.id===state.chat);return `${head('Contacto','Ficha personal','contacts')}<div class="card" style="text-align:center;padding:24px">${avatar(c)}<h1 style="margin-top:12px">${c.name}</h1><div class="muted small">${c.status}</div><div class="row" style="justify-content:center;margin-top:16px"><button class="btn primary" onclick="openChat('${c.id}')">✉ Mensaje</button><button class="btn" onclick="toast('Llamando a ${c.name}…')">☎ Llamar</button></div></div><div class="card"><h3>Actividad relacionada</h3><div class="listitem" onclick="openChat('${c.id}')"><span>✉</span><div class="grow"><div class="listtitle">Conversación</div><div class="subline">${c.last}</div></div></div><div class="listitem" onclick="go('calls')"><span>☎</span><div class="grow"><div class="listtitle">Historial de llamadas</div><div class="subline">Ver registros asociados</div></div></div></div>`}
-function calendarPage(){let days=Array.from({length:30},(_,i)=>i+1);return `${apphead('Calendario')}<div class="card"><div class="between"><h2>Abril 2026</h2><span class="muted small">Madrid</span></div><div class="monthgrid">${['L','M','X','J','V','S','D'].map(x=>`<div class="muted">${x}</div>`).join('')}${days.map(d=>`<div class="day ${d===state.calday?'active':''} ${[14,16,17].includes(d)?'marked':''}" onclick="state.calday=${d};render()">${d}</div>`).join('')}</div><div class="small muted">Los días con borde dorado contienen eventos de interés.</div></div><div class="card"><div class="eyebrow">Miércoles · ${state.calday} abril</div>${(state.calday===16?[['23:00','Visita a la estación vieja','Ubicación: andén norte',true],['23:30','Llamar a Mara','Sin detalles',false],['23:51','Recibo registrado','Código de operación 17',true]]:state.calday===14?[['22:30','Nota añadida','La puerta lateral',true]]:[['10:00','Reunión','Oficina · planta 2',false],['14:00','Almuerzo con Mara','Centro',false]]).map(e=>`<div class="event"><div class="datebox"><strong>${e[0].split(':')[0]}</strong><span>${e[0].split(':')[1]}</span></div><div class="grow"><h3>${e[1]} ${e[3]?'◆':''}</h3><div class="muted small">${e[2]}</div>${e[3]?'<div class="clue">El recibo aparece a las 23:51, después de la visita programada.</div>':''}</div></div>`).join('')}</div>`}
-function mapsPage(){return `${apphead('Mapas')}<div class="mapfake"><span class="pin"></span><span class="maplabel">Estación vieja</span><span style="position:absolute;left:12%;top:70%;font-size:10px;color:#78c7ff">Ubicación anterior</span></div><div class="card" style="margin-top:12px"><div class="eyebrow">Lugar marcado</div><h2 style="margin-top:7px">Estación vieja</h2><div class="muted small">Sector norte · 1,2 km</div><div class="divider"></div><p class="small">Última ubicación guardada: 23:03. La foto IMG_2048 se tomó cerca de las 23:44.</p><button class="btn primary" onclick="go('photos')">Ver fotos del lugar</button></div>`}
-function browserPage(){return `${apphead('Navegador')}<div class="card"><div class="search">🔒 historial.local/nexo</div><h2>Historial reciente</h2>${[['23:08','estación vieja entrada lateral'],['22:41','cómo recuperar metadatos EXIF'],['20:12','registro de accesos compartido'],['15:03','horarios estación norte']].map(x=>`<div class="listitem" onclick="toast('Página guardada sin conexión')"><span>◉</span><div class="grow"><div class="listtitle">${x[1]}</div><div class="subline">${x[0]} · Página guardada</div></div></div>`).join('')}<div class="clue">El historial muestra una búsqueda sobre entradas laterales a las 23:08.</div></div>`}
-function voicePage(){return `${apphead('Notas de voz')}<div class="card"><div class="eyebrow">Grabaciones recuperadas</div>${[['Audio 01 · 23:39','“...la puerta no, la otra entrada...”','00:07'],['Audio 02 · 23:44','“...el diecisiete. No lo pongas en el registro...”','00:12'],['Audio 03 · 20:19','“Iván dijo que no confiara en el horario...”','00:09']].map(a=>`<div class="listitem"><div class="fileicon">♫</div><div class="grow"><div class="listtitle">${a[0]}</div><div class="subline">${a[1]}</div><div style="margin-top:9px"><button class="btn" onclick="toast('Transcripción: ${a[1]}')">▶ Escuchar · ${a[2]}</button></div></div></div>`).join('')}<div class="clue">Las transcripciones mencionan el número 17 y la entrada alternativa.</div></div>`}
-function healthPage(){return `${apphead('Salud')}<div class="widgetrow"><div class="widget"><div class="eyebrow">Pasos hoy</div><div class="big">4.320</div><div class="small muted">Objetivo: 8.000</div></div><div class="widget"><div class="eyebrow">Última actividad</div><div class="big">23:04</div><div class="small muted">Caminata · 1,2 km</div></div></div><div class="card" style="margin-top:12px"><h2>Actividad reciente</h2><div class="event"><div class="fileicon">⌖</div><div class="grow"><h3>Caminata detectada</h3><div class="muted small">Sector norte · 23:04–23:21</div></div></div><div class="clue">La actividad coincide con el trayecto hacia la estación.</div></div>`}
-function settingsPage(){return `${apphead('Ajustes')}<div class="card"><div class="row">${avatar({initial:'N',avatar:'',name:'NEXO'})}<div class="grow"><h2>NEXO</h2><div class="muted small">ID: 7A3F-902K · Versión 4.2.1</div></div><span class="badge">Seguro</span></div></div><div class="card">${[['◉','Cuenta NEXO','Última sincronización: 22:58'],['♙','Privacidad','Historial compartido desactivado'],['⌁','Red y conexión','Pérdida de señal: 23:48'],['▣','Notificaciones','3 mensajes · 1 llamada perdida'],['⚙','General','Idioma: Español'],['ⓘ','Acerca del dispositivo','Expediente Cero · Unidad 04']].map(a=>`<div class="listitem" onclick="toast('${a[1]} · ${a[2]}')"><span style="font-size:20px">${a[0]}</span><div class="grow"><div class="listtitle">${a[1]}</div><div class="subline">${a[2]}</div></div><span class="muted">›</span></div>`).join('')}</div><button class="btn danger" style="width:100%" onclick="go('lock')">Bloquear dispositivo</button><button class="btn" style="width:100%;margin-top:9px" onclick="go('eliminated')">Recuperar eliminados</button>`}
-function eliminatedPage(){return `${head('Eliminados','Recuperación protegida','settings')}<div class="card"><div style="text-align:center;font-size:35px">🔒</div><h2 style="text-align:center">Contenido eliminado</h2><p class="muted small" style="text-align:center">Introduce el PIN de recuperación de 4 cifras.</p><input id="pin" class="search" inputmode="numeric" maxlength="4" placeholder="••••" style="text-align:center;letter-spacing:8px;font-size:22px"><button class="btn primary" style="width:100%" onclick="if($('#pin').value==='2317'){go('recovered')}else toast('PIN incorrecto')">Desbloquear</button></div>`}
-function recoveredPage(){return `${head('Recuperación','Datos restaurados','settings')}<div class="card"><span class="badge gold">RECUPERADO</span><h2 style="margin-top:12px">Borrador de Mara</h2><p>“Si preguntan por el recibo, yo no estuve allí a las 23:51. La cámara de la entrada lateral estaba apagada.”</p><div class="clue">La cámara apagada podría explicar por qué el registro no coincide con las fotografías.</div><button class="btn" style="margin-top:12px" onclick="go('photos')">Revisar fotografías</button></div>`}
-function render(){const s=$('#screen');$('#wallpaper').style.display=state.page==='lock'?'block':'none';const pages={lock,home,messages,chat,calls:callsPage,photos:photosPage,photo:photoPage,notes:notesPage,note:notePage,files:filesPage,file:filePage,contacts:contactsPage,contact:contactPage,calendar:calendarPage,maps:mapsPage,browser:browserPage,voice:voicePage,health:healthPage,settings:settingsPage,eliminated:eliminatedPage,recovered:recoveredPage};s.innerHTML=(pages[state.page]||home)();s.scrollTop=0;if(state.page==='lock')updateClock()}
-function go(page){state.page=page;render()}
-function filterList(value,id){const q=value.toLowerCase();document.querySelectorAll(`#${id} [data-search]`).forEach(el=>el.style.display=el.dataset.search.includes(q)?'flex':'none')}
-function updateClock(){const el=$('#clock');if(el){const d=new Date();el.textContent=d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})}}
-setInterval(updateClock,15000);
-render();
+const defaultState={clues:[],seen:[],chatsRead:[],interviews:[],answers:{},verdict:null,notes:[],resetCount:0};
+let state=loadState(),currentPhoto=null,currentChat=null,toastTimer=null;
+function loadState(){try{return {...defaultState,...JSON.parse(localStorage.getItem("expedienteCeroSave")||"{}")}}catch(e){return {...defaultState}}}
+function save(){try{localStorage.setItem("expedienteCeroSave",JSON.stringify(state))}catch(e){}}
+function has(id){return state.clues.includes(id)}
+function addClue(id,title,text){
+ if(!has(id)){state.clues.push(id);save();notify("Pista añadida al expediente: "+title);renderPolice()}
+ else notify("Esta pista ya está registrada en el expediente.");
+}
+function markSeen(id){if(!state.seen.includes(id)){state.seen.push(id);save()}}
+function notify(text){const t=$("toast");t.textContent=text;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2400)}
+function showView(id){document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));$(id).classList.add("active");window.scrollTo(0,0)}
+function unlock(){showView("homeView")}
+function goHome(){showView("homeView")}
+function openPolice(){renderPolice();showView("policeView")}
+function openApp(name){renderApp(name);showView("appView")}
+const appNames={messages:["Mensajes","Conversaciones recuperadas"],calls:["Teléfono","Registro de llamadas"],photos:["Fotos","Galería recuperada"],camera:["Cámara","Últimas imágenes del dispositivo"],notes:["Notas","Apuntes personales"],files:["Archivos","Datos recuperados"],calendar:["Calendario","Actividad del 16 de abril"],maps:["Mapas","Lugares relacionados con el caso"],voice:["Notas de voz","Audio recuperado"],contacts:["Contactos","Agenda local"],health:["Salud","Datos del dispositivo"],settings:["Ajustes","Información del sistema"]};
+function renderApp(name){
+ $("appTitle").textContent=appNames[name]?.[0]||"NEXO";
+ $("appSubtitle").textContent=appNames[name]?.[1]||"";
+ const c=$("appContent");
+ const pages={messages:renderMessages,calls:renderCalls,photos:renderPhotos,camera:renderPhotos,notes:renderNotes,files:renderFiles,calendar:renderCalendar,maps:renderMaps,voice:renderVoice,contacts:renderContacts,health:renderHealth,settings:renderSettings};
+ c.innerHTML=(pages[name]||renderSettings)();
+}
+function renderMessages(){return `<input class="search" placeholder="⌕  Buscar conversaciones" oninput="filterChats(this.value)"><div id="chatList">${chatListHTML(chats)}</div><div class="note">Algunos mensajes contienen información relevante. Las pistas confirmadas se guardan en el expediente de comisaría.</div>`}
+function chatListHTML(items){return items.map(ch=>`<button class="listitem" onclick="openChat('${ch.id}')"><div class="avatar">${ch.emoji}</div><div style="min-width:0;flex:1"><strong>${ch.name}</strong><small>${ch.preview}</small></div><span class="right">${ch.time}<br><span style="color:#56b9ff">●</span></span></button>`).join("")}
+function filterChats(v){$("chatList").innerHTML=chatListHTML(chats.filter(c=>(c.name+" "+c.preview).toLowerCase().includes(v.toLowerCase())))}
+function openChat(id){
+ currentChat=id;const ch=chats.find(c=>c.id===id);if(!ch)return;
+ state.chatsRead=state.chatsRead||[];if(!state.chatsRead.includes(id))state.chatsRead.push(id);save();
+ $("appTitle").textContent=ch.name;$("appSubtitle").textContent="Mensajes recuperados · "+ch.time;
+ $("appContent").innerHTML=`<button class="back" onclick="openApp('messages')">‹ Conversaciones</button><div class="chathead"><div class="avatar">${ch.emoji}</div><div><b>${ch.name}</b><div class="small muted">Conversación almacenada en el dispositivo</div></div></div><div class="chatmessages">${ch.messages.map(m=>`<div class="bubble ${m.from==='me'?'mine':''}">${m.text}<span class="stamp">${m.time}</span></div>`).join("")}</div><div class="note">Los mensajes se han recuperado de una copia local. La hora de envío no demuestra por sí sola la ubicación de su autor.</div><button class="secondary full" onclick="inspectChat('${id}')">Analizar conversación</button>`;
+}
+function inspectChat(id){
+ const data={
+ mara:["mara","Mensajes de Mara","Mara insiste en evitar la entrada principal y pide discreción. La conversación apoya la hipótesis de una cita secreta."],
+ ivan:["ivan","Declaración previa de Iván","Iván asegura que estaba en casa desde las diez. Esta afirmación debe contrastarse con las pruebas de tiempo y ubicación."],
+ unknown:["unknown","Amenaza del número desconocido","El remitente afirma haber visto al investigador y exige abandonar el expediente. No hay identidad verificada."],
+ lucia:["lucia","Mensaje de Lucía","Lucía vincula el número 17 con un registro que Mara había descubierto."],
+ group:["group","Conversación de grupo","La discusión muestra que Mara se negó a firmar algo y que Iván conocía la cita."]
+ };
+ const d=data[id];addClue(d[0],d[1],d[2]);openChat(id)
+}
+function renderCalls(){return `<div class="tabs"><button class="selected">Todas</button><button onclick="notify('No hay más llamadas perdidas recuperadas.')">Perdidas</button><button onclick="openApp('contacts')">Contactos</button></div>${[
+["👩🏻","Mara V.","Saliente · 00:18","23:42","mara"],
+["☎","Número desconocido","Entrante · 00:00","23:46","unknown"],
+["👩🏻","Mara V.","Saliente · 00:32","23:17","mara"],
+["👨🏻","Iván R.","Entrante · 01:12","20:03","ivan"],
+["👩🏼","Lucía P.","Saliente · 00:45","18:22","lucia"]].map((a,i)=>`<button class="listitem" onclick="callDetail('${a[4]}','${a[1]}','${a[3]}')"><div class="avatar">${a[0]}</div><div style="flex:1"><strong>${a[1]}</strong><small>${a[2]}</small></div><span class="right">${a[3]}<br>ⓘ</span></button>`).join("")}<div class="note">Registro reconstruido desde los metadatos locales. No permite realizar llamadas reales.</div>`}
+function callDetail(id,name,time){const clue=id==="unknown"?"unknown":id;addClue(clue,"Registro de llamada · "+name,"El registro incluye una llamada a las "+time+". Es una referencia temporal; por sí sola no prueba quién sostenía el dispositivo.");notify("Registro consultado")}
+function renderPhotos(){return `<div class="between" style="margin-bottom:13px"><span class="muted small">16 ABR · 6 ELEMENTOS</span><span class="tag">${state.clues.length} pistas registradas</span></div><div class="photo-grid">${photos.map((p,i)=>`<button class="photo-tile" onclick="viewPhoto('${p.id}')"><img loading="lazy" src="${p.url}" alt="${p.title}"><span class="evidence-dot">${has(p.clue)?'✓ REGISTRADA':'⌕ ANALIZAR'}</span><div class="photocap"><b>${p.title}</b><div class="muted" style="margin-top:4px">${p.desc.slice(0,65)}…</div></div></button>`).join("")}</div><div class="note">Pulsa cualquier fotografía para ampliarla. Los elementos importantes pueden incorporarse al expediente.</div>`}
+function viewPhoto(id){currentPhoto=photos.find(p=>p.id===id);if(!currentPhoto)return;$("viewerImage").src=currentPhoto.url;$("viewerTitle").textContent=currentPhoto.title;$("viewerDescription").textContent=currentPhoto.desc;$("viewerClueButton").textContent=has(currentPhoto.clue)?"Pista ya registrada":"Analizar y registrar pista";$("photoViewer").classList.add("open")}
+function closePhoto(){$("photoViewer").classList.remove("open")}
+function collectViewerClue(){if(!currentPhoto)return;addClue(currentPhoto.clue,currentPhoto.clueTitle,currentPhoto.clueText);$("viewerClueButton").textContent="Pista ya registrada"}
+function renderNotes(){return `<div class="card"><div class="between"><h3>Nota fijada</h3><span class="tag">16 ABR</span></div><p style="line-height:1.7">No confiar.<br>La puerta azul no es la entrada.<br>Si el reloj marca las 23:17, ya es tarde.</p><div class="muted small">Última modificación · 23:09</div><button class="secondary full" style="margin-top:12px" onclick="addClue('note','Nota de Mara','La nota menciona una puerta azul y la hora 23:17. Es una referencia que debe contrastarse con la fotografía del andén.')">Registrar nota como pista</button></div><div class="card"><h3>Borrador sin título</h3><p class="small">El número 17 aparece en el registro antiguo. Lucía sabe algo, pero no quiere decirlo por teléfono.</p><button class="secondary full" onclick="addClue('lucia','Borrador sobre el número 17','El borrador vincula el número 17 con un registro antiguo y con una conversación con Lucía.')">Guardar hallazgo</button></div><div class="card"><h3>Lista de tareas</h3>${["Revisar cámara de la estación","Buscar recibo 17","Llamar a Iván"].map((s,i)=>`<label style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid #263546"><input type="checkbox" ${state.seen.includes("task"+i)?"checked":""} onchange="toggleTask(${i},this.checked)"><span class="small">${s}</span></label>`).join("")}</div>`}
+function toggleTask(i,v){if(v)markSeen("task"+i);else{state.seen=state.seen.filter(x=>x!=="task"+i);save()}}
+function renderFiles(){return `${files.map((f,i)=>`<button class="listitem" onclick="openFile(${i})"><div class="avatar">${f.icon}</div><div style="flex:1"><strong>${f.name}</strong><small>${f.meta}</small></div><span class="right">›</span></button>`).join("")}<div class="note">Los archivos recuperados son copias de investigación ficticias para el juego. Selecciona un archivo para examinarlo.</div>`}
+function openFile(i){const f=files[i];const id=["backup","receipt","voice","photos","documents"][i];const desc=f.desc;addClue(id,"Archivo examinado · "+f.name,desc);notify(f.name+" examinado")}
+function renderCalendar(){return `<div class="card"><div class="between"><h3>Abril 2026</h3><span class="tag">MIÉRCOLES 16</span></div><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center;margin-top:17px">${["L","M","X","J","V","S","D",..."1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30".split(" ")].map((d,i)=>`<div style="padding:8px 0;font-size:11px;color:${i===24?'#fff':'#9eafc0'};background:${d==='16'?'#1765a2':'transparent'};border-radius:8px">${d}</div>`).join("")}</div></div><div class="card"><h3>Eventos recuperados</h3><div class="clue"><div class="num">22</div><div><strong>Posible cita · Estación vieja</strong><p>22:00–23:00 · Ubicación aproximada</p></div></div><div class="clue"><div class="num">23</div><div><strong>Mensaje de Mara</strong><p>23:21 · «No vayas por la entrada principal»</p></div></div><div class="clue"><div class="num">17</div><div><strong>Referencia sin identificar</strong><p>El número aparece en notas y archivos.</p></div></div><button class="secondary full" onclick="addClue('calendar','Cronología del calendario','El calendario sitúa una cita en la estación entre las 22:00 y las 23:00. El mensaje de las 23:21 puede ser posterior a esa franja.')">Incorporar cronología</button></div>`}
+function renderMaps(){return `<div class="card" style="padding:0;overflow:hidden"><div style="height:235px;background:linear-gradient(145deg,#152b37,#0a131c);position:relative;overflow:hidden"><svg viewBox="0 0 400 260" style="width:100%;height:100%" aria-label="Mapa esquemático ficticio"><g stroke="#365064" stroke-width="2" fill="none"><path d="M-20 35 L120 95 170 25 260 95 420 25M-10 120L100 145 165 120 240 155 420 120M10 240L80 180 180 210 260 175 420 225M40 -10L60 270M140 -10L130 270M230 -10L220 270M320 -10L310 270"/></g><path d="M72 205L118 158L190 138L244 91" stroke="#55b8ff" stroke-width="4" stroke-dasharray="7 5" fill="none"/><circle cx="244" cy="91" r="12" fill="#ff6479"/><circle cx="244" cy="91" r="4" fill="white"/><text x="260" y="85" fill="#edf6ff" font-size="12">Estación vieja</text><text x="18" y="30" fill="#7f9ab0" font-size="11">MADRID · ESQUEMA</text></svg></div><div style="padding:14px"><h3>Estación vieja</h3><p class="small muted">Sector norte · ubicación ficticia del caso</p><span class="tag">Ruta por acceso lateral</span></div></div><div class="card"><h3>Ubicaciones relacionadas</h3><button class="listitem" onclick="addClue('door','Acceso lateral de la estación','El mapa de la investigación marca un acceso lateral como posible punto de entrada.')"><div class="avatar">📍</div><div><strong>Acceso lateral</strong><small>Coincide con las indicaciones de Mara</small></div></button><button class="listitem" onclick="addClue('station','Estación vieja','La estación es el lugar central de la investigación, pero la ubicación no identifica al responsable.')"><div class="avatar">🚉</div><div><strong>Andén 3</strong><small>Última ubicación conocida de Mara</small></div></button></div>`}
+function renderVoice(){return `<div class="card"><div style="font-size:36px;text-align:center;margin:15px">◖)))</div><h3 style="text-align:center">audio_cache.tmp</h3><p class="small muted" style="text-align:center">00:18 · Archivo parcialmente recuperado</p><div class="progress" style="margin:18px 0"><span style="width:63%"></span></div><p style="line-height:1.7">Transcripción parcial:<br><i>«…no es el acceso principal… busca el diecisiete… si llega antes que yo, no le des el sobre…»</i></p><button class="primary full" onclick="addClue('voice','Transcripción de audio','La transcripción menciona el acceso principal, el número 17 y un sobre. Es una pista contextual, no una identificación de la voz.')">Guardar transcripción</button></div><div class="note">La reproducción de audio original no está disponible en esta versión. Esta transcripción forma parte de la ficción del caso.</div>`}
+function renderContacts(){return chats.map((c,i)=>`<button class="listitem" onclick="openContact('${c.id}')"><div class="avatar">${c.emoji}</div><div><strong>${c.name}</strong><small>${["Contacto frecuente","Compañero de Mara","Número sin identificar","Amiga de Mara","Grupo archivado"][i]}</small></div></button>`).join("")}
+function openContact(id){const c=chats.find(x=>x.id===id);const details={mara:"Última persona que envió mensajes al dispositivo antes de la desaparición.",ivan:"Conocido de Mara. Afirma que estuvo en casa desde las diez.",unknown:"Número no guardado. Envió mensajes intimidatorios después de recuperar el teléfono.",lucia:"Amiga de Mara. Menciona un registro y el número 17.",group:"Grupo archivado con mensajes sobre una cita y un documento."};$("appContent").innerHTML=`<button class="back" onclick="openApp('contacts')">‹ Contactos</button><div class="card" style="text-align:center;padding:24px"><div class="avatar" style="margin:auto;width:70px;height:70px;font-size:28px">${c.emoji}</div><h2>${c.name}</h2><p class="small muted">${details[id]}</p><button class="primary full" onclick="openChat('${id}')">Ver mensajes</button><button class="secondary full" style="margin-top:8px" onclick="inspectChat('${id}')">Registrar información</button></div>`}
+function renderHealth(){return `<div class="card"><h3>Actividad del dispositivo</h3><div class="metricgrid"><div class="metric"><b>6</b><small>FOTOS</small></div><div class="metric"><b>5</b><small>CHATS</small></div><div class="metric"><b>3</b><small>ARCHIVOS</small></div></div><p class="small muted" style="margin-top:14px">Datos ficticios recuperados durante la reconstrucción del dispositivo.</p></div><div class="card"><h3>Última sincronización</h3><p class="small">16 de abril · 23:48</p><span class="tag green">Copia local disponible</span></div>`}
+function renderSettings(){return `<div class="card"><div class="row"><div class="avatar">◉</div><div><strong>NEXO · Unidad 04</strong><div class="small muted">Dispositivo recuperado</div></div></div></div><div class="card"><h3>Privacidad y sistema</h3>${["Red y conexión · Última señal 23:48","Notificaciones · 3 alertas pendientes","Idioma · Español","Almacenamiento · Copia parcial"].map(t=>`<div class="clue"><div class="num">◉</div><div><strong>${t}</strong></div></div>`).join("")}</div><div class="card"><h3>Progreso de investigación</h3><p class="small muted">${state.clues.length} pistas guardadas. El progreso se conserva en este navegador.</p><button class="secondary full" onclick="openPolice()">Abrir expediente policial</button><button class="danger full" style="margin-top:9px" onclick="resetGame()">Reiniciar partida</button></div><p class="footer">NEXO OS · Expediente Cero · Versión de investigación</p>`}
+function renderPolice(){
+ const total=10,progress=Math.min(100,Math.round(state.clues.length/total*100));
+ $("policeContent").innerHTML=`<div class="casehero"><img src="https://images.unsplash.com/photo-1453873531674-2151bcd01707?auto=format&fit=crop&w=1100&q=85" alt="Mesa de investigación"><div class="herotext"><span class="tag red">CASO ABIERTO</span><h2>La última conexión</h2><p class="small muted">Desaparición de Mara V. · Estación vieja · 16 de abril</p><div class="progress"><span style="width:${progress}%"></span></div><p class="small muted">${state.clues.length} hallazgos registrados · Investigación ${progress}%</p></div></div>
+ <div class="metricgrid"><div class="metric"><b>${state.clues.length}</b><small>PISTAS</small></div><div class="metric"><b>${state.interviews.length}</b><small>DECLARACIONES</small></div><div class="metric"><b>${state.seen.filter(x=>x.startsWith("task")).length}</b><small>TAREAS</small></div></div>
+ <div class="sectiontitle">CENTRO DE INVESTIGACIÓN</div>
+ <button class="listitem" onclick="renderEvidence()"><div class="avatar">🗂</div><div style="flex:1"><strong>Pruebas y evidencias</strong><small>Consultar pistas y sus relaciones</small></div><span class="right">${state.clues.length} ›</span></button>
+ <button class="listitem" onclick="renderTimeline()"><div class="avatar">◷</div><div style="flex:1"><strong>Cronología del caso</strong><small>Contrastar horarios y declaraciones</small></div><span class="right">›</span></button>
+ <button class="listitem" onclick="renderSuspects()"><div class="avatar">♙</div><div style="flex:1"><strong>Sospechosos y testigos</strong><small>Consultar perfiles y motivos</small></div><span class="right">3 ›</span></button>
+ <button class="listitem" onclick="openInterview('ivan')"><div class="avatar">🎙</div><div style="flex:1"><strong>Interrogar a Iván R.</strong><small>Contrasta su declaración con las pruebas</small></div><span class="right">›</span></button>
+ <button class="listitem" onclick="openInterview('lucia')"><div class="avatar">🎙</div><div style="flex:1"><strong>Entrevistar a Lucía P.</strong><small>Preguntar por el número 17</small></div><span class="right">›</span></button>
+ <button class="listitem" onclick="openInterview('unknown')"><div class="avatar">🎙</div><div style="flex:1"><strong>Analizar el número desconocido</strong><small>Investigar las amenazas</small></div><span class="right">›</span></button>
+ <div class="card" style="margin-top:16px"><h3>Conclusión del caso</h3><p class="small muted">Necesitas cruzar las pruebas, revisar los testimonios y elegir una hipótesis.</p><button class="primary full" onclick="openVerdict()">Preparar resolución →</button></div>
+ <button class="secondary full" onclick="goHome()">← Volver al móvil NEXO</button>`;
+}
+function renderEvidence(){
+ const c=$("policeContent");c.innerHTML=`<button class="back" onclick="renderPolice()">‹ Expediente</button><h2>Pruebas y evidencias</h2><p class="small muted">Las pistas que hayas registrado en el teléfono aparecen aquí.</p>`;
+ if(!state.clues.length)c.innerHTML+=`<div class="card"><div style="font-size:32px">🗂</div><h3>Sin pruebas incorporadas</h3><p class="small muted">Vuelve al móvil y revisa los mensajes, las fotos, las notas y los archivos.</p><button class="primary full" onclick="goHome()">Volver al móvil</button></div>`;
+ else c.innerHTML+=`<div class="card">${state.clues.map((id,i)=>{const p=photos.find(x=>x.clue===id);const dict=clueDictionary[id]||[id,"Hallazgo registrado","Información recuperada del dispositivo."];return `<div class="clue"><div class="num">${String(i+1).padStart(2,"0")}</div><div><strong>${dict[1]}</strong><p>${dict[2]}</p></div></div>`}).join("")}</div>`;
+}
+const clueDictionary={
+photo:["photo","Fotografía del andén","La imagen sitúa a Mara en la estación a las 23:18 y muestra una figura reflejada."],
+receipt:["receipt","Recibo de la cafetería","El recibo marca las 22:41, pero no identifica a quien realizó la compra."],
+door:["door","Acceso lateral","La ruta alternativa coincide con el mensaje de Mara."],
+message:["message","Mensaje de las 23:21","Mara pide evitar la entrada principal y mantener discreción."],
+mara:["mara","Mensaje sobre la discreción","Mara pide que la conversación se mantenga en secreto."],
+ivan:["ivan","Declaración de Iván","Iván asegura que estuvo en casa desde las diez."],
+unknown:["unknown","Amenaza del número desconocido","El remitente afirma haber visto al investigador."],
+lucia:["lucia","Mensaje de Lucía","Lucía menciona el número 17 y un registro antiguo."],
+group:["group","Conversación de grupo","Mara se niega a firmar un documento."],
+note:["note","Nota del número 17","La nota menciona una puerta azul y la hora 23:17."],
+backup:["backup","Copia local","La copia conserva referencias a datos del dispositivo."],
+voice:["voice","Transcripción de audio","El audio menciona el acceso, el número 17 y un sobre."],
+corridor:["corridor","Pasillo de servicio","Un recorrido posible desde la entrada lateral."],
+calendar:["calendar","Cronología del calendario","Una cita figura entre las 22:00 y las 23:00."],
+station:["station","Ubicación de la estación","La estación es el punto central de la investigación."]
+};
+function renderTimeline(){
+ const c=$("policeContent");c.innerHTML=`<button class="back" onclick="renderPolice()">‹ Expediente</button><h2>Cronología</h2><p class="small muted">Las horas recuperadas son referencias; algunas pueden proceder de copias locales.</p><div class="card">${[
+["20:17","Iván escribe: «Mañana hablamos».","ivan"],
+["22:00","Posible cita en la estación vieja.","calendar"],
+["22:41","Hora del recibo recuperado.","receipt"],
+["23:17","Hora mencionada en una nota.","note"],
+["23:18","Fotografía del andén.","photo"],
+["23:21","Mensaje de Mara sobre la entrada principal.","message"],
+["23:46","Llamada del número desconocido.","unknown"]
+].map(([t,desc,id])=>`<div class="clue"><div class="num">${t}</div><div><strong>${desc}</strong><p>${has(id)?'✓ Prueba incorporada':'○ Aún no confirmada'}</p></div></div>`).join("")}</div><button class="secondary full" onclick="goHome()">Volver al teléfono</button>`;
+}
+function renderSuspects(){
+ const c=$("policeContent");c.innerHTML=`<button class="back" onclick="renderPolice()">‹ Expediente</button><h2>Personas relacionadas</h2>
+ <div class="card"><div class="row"><div class="avatar">👨🏻</div><div><h3>Iván R.</h3><span class="tag red">PERSONA DE INTERÉS</span></div></div><p class="small">Conocido de Mara. Afirma que estaba en casa desde las 22:00. Sus mensajes muestran que conocía la cita.</p><button class="secondary full" onclick="openInterview('ivan')">Interrogar</button></div>
+ <div class="card"><div class="row"><div class="avatar">👩🏼</div><div><h3>Lucía P.</h3><span class="tag">TESTIGO</span></div></div><p class="small">Amiga de Mara. Conoce la referencia al número 17, pero no ha explicado su significado.</p><button class="secondary full" onclick="openInterview('lucia')">Entrevistar</button></div>
+ <div class="card"><div class="row"><div class="avatar">☎</div><div><h3>Número desconocido</h3><span class="tag red">IDENTIDAD SIN VERIFICAR</span></div></div><p class="small">Envió mensajes intimidatorios tras la recuperación del teléfono. No se dispone de identidad confirmada.</p><button class="secondary full" onclick="openInterview('unknown')">Investigar mensajes</button></div>`;
+}
+const interviews={
+ivan:{
+name:"Iván R.",intro:"Iván está sentado frente al investigador. Repite que no salió de casa y que no sabe qué buscaba Mara en la estación.",
+questions:[
+{q:"Iván asegura que estaba en casa desde las diez. ¿Qué quieres preguntarle?",opts:[
+{t:"¿Cómo explicas que conocieras la cita de Mara?",need:"group",reply:"Iván se queda callado. «Lo oí mencionar, nada más». Su respuesta no demuestra que estuviera allí.",clue:"interviewIvan"},
+{t:"¿Puedes confirmar dónde estabas a las 23:18?",need:"photo",reply:"«En casa», repite. No aporta un dato verificable sobre esa hora.",clue:"interviewIvan"},
+{t:"Acusarlo directamente de la desaparición",need:null,reply:"Iván se niega a continuar sin pruebas concretas. La acusación no produce información nueva.",clue:null}
+]},
+{q:"Le enseñas una prueba relacionada con la cronología. ¿Cómo continúas?",opts:[
+{t:"Preguntar por la discusión del grupo",need:"group",reply:"«Mara quería revisar unos documentos. Yo quería que dejara de removerlo todo». Admite la discusión, no la desaparición.",clue:"ivanStatement"},
+{t:"Preguntar por el número 17",need:"note",reply:"Iván responde que no recuerda ese número y pide ver la nota completa.",clue:"interviewIvan"},
+{t:"Terminar el interrogatorio",need:null,reply:"El interrogatorio termina sin una nueva declaración.",clue:null}
+]}
+]},
+lucia:{
+name:"Lucía P.",intro:"Lucía conocía a Mara y recibió mensajes sobre un registro antiguo. Parece nerviosa al hablar del número 17.",
+questions:[
+{q:"¿Qué significaba el número 17 para Mara?",opts:[
+{t:"Mostrarle la nota recuperada",need:"note",reply:"Lucía reconoce la referencia. «Era un número de registro, no un andén. Mara pensaba que alguien había cambiado una entrada».",clue:"luciaStatement"},
+{t:"Preguntarle por la vida personal de Mara",need:null,reply:"Lucía habla de sus problemas recientes, pero no aporta una conexión verificable con la estación.",clue:null},
+{t:"Preguntar si vio a Iván esa noche",need:"ivan",reply:"«No lo vi esa noche. Solo sé que habían discutido». No puede confirmar su ubicación.",clue:"luciaStatement"}
+]},
+{q:"Lucía menciona un documento que Mara no quería firmar.",opts:[
+{t:"Preguntar por el contenido del documento",need:"group",reply:"«Era una corrección de un registro. Mara decía que la hora no cuadraba». La copia del documento no está recuperada.",clue:"record"}
+]}
+]},
+unknown:{
+name:"Número desconocido",intro:"No se ha podido identificar al remitente. El interrogatorio se plantea como análisis de los mensajes, no como una persona presente.",
+questions:[
+{q:"¿Qué conclusión puede extraerse de los mensajes?",opts:[
+{t:"El remitente sabía que el teléfono estaba siendo revisado",need:"unknown",reply:"El texto sugiere que el remitente conocía la investigación. No revela cómo obtuvo esa información.",clue:"unknownAnalysis"},
+{t:"El remitente es necesariamente Iván",need:null,reply:"No hay datos técnicos suficientes para atribuir el número a Iván. La hipótesis sigue sin probar.",clue:null},
+{t:"Registrar el número como línea pendiente de identificar",need:null,reply:"La línea queda registrada como evidencia pendiente de identificación.",clue:"unknownAnalysis"}
+]}
+]}
+};
+function openInterview(id){
+ const data=interviews[id];if(!data)return;
+ state.answers[id]=state.answers[id]||{};save();
+ $("interviewContent").innerHTML=`<div class="card"><span class="tag red">DECLARACIÓN RESERVADA</span><h2 style="margin-top:12px">${data.name}</h2><p class="small" style="line-height:1.7">${data.intro}</p><div class="note">Presenta pruebas relacionadas con la pregunta. Las opciones sin prueba pueden cerrar líneas de investigación.</div></div>${data.questions.map((q,qi)=>`<div class="card"><div class="sectiontitle">PREGUNTA ${qi+1} / ${data.questions.length}</div><h3>${q.q}</h3>${q.opts.map((o,oi)=>{const ans=state.answers[id][qi];return `<button class="choice ${ans===oi?'selected':''}" onclick="answerInterview('${id}',${qi},${oi})"><span class="letter">${String.fromCharCode(65+oi)}</span><span>${o.t}${o.need&&!has(o.need)?'<br><small class="muted">Requiere una prueba relacionada</small>':''}</span></button>`}).join("")}${state.answers[id][qi]!==undefined?`<div class="note">${q.opts[state.answers[id][qi]].reply}</div>`:""}</div>`).join("")}<button class="primary full" onclick="finishInterview('${id}')">Cerrar declaración</button><button class="secondary full" style="margin-top:8px" onclick="renderPolice()">Volver al expediente</button>`;
+ showView("interviewView");
+}
+function answerInterview(id,qi,oi){
+ const q=interviews[id].questions[qi],o=q.opts[oi];
+ if(o.need&&!has(o.need)){notify("Todavía no tienes esa prueba. Vuelve al móvil y búscala.");return}
+ state.answers[id][qi]=oi;
+ if(o.clue){state.interviews=state.interviews||[];if(!state.interviews.includes(o.clue))state.interviews.push(o.clue)}
+ save();openInterview(id)
+}
+function finishInterview(id){
+ const ans=state.answers[id]||{};
+ if(!state.interviews.includes("closed_"+id)){state.interviews.push("closed_"+id);save()}
+ notify("Declaración guardada en el expediente");openPolice()
+}
+function openVerdict(){
+ $("verdictContent").innerHTML=`<div class="card"><span class="tag red">RESOLUCIÓN PROVISIONAL</span><h2 style="margin-top:12px">¿Qué ocurrió con Mara?</h2><p class="small" style="line-height:1.7">Selecciona la hipótesis que mejor explique las pruebas. Una conclusión sólida debe distinguir entre hechos, testimonios y sospechas.</p><div class="sectiontitle">PERSONA RESPONSABLE</div>
+ <button class="choice" onclick="selectVerdict('ivan')"><span class="letter">A</span><span><b>Iván R.</b><br>Conocía la cita y discutió con Mara sobre el registro.</span></button>
+ <button class="choice" onclick="selectVerdict('unknown')"><span class="letter">B</span><span><b>El remitente desconocido</b><br>Envió amenazas y conocía la investigación.</span></button>
+ <button class="choice" onclick="selectVerdict('accident')"><span class="letter">C</span><span><b>Desaparición sin responsable confirmado</b><br>Las pruebas actuales no permiten identificar con certeza a una persona.</span></button>
+ <div class="sectiontitle">MOTIVO PRINCIPAL</div>
+ <button class="choice" onclick="selectMotive('record')"><span class="letter">1</span><span>Evitar que se descubriera una alteración del registro número 17.</span></button>
+ <button class="choice" onclick="selectMotive('personal')"><span class="letter">2</span><span>Una discusión personal sin relación demostrada con el registro.</span></button>
+ <button class="choice" onclick="selectMotive('unknown')"><span class="letter">3</span><span>Un motivo desconocido que aún requiere investigación.</span></button>
+ <div class="sectiontitle">PRUEBAS CLAVE</div><p class="small muted">Marca las evidencias que sustentan tu conclusión.</p>
+ ${["message","photo","note","group","ivan","lucia","unknown","voice"].map(id=>{let d=clueDictionary[id]||[id,id,id];return `<label style="display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #263546"><input type="checkbox" id="proof_${id}" ${has(id)?"checked":""} ${has(id)?"":"disabled"}><span class="small">${d[1]} ${has(id)?"":"(aún no recuperada)"}</span></label>`}).join("")}
+ <label class="formlabel">Tu razonamiento</label><textarea id="reasoning" placeholder="Explica cómo conectan las pistas con tu conclusión…"></textarea>
+ <button class="primary full" style="margin-top:14px" onclick="submitVerdict()">Presentar resolución final</button></div>`;
+ showView("verdictView")
+}
+let selectedSuspect=null,selectedMotive=null;
+function selectVerdict(v){selectedSuspect=v;document.querySelectorAll("#verdictContent .choice").forEach((b,i)=>{if(i<3)b.classList.toggle("selected",["ivan","unknown","accident"][i]===v)})}
+function selectMotive(v){selectedMotive=v;document.querySelectorAll("#verdictContent .choice").forEach((b,i)=>{if(i>=3&&i<6)b.classList.toggle("selected",["record","personal","unknown"][i-3]===v)})}
+function submitVerdict(){
+ if(!selectedSuspect||!selectedMotive){notify("Elige un responsable y un motivo antes de continuar.");return}
+ const selected=["message","photo","note","group","ivan","lucia","unknown","voice"].filter(id=>{const el=$("proof_"+id);return el&&el.checked});
+ const score=selected.filter(id=>has(id)).length;
+ const interviewsDone=["ivan","lucia","unknown"].filter(id=>state.interviews.includes("closed_"+id)).length;
+ const correct=selectedSuspect==="ivan"&&selectedMotive==="record";
+ const supported=score>=3&&has("note")&&has("group");
+ state.verdict={suspect:selectedSuspect,motive:selectedMotive,proofs:selected,reason:$("reasoning").value,correct,supported,score,interviewsDone};save();
+ showVerdictResult()
+}
+function showVerdictResult(){
+ const v=state.verdict;if(!v)return;
+ const suspectName={ivan:"Iván R.",unknown:"el remitente desconocido",accident:"sin responsable confirmado"}[v.suspect];
+ let title,description,icon;
+ if(v.correct&&v.supported){title="Caso resuelto";icon="✓";description="Tu hipótesis coincide con la explicación prevista y está respaldada por varias líneas de investigación. Iván conocía la cita, hubo una discusión sobre el documento y el número 17 conecta las notas con el registro cuestionado. Aun así, las amenazas del número desconocido no prueban por sí solas quién las envió."}
+ else if(v.correct){title="Hipótesis plausible";icon="◷";description="Has señalado a la persona correcta dentro de la historia, pero faltan pruebas cruzadas. Vuelve al móvil, revisa la nota, la conversación de grupo y las declaraciones antes de cerrar el expediente."}
+ else if(v.supported){title="Conclusión no demostrada";icon="!";description="Has reunido varias pruebas, pero la persona o el motivo que has elegido no encaja con la explicación mejor sustentada. Las amenazas no identifican automáticamente al remitente y una ubicación no demuestra culpabilidad."}
+ else{title="Expediente incompleto";icon="…";description="La conclusión no tiene apoyo suficiente todavía. Explora el teléfono, registra pruebas y contrasta los testimonios. Puedes volver a intentarlo sin perder tu progreso."}
+ $("verdictContent").innerHTML=`<div class="card"><div class="resultmark">${icon}</div><h2 class="resulttitle">${title}</h2><p class="small muted" style="text-align:center">Resolución registrada · EC / 001</p><div class="divider"></div><h3>Tu conclusión</h3><p class="small">Responsable elegido: <b>${suspectName}</b></p><p class="small">Pruebas seleccionadas: <b>${v.score}</b> · Declaraciones cerradas: <b>${v.interviewsDone}</b></p><div class="note">${description}</div><h3 style="margin-top:18px">Razonamiento registrado</h3><p class="small">${escapeHTML(v.reason||"No se añadió una explicación escrita.")}</p><button class="primary full" onclick="openPolice()">Volver al expediente</button><button class="secondary full" style="margin-top:8px" onclick="openVerdict()">Revisar conclusión</button></div>`;
+ showView("verdictView")
+}
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function resetGame(){if(!confirm("¿Seguro que quieres borrar todas las pistas y reiniciar la investigación?"))return;localStorage.removeItem("expedienteCeroSave");state={...defaultState,clues:[],seen:[],chatsRead:[],interviews:[],answers:{},notes:[],verdict:null};selectedSuspect=null;selectedMotive=null;save();notify("Investigación reiniciada");openApp("settings")}
+function updateClock(){const d=new Date();const t=d.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit",hour12:false});$("statusTime").textContent=t;$("lockTime").textContent=t}
+updateClock();setInterval(updateClock,30000);
+$("photoViewer").addEventListener("click",e=>{if(e.target.id==="photoViewer")closePhoto()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closePhoto()});
+if(window.matchMedia("(min-width:700px)").matches)document.body.classList.add("desktop-mode");
 </script>
 </body>
 </html>
